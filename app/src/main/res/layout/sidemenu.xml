@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#adbb00"
+    android:orientation="vertical" >
+
+    <EditText android:id="@+id/inputSearch"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:drawableLeft="@drawable/trazilicabtn"
+    android:drawablePadding="10dp"
+    android:hint="Pretraži 5do12"
+    android:inputType="text"/>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/breakline" />
+
+    <TextView
+        android:id="@+id/pocetnabtn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/pocetnabtn"
+        android:text="POČETNA"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:src="@drawable/pocetnabtn" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/breakline" />
+    <TextView
+        android:id="@+id/organizatorbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/organizatorbtn"
+        android:text="ORGANIZATOR"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:src="@drawable/pocetnabtn" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/breakline" />
+    
+    <TextView
+        android:id="@+id/profilbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/profilbtn"
+        android:text="PROFIL"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:src="@drawable/pocetnabtn" />
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/breakline" />
+
+    
+    <TextView
+        android:id="@+id/favoritibtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/favoritibtn"
+        android:text="FAVORITI"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:src="@drawable/pocetnabtn" />
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/breakline" />
+
+    <TextView
+        android:id="@+id/akcijebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/akcijebtn"
+        android:text="AKCIJE"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:src="@drawable/pocetnabtn" />
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/breakline" />
+
+    
+    <TextView
+        android:id="@+id/prijateljibtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/prijateljibtn"
+        android:text="PRIJATELJI"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:src="@drawable/pocetnabtn" />
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/breakline" />
+
+    <TextView
+        android:id="@+id/preporukebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/preporukebtn"
+        android:text="PREPORUKE"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:src="@drawable/pocetnabtn" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/breakline" />
+ 
+</LinearLayout>

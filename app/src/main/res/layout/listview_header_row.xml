@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+       
+     
+   <TextView
+        android:id="@+id/subcatname"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/imageView1"
+        android:layout_marginTop="18dp"
+        android:paddingRight="15dp"
+        android:background="#FF0000"
+        android:text="TextView" />
+
+</LinearLayout>
