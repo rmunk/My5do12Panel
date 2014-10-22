@@ -1,5 +1,7 @@
 package com.nas2skupa.do12;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.nas2skupa.do12.R;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +25,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
  
 public class MainActivity extends ListActivity {
- 
+
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private final static String TAG = "5do12";
+
     private ProgressDialog pDialog;
  
     // URL to get contacts JSON
@@ -85,7 +90,22 @@ public class MainActivity extends ListActivity {
         // Calling async task to get json
         new GetContacts().execute();
     }
- 
+
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Async task class to get json by making HTTP call
      * */

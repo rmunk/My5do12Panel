@@ -11,8 +11,9 @@
     <string name="home_title">Home</string>
     <string name="fav_title">Favorites</string>
     <string name="currency"> kn</string>
-	
-    
+
+    <string name="gcm_project_id">238306205978</string>
+
     
     <string name="city_prompt">GRAD</string>
  

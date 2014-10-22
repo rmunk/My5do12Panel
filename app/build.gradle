@@ -12,13 +12,14 @@ android {
 
     buildTypes {
         release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt', 'proguard-project.txt'
         }
     }
 }
 
 dependencies {
     compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.google.android.gms:play-services:6.1.+'
     compile files('libs/slider.jar')
 }
