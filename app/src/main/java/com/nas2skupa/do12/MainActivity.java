@@ -33,7 +33,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
  
 public class MainActivity extends ListActivity {
-
+    //Ovo je git test!!!
     public static final String EXTRA_MESSAGE = "message";
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
