@@ -89,7 +89,7 @@ public class BaseActivity extends Activity {
 	}
 
 	public void vaznoActivity() {
-		Toast.makeText(this, "Važno Option Selexted", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Vaï¿½no Option Selected", Toast.LENGTH_SHORT).show();
 	}
 	
 	public void optionActivity() {

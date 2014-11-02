@@ -17,14 +17,17 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +38,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
     private ImageView calendarToJournalButton;
     private Button selectedDayMonthYearButton;
+    private TextView eventsDetails;
     private Button currentMonth;
     private ImageView prevMonth;
     private ImageView nextMonth;
@@ -58,14 +62,14 @@ public class Organizer extends BaseActivity implements OnClickListener {
         year = _calendar.get(Calendar.YEAR);
         Log.d(tag, "Calendar Instance:= " + "Month: " + month + " " + "Year: " + year);
 
-        //selectedDayMonthYearButton = (Button) this.findViewById(R.id.selectedDayMonthYear);
-        //selectedDayMonthYearButton.setText("Selected: ");
+//        selectedDayMonthYearButton = (Button) this.findViewById(R.id.selectedDayMonthYear);
+//        selectedDayMonthYearButton.setText("Selected: ");
 
         prevMonth = (ImageView) this.findViewById(R.id.prevMonth);
         prevMonth.setOnClickListener(this);
 
         currentMonth = (Button) this.findViewById(R.id.currentMonth);
-        currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));
+//        currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));
 
         nextMonth = (ImageView) this.findViewById(R.id.nextMonth);
         nextMonth.setOnClickListener(this);
@@ -74,8 +78,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
         // Initialised
         adapter = new GridCellAdapter(getApplicationContext(), R.id.calendar_day_gridcell, month, year);
-        adapter.notifyDataSetChanged();
-        calendarView.setAdapter(adapter);
+
+        eventsDetails = (TextView) this.findViewById(R.id.eventsDetails);
     }
 
     /**
@@ -84,8 +88,12 @@ public class Organizer extends BaseActivity implements OnClickListener {
      */
     private void setGridCellAdapterToDate(int month, int year) {
         adapter = new GridCellAdapter(getApplicationContext(), R.id.calendar_day_gridcell, month, year);
+        updateCalendar(month, year);
+    }
+
+    private void updateCalendar(int month, int year) {
         _calendar.set(year, month, _calendar.get(Calendar.DAY_OF_MONTH));
-        currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));
+//        currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));
         adapter.notifyDataSetChanged();
         calendarView.setAdapter(adapter);
     }
@@ -138,11 +146,12 @@ public class Organizer extends BaseActivity implements OnClickListener {
         private int currentWeekDay;
         private Button gridcell;
         private TextView num_events_per_day;
-        private final HashMap eventsPerMonthMap;
+        private HashMap eventsPerMonthMap;
         private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy");
 
         private ProgressDialog pDialog;
         private String url;
+        private HashMap<String, ArrayList<Order>> orders = new HashMap<String, ArrayList<Order>>();
 
         // Days in Current Month
         public GridCellAdapter(Context context, int textViewResourceId, int month, int year) {
@@ -161,13 +170,12 @@ public class Organizer extends BaseActivity implements OnClickListener {
             Log.d(tag, "CurrentDayOfMonth :" + getCurrentDayOfMonth());
 
             // Print Month
+            currentMonth.setText(getMonthAsString(month));
             printMonth(month, year);
 
             String userId = ((Globals) getApplication()).getUser()[0];
             url = "http://nas2skupa.com/5do12/getOrders.aspx?userId=" + userId + "&year=" + year + "&month=" + month;
             new GetOrders().execute();
-            // Find Number of Events
-            eventsPerMonthMap = findNumberOfEventsPerMonth(year, month);
         }
 
         private String getMonthAsString(int i) {
@@ -259,52 +267,24 @@ public class Organizer extends BaseActivity implements OnClickListener {
             // Trailing Month days
             for (int i = 0; i < trailingSpaces; i++) {
                 Log.d(tag, "PREV MONTH:= " + prevMonth + " => " + getMonthAsString(prevMonth) + " " + String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i));
-                list.add(String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i) + "-GREY" + "-" + getMonthAsString(prevMonth) + "-" + prevYear);
+                list.add(String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i) + "-GREY" + "-" + (prevMonth + 1) + "-" + prevYear);
             }
 
             // Current Month Days
             for (int i = 1; i <= daysInMonth; i++) {
                 Log.d(currentMonthName, String.valueOf(i) + " " + getMonthAsString(currentMonth) + " " + yy);
                 if (i == getCurrentDayOfMonth()) {
-                    list.add(String.valueOf(i) + "-BLUE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+                    list.add(String.valueOf(i) + "-BLUE" + "-" + (currentMonth + 1) + "-" + yy);
                 } else {
-                    list.add(String.valueOf(i) + "-WHITE" + "-" + getMonthAsString(currentMonth) + "-" + yy);
+                    list.add(String.valueOf(i) + "-WHITE" + "-" + (currentMonth + 1) + "-" + yy);
                 }
             }
 
             // Leading Month days
             for (int i = 0; i < list.size() % 7; i++) {
                 Log.d(tag, "NEXT MONTH:= " + getMonthAsString(nextMonth));
-                list.add(String.valueOf(i + 1) + "-GREY" + "-" + getMonthAsString(nextMonth) + "-" + nextYear);
+                list.add(String.valueOf(i + 1) + "-GREY" + "-" + (nextMonth + 1) + "-" + nextYear);
             }
-        }
-
-        /**
-         * NOTE: YOU NEED TO IMPLEMENT THIS PART Given the YEAR, MONTH, retrieve
-         * ALL entries from a SQLite database for that month. Iterate over the
-         * List of All entries, and get the dateCreated, which is converted into
-         * day.
-         *
-         * @param year
-         * @param month
-         * @return
-         */
-        private HashMap findNumberOfEventsPerMonth(int year, int month) {
-            HashMap map = new HashMap<String, Integer>();
-            // DateFormat dateFormatter2 = new DateFormat();
-            //
-//            String day = dateFormatter2.format("dd", dateCreated).toString();
-//
-            // if (map.containsKey(day))
-            // {
-//                Integer val = (Integer) map.get(day) + 1;
-//                map.put(day, val);
-            // }
-            // else
-            // {
-//                map.put(day, 1);
-//            }
-            return map;
         }
 
         @Override
@@ -328,13 +308,15 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
             Log.d(tag, "Current Day: " + getCurrentDayOfMonth());
             String[] day_color = list.get(position).split("-");
-            String theday = day_color[0];
-            String themonth = day_color[2];
-            String theyear = day_color[3];
-            if ((!eventsPerMonthMap.isEmpty()) && (eventsPerMonthMap != null)) {
-                if (eventsPerMonthMap.containsKey(theday)) {
+            final String theday = day_color[0];
+            final String color = day_color[1];
+            final String themonth = day_color[2];
+            final String theyear = day_color[3];
+            final String key = theday + "-" + themonth + "-" + theyear;
+            if (orders.size() > 0) {
+                if (orders.containsKey(key)) {
                     num_events_per_day = (TextView) row.findViewById(R.id.num_events_per_day);
-                    Integer numEvents = (Integer) eventsPerMonthMap.get(theday);
+                    Integer numEvents = orders.get(key).size();
                     num_events_per_day.setText(numEvents.toString());
                 }
             }
@@ -344,13 +326,14 @@ public class Organizer extends BaseActivity implements OnClickListener {
             gridcell.setTag(theday + "-" + themonth + "-" + theyear);
             Log.d(tag, "Setting GridCell " + theday + "-" + themonth + "-" + theyear);
 
-            if (day_color[1].equals("GREY")) {
+            if (color.equals("GREY")) {
                 gridcell.setTextColor(Color.LTGRAY);
+                gridcell.setClickable(false);
             }
-            if (day_color[1].equals("WHITE")) {
+            if (color.equals("WHITE")) {
                 gridcell.setTextColor(Color.WHITE);
             }
-            if (day_color[1].equals("BLUE")) {
+            if (color.equals("BLUE")) {
                 gridcell.setTextColor(getResources().getColor(R.color.static_text_color));
             }
             return row;
@@ -359,8 +342,14 @@ public class Organizer extends BaseActivity implements OnClickListener {
         @Override
         public void onClick(View view) {
             String date_month_year = (String) view.getTag();
-            selectedDayMonthYearButton.setText("Selected: " + date_month_year);
-
+            eventsDetails.setText(date_month_year);
+            if (orders.containsKey(date_month_year)) {
+                ArrayList<Order> events = orders.get(date_month_year);
+                SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
+                for (Order order : events) {
+                    eventsDetails.append("\nTermin: " + tf.format(order.startTime) + " - " + tf.format(order.endTime));
+                }
+            }
             try {
                 Date parsedDate = dateFormatter.parse(date_month_year);
                 Log.d(tag, "Parsed Date: " + parsedDate.toString());
@@ -409,37 +398,24 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
                 Log.d("Response: ", "> " + jsonStr);
 
-                if (jsonStr != null) {
-                    try {
-                        JSONObject jsonObj = new JSONObject(jsonStr);
+                if (jsonStr != null) try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    JSONArray jsonArray = jsonObj.getJSONArray("orders");
 //
-//                        // Getting JSON Array node
-//                        orders = jsonObj.getJSONArray(TAG_ARRAY);
-//
-//
-//                        for (int i = 0; i < orders.length(); i++) {
-//                            JSONObject c = orders.getJSONObject(i);
-//
-//                            String id = c.getString(TAG_ID);
-//                            String name = c.getString(TAG_NAME);
-//                            String favore = c.getString("favorite");
-//                            String action = c.getString("akcija");
-//                            int fav = R.drawable.blank;
-//                            int akcija = R.drawable.blank;
-//                            if (favore.equals("1")) {
-//                                fav = R.drawable.fav_icon;
-//                            }
-//                            if (action.equals("1")) {
-//                                akcija = R.drawable.akcija_icon;
-//                            }
-//                            listArray.add(new Provider(fav, name, id, akcija));
-//                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        Order order = new Order(jsonArray.getJSONObject(i));
+                        String key = new DateFormat().format("d-M-yyyy", order.date).toString();
+                        if (orders.containsKey(key))
+                            orders.get(key).add(order);
+                        else
+                            orders.put(key, new ArrayList<Order>(Arrays.asList(order)));
                     }
-                } else {
-                    Log.e("ServiceHandler", "Couldn't get any data from the url");
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                else {
+                    Log.e("ServiceHandler", "Couldn't get any data from the url");
                 }
 
                 return null;
@@ -449,9 +425,10 @@ public class Organizer extends BaseActivity implements OnClickListener {
             protected void onPostExecute(Void result) {
                 super.onPostExecute(result);
                 // Dismiss the progress dialog
-                if (pDialog.isShowing())
+                if (pDialog.isShowing()) {
                     pDialog.dismiss();
-
+                }
+                updateCalendar(month, year);
             }
         }
     }

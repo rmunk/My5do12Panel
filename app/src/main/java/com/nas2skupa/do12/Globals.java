@@ -38,7 +38,7 @@ public class Globals extends Application{
 			catSettings[1]="#7ec5c4";
 			return catSettings;
 		case 2:
-			catSettings[0]="servis i odrûavanje";
+			catSettings[0]="servis i odr≈æavanje";
 			catSettings[1]="#8c7c66";
 			return catSettings;
 		case 3:

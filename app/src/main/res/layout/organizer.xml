@@ -4,7 +4,8 @@
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="@drawable/bg">
+	android:background="@drawable/bg"
+    android:weightSum="1">
 
 	<LinearLayout
 		android:orientation="horizontal"
@@ -34,25 +35,33 @@
 		</ImageView>
 	</LinearLayout>
 
-	<LinearLayout
-		android:layout_gravity="center"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
-		<ImageView
-			android:id="@+id/calendarheader"
-			android:src="@drawable/blue_bg_with_text"
-			android:layout_gravity="center"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content">
-		</ImageView>
-	</LinearLayout>
+    <ImageView
+        android:id="@+id/calendarheader"
+        android:src="@drawable/blue_bg_with_text"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="image"
+        android:cropToPadding="false"
+        android:scaleType="fitXY">
+    </ImageView>
 
 
-	<GridView
+    <GridView
 		android:id="@+id/calendar"
 		android:numColumns="7"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
 	</GridView>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/eventsDetails"
+        android:background="@drawable/calendar_top_header"
+        android:layout_weight="0.61"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFFFFF"
+        android:padding="10dp" />
 
 </LinearLayout>
