@@ -69,7 +69,6 @@ public class Organizer extends BaseActivity implements OnClickListener {
         prevMonth.setOnClickListener(this);
 
         currentMonth = (Button) this.findViewById(R.id.currentMonth);
-//        currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));
 
         nextMonth = (ImageView) this.findViewById(R.id.nextMonth);
         nextMonth.setOnClickListener(this);
@@ -93,7 +92,6 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
     private void updateCalendar(int month, int year) {
         _calendar.set(year, month, _calendar.get(Calendar.DAY_OF_MONTH));
-//        currentMonth.setText(dateFormatter.format(dateTemplate, _calendar.getTime()));
         adapter.notifyDataSetChanged();
         calendarView.setAdapter(adapter);
     }
@@ -170,7 +168,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
             Log.d(tag, "CurrentDayOfMonth :" + getCurrentDayOfMonth());
 
             // Print Month
-            currentMonth.setText(getMonthAsString(month));
+            currentMonth.setText(getMonthAsString(month - 1));
             printMonth(month, year);
 
             String userId = ((Globals) getApplication()).getUser()[0];
@@ -342,12 +340,12 @@ public class Organizer extends BaseActivity implements OnClickListener {
         @Override
         public void onClick(View view) {
             String date_month_year = (String) view.getTag();
-            eventsDetails.setText(date_month_year);
+            eventsDetails.setText(date_month_year.replace('-','.').concat("."));
             if (orders.containsKey(date_month_year)) {
                 ArrayList<Order> events = orders.get(date_month_year);
                 SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
                 for (Order order : events) {
-                    eventsDetails.append("\nTermin: " + tf.format(order.startTime) + " - " + tf.format(order.endTime));
+                    eventsDetails.append(String.format("\n%s: %s - %s", order.proName, tf.format(order.startTime), tf.format(order.endTime)));
                 }
             }
             try {

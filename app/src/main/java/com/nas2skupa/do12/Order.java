@@ -15,6 +15,7 @@ import java.util.Date;
 public class Order {
     public String id;
     public String proId;
+    public String proName;
     public String userId;
     public String serviceId;
     public Date date;
@@ -32,6 +33,7 @@ public class Order {
         try {
             this.id = jsonObj.optString("id");
             this.proId = jsonObj.optString("proId");
+            this.proName = jsonObj.optString("proName");
             this.userId = jsonObj.optString("userId");
             this.serviceId = jsonObj.optString("serviceId");
             this.date = df.parse(jsonObj.optString("date"));
