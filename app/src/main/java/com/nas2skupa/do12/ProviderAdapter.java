@@ -4,11 +4,16 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class ProviderAdapter extends ArrayAdapter<Provider>{
@@ -39,7 +44,9 @@ public class ProviderAdapter extends ArrayAdapter<Provider>{
             holder.akcijaIcon = (ImageView)row.findViewById(R.id.akcijaIcon);
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
             holder.providerID = (TextView)row.findViewById(R.id.providerID);
-           
+            holder.rating = (RatingBar)row.findViewById(R.id.ratingBar2);
+            LayerDrawable stars = (LayerDrawable) holder.rating.getProgressDrawable();
+            stars.getDrawable(2).setColorFilter(Color.parseColor("#ffadbb02"), PorterDuff.Mode.SRC_IN);
             row.setTag(holder);
         }
         else
@@ -52,6 +59,7 @@ public class ProviderAdapter extends ArrayAdapter<Provider>{
         holder.txtTitle.setText(provider.title);
         holder.favIcon.setImageResource(provider.favIcon);
         holder.akcijaIcon.setImageResource(provider.akcijaIcon);
+        holder.rating.setRating(provider.rating);
        
         return row;
     }
@@ -62,5 +70,6 @@ public class ProviderAdapter extends ArrayAdapter<Provider>{
         ImageView akcijaIcon;
         TextView txtTitle;
         TextView providerID;
+        RatingBar rating;
     }
 }

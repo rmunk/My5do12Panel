@@ -12,6 +12,8 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -180,6 +182,8 @@ public class SingleProvider  extends BaseActivity {
 	            TextView lblAbout = (TextView) findViewById(R.id.about_label);
 	            lblAbout.setBackgroundColor(Color.parseColor(color));
                 RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+                LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+                stars.getDrawable(2).setColorFilter(Color.parseColor("#ffadbb02"), PorterDuff.Mode.SRC_IN);
 
 	            lblName.setText(provider[1]);
 	            lblAbout.setText(provider[5]);

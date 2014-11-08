@@ -146,7 +146,11 @@ public class ProviderList extends BaseActivity {
                         if(action.equals("1")){
                         	akcija=R.drawable.akcija_icon;
                         }
-                        listArray.add(new Provider(fav, name, id, akcija));
+                       float rating = 0;
+                       try {
+                           rating = Float.parseFloat(c.getString("rating"));
+                       }catch (NumberFormatException e) {}
+                       listArray.add(new Provider(fav, name, id, akcija, rating));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

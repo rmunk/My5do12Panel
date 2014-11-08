@@ -14,7 +14,18 @@
 	        android:textStyle="bold"
 	        android:paddingLeft="20dp"
 	        android:paddingTop="20dp" />
-  <TextView
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar"
+        android:layout_gravity="left"
+        style="?android:attr/ratingBarStyleSmall"
+        android:numStars="5"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
+
+    <TextView
         android:id="@+id/about_label"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
