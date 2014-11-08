@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -36,7 +37,8 @@ public class SingleProvider  extends BaseActivity {
 	private static final String TAG_ABOUT = "about";
 	private static final String TAG_CATEGORY = "category";
 	private static final String TAG_SUBCAT = "subcat";
-	
+	private static final String TAG_RATING = "rating";
+
 	private String color;
 
     private String url = "http://nas2skupa.com/5do12/getSinglePro.aspx?id=";
@@ -127,6 +129,7 @@ public class SingleProvider  extends BaseActivity {
 	                    	String about = c.getString(TAG_ABOUT);
 	                    	String category = c.getString(TAG_CATEGORY);
 	                    	String subcat = c.getString(TAG_SUBCAT);
+	                    	String rating = c.getString(TAG_RATING);
 	                    	provider[0]=id;
 	                    	provider[1]=name;
 	                    	provider[2]=email;
@@ -135,6 +138,7 @@ public class SingleProvider  extends BaseActivity {
 	                    	provider[5]=about;
 	                    	provider[6]=category;
 	                    	provider[7]=subcat;
+	                    	provider[8]=rating;
 		                    pricelists = c.getJSONArray("cjenik");
 	                    	for (int j=0;j<pricelists.length();j++){
 	                    		JSONObject p = pricelists.getJSONObject(j);
@@ -175,9 +179,14 @@ public class SingleProvider  extends BaseActivity {
 	            TextView lblName = (TextView) findViewById(R.id.name_label);
 	            TextView lblAbout = (TextView) findViewById(R.id.about_label);
 	            lblAbout.setBackgroundColor(Color.parseColor(color));
+                RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
 	            lblName.setText(provider[1]);
 	            lblAbout.setText(provider[5]);
+                try {
+                    float rating = Float.parseFloat(provider[8]);
+                    ratingBar.setRating(rating);
+                } catch (NumberFormatException e) { }
 
 	            PricelistAdapter adapter = new PricelistAdapter(SingleProvider.this,
 	            		R.layout.listview_service_row, listArray);
