@@ -85,7 +85,9 @@ public class BaseActivity extends Activity {
 	}
 
 	public void favActivity() {
-		Toast.makeText(this, this+"dsa", Toast.LENGTH_SHORT).show();
+
+        Intent i = new Intent(this, Favorites.class);
+        startActivity(i);
 	}
 
 	public void vaznoActivity() {

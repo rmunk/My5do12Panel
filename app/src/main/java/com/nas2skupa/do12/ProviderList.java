@@ -153,7 +153,7 @@ public class ProviderList extends BaseActivity {
                        try {
                            rating = Float.parseFloat(c.getString("rating"));
                        }catch (NumberFormatException e) {}
-                       listArray.add(new Provider(fav, name, id, akcija, rating));
+                       listArray.add(new Provider(fav, name, id, akcija, rating,null));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

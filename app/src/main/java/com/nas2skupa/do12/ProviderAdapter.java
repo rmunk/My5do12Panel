@@ -44,6 +44,7 @@ public class ProviderAdapter extends ArrayAdapter<Provider>{
             holder.akcijaIcon = (ImageView)row.findViewById(R.id.akcijaIcon);
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
             holder.providerID = (TextView)row.findViewById(R.id.providerID);
+            holder.catID = (TextView)row.findViewById(R.id.catID);
             holder.rating = (RatingBar)row.findViewById(R.id.ratingBar2);
             LayerDrawable stars = (LayerDrawable) holder.rating.getProgressDrawable();
             stars.getDrawable(2).setColorFilter(Color.parseColor("#ffadbb02"), PorterDuff.Mode.SRC_IN);
@@ -56,6 +57,7 @@ public class ProviderAdapter extends ArrayAdapter<Provider>{
        
         Provider provider = data.get(position);
         holder.providerID.setText(provider.proID);
+        holder.catID.setText(provider.catID);
         holder.txtTitle.setText(provider.title);
         holder.favIcon.setImageResource(provider.favIcon);
         holder.akcijaIcon.setImageResource(provider.akcijaIcon);
@@ -70,6 +72,7 @@ public class ProviderAdapter extends ArrayAdapter<Provider>{
         ImageView akcijaIcon;
         TextView txtTitle;
         TextView providerID;
+        TextView catID;
         RatingBar rating;
     }
 }
