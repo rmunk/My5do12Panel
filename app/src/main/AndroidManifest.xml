@@ -25,20 +25,28 @@
             android:name="com.nas2skupa.do12.SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
-            <intent-filter>
+            <intent-filter android:name="android.intent.filter.MAIN" >
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.nas2skupa.do12.Organizer"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter android:name="android.intent.filter.MAIN" >
+                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.nas2skupa.do12.LoginScreen"
             android:label="@string/app_name"
-            android:parentActivityName="com.nas2skupa.do12.SplashScreen"
             android:screenOrientation="portrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nas2skupa.do12.SplashScreen" />
+            <intent-filter android:name="android.intent.filter.MAIN" >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.nas2skupa.do12.HomeScreen"
@@ -56,11 +64,6 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.nas2skupa.do12.Organizer"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-        </activity> 
-        <activity
             android:label="@string/app_name"
             android:name="com.nas2skupa.do12.SingleContactActivity" >
         </activity>
@@ -73,20 +76,19 @@
             android:name="com.nas2skupa.do12.OrderActivity" >
         </activity>
 
-        <!-- Google Cloud Messaging Service and Notifications
-        <service android:name=".GCMIntentService" >
+         Google Cloud Messaging Service and Notifications
+        <service android:name=".GcmIntentService" >
             <meta-data android:name="GCM_PROJECT_ID" android:value="@string/gcm_project_id" />
         </service>
 
-        <receiver android:name=".GCMBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+        <receiver android:name=".GcmBroadcastReceiver" >
+            <!--android:permission="com.google.android.c2dm.permission.SEND" >-->
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
-         -->
     </application>
 
 </manifest>

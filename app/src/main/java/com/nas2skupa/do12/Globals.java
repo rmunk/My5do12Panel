@@ -8,27 +8,6 @@ public class Globals extends Application{
 	
 	private String[] catSettings = new String[2];
 	
-	public String[] userDetails = new String[10];
-	
-	public void setUserDetails(String id, String uname, String name, String sname, String birth, String homeadd, String businessadd, String cell, String email, String gender){	
-		userDetails[0]=id;	
-		userDetails[1]=uname;	
-		userDetails[2]=name;	
-		userDetails[3]=sname;	
-		userDetails[4]=birth;	
-		userDetails[5]=homeadd;	
-		userDetails[6]=businessadd;	
-		userDetails[7]=cell;	
-		userDetails[8]=email;	
-		userDetails[9]=gender;
-		
-	}
-	
-	public String[] getUser(){
-		return userDetails;		
-	}
-	
-	
 	public String[] getCatSettings(int CatId) {
 		
 		switch (CatId) {

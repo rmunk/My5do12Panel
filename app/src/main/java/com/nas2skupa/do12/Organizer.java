@@ -2,6 +2,7 @@ package com.nas2skupa.do12;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -171,7 +172,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
             currentMonth.setText(getMonthAsString(month - 1));
             printMonth(month, year);
 
-            String userId = ((Globals) getApplication()).getUser()[0];
+            final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
+            String userId = prefs.getString("id", "");
             url = "http://nas2skupa.com/5do12/getOrders.aspx?userId=" + userId + "&year=" + year + "&month=" + month;
             new GetOrders().execute();
         }

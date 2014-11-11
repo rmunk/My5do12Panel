@@ -9,7 +9,9 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -51,10 +53,11 @@ public class ProviderList extends BaseActivity {
         String subcat = extras.getString("subcat");
         color = extras.getString("color");
         String ID = extras.getString("ID");
-        String[] user= ((Globals) getApplication()).getUser();
-        String userID=user[0];
+        final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
+        String userId = prefs.getString("id", "");
 
-        url+=ID+"&u="+userID;
+
+        url+=ID+"&u="+userId;
 
 
         // Calling async task to get json

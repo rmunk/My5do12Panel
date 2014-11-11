@@ -12,7 +12,8 @@
     <string name="fav_title">Favorites</string>
     <string name="currency"> kn</string>
 
-    <string name="gcm_project_id">238306205978</string>
+    <string name="gcm_project_id">noted-trail-758</string>
+    <string name="gcm_project_no">492542058520</string>
 
     
     <string name="city_prompt">GRAD</string>

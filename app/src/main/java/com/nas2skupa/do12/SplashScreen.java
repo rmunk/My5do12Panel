@@ -26,6 +26,7 @@ public class SplashScreen extends Activity {
                 // This method will be executed once the timer is over
                 // Start your app main activity
                 Intent i = new Intent(SplashScreen.this, LoginScreen.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
  
                 // close this activity
