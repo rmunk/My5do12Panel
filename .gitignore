@@ -1,0 +1,7 @@
+*.iws
+.idea/workspace.xml
+local.properties
+build/
+.gradle/
+.idea/libraries/
+Thumbs.db
