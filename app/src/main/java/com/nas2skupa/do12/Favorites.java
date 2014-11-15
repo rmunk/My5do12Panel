@@ -38,9 +38,9 @@ public class Favorites extends BaseActivity {
     private static final String TAG_ID = "ID";
     private static final String TAG_NAME = "name";
     private static final String TAG_CAT = "category";
-    private String[] catSettings = new String[2];
+    private String[] catSet = new String[2];
     private String color;
-    Globals Globs;
+    private Globals Globs;
  // subcats JSONArray
     JSONArray providers = null;
     View header = null;
@@ -75,16 +75,17 @@ public class Favorites extends BaseActivity {
                 // getting values from selected ListItem
                 String proID = ((TextView) view.findViewById(R.id.providerID))
                         .getText().toString();
-                String catID = "1";//((TextView) view.findViewById(R.id.catID))
-                        //.getText().toString();
+                String catID = ((TextView) view.findViewById(R.id.catID))
+                        .getText().toString();
                 // Starting detail view
-               //catSettings=Globs.getCatSettings(Integer.parseInt(catID));
+               // catSet=Globs.getCatSettings(Integer.parseInt("1"));
+
                Intent in = new Intent(getApplicationContext(),
                        SingleProvider.class);
                in.putExtra(TAG_ID, proID);
                in.putExtra("color", "#000000");
-                startActivity(in);
-            	//Toast.makeText(Favorites.this, "neko ime="+catSettings[1], Toast.LENGTH_SHORT).show();
+               startActivity(in);
+            	//Toast.makeText(Favorites.this, "neko ime="+catSet[1], Toast.LENGTH_SHORT).show();
             }
         });
        
