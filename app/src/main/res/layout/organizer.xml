@@ -60,6 +60,9 @@
         android:background="@drawable/calendar_top_header"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF"
-        android:padding="20dp" />
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="20dp" />
 
 </LinearLayout>

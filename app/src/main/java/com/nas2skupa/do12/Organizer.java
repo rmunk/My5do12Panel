@@ -1,7 +1,9 @@
 package com.nas2skupa.do12;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -60,6 +62,9 @@ public class Organizer extends BaseActivity implements OnClickListener {
         setContentView(R.layout.organizer);
 
         Intent callingIntent = getIntent();
+        Bundle data = callingIntent.getExtras();
+        if (data != null)
+            showNotificationDialog(data);
 
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
@@ -88,6 +93,58 @@ public class Organizer extends BaseActivity implements OnClickListener {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        Bundle data = intent.getExtras();
+        if (data != null)
+            showNotificationDialog(data);
+    }
+
+    public void showNotificationDialog(Bundle data) {
+        SimpleDateFormat inputDateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+        SimpleDateFormat outputDateFormatter = new SimpleDateFormat("dd.MM.yyyy.");
+
+        final String orderId = data.getString("orderId");
+        String provider = data.getString("provider");
+        boolean confirmed = data.getString("confirmed").equals("1");
+        String date = null;
+        try {
+            date = outputDateFormatter.format(inputDateFormatter.parse(data.getString("date")));
+        } catch (ParseException e) { }
+        String startTime = data.getString("startTime");
+        String endTime = data.getString("endTime");
+        String message = String.format("Vaš termin %s u %s sati je %s", date, startTime.substring(0, 5), confirmed ? "potvrđen." : "otkazan.");
+        new AlertDialog.Builder(this)
+                .setTitle(provider)
+                .setMessage(message)
+                .setPositiveButton("Potvrdi", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        new SendConfirmation().execute(orderId, "1");
+                    }
+                })
+                .setNegativeButton("Otkaži", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        new SendConfirmation().execute(orderId, "2");
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+    }
+
+    private class SendConfirmation extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... params) {
+            String orderId = params[0];
+            String confirmed = params[1];
+            try {
+                ServiceHandler sh = new ServiceHandler();
+                String url = "http://nas2skupa.com/5do12/confirmUser.aspx?orderId=" + orderId + "&confirmed=" + confirmed;
+                String msg = sh.makeServiceCall(url, ServiceHandler.GET);
+                Log.d("Response: ", "> " + msg);
+            } catch (Exception ex) {
+                Log.d("Error :",ex.getMessage());
+            }
+            return null;
+        }
     }
 
     /**
