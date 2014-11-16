@@ -10,7 +10,9 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
@@ -19,6 +21,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -53,7 +56,11 @@ public class SingleProvider  extends BaseActivity {
 	private String proId;
 	ArrayList<Pricelist> listArray=new ArrayList<Pricelist>();
     View footer = null;
-    
+    private RatingBar ratingBar;
+    private RatingBar ratingBarBig;
+    private Button rateButton;
+    private float userRating;
+
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +92,64 @@ public class SingleProvider  extends BaseActivity {
                     startActivity(in);
             }
         });
+
+        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(Color.parseColor("#ffadbb02"), PorterDuff.Mode.SRC_IN);
+        ratingBarBig = (RatingBar) findViewById(R.id.ratingBarBig);
+        LayerDrawable starsBig = (LayerDrawable) ratingBarBig.getProgressDrawable();
+        starsBig.getDrawable(2).setColorFilter(Color.parseColor("#ffadbb02"), PorterDuff.Mode.SRC_IN);
+        ratingBarBig.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if (fromUser)
+                    userRating = rating;
+            }
+        });
+        rateButton = (Button) findViewById(R.id.rateBtn);
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AsyncTask() {
+                    @Override
+                    protected Object doInBackground(Object[] params) {
+                        String msg = "";
+                        try {
+                            if(userRating == 0) return null;
+                            final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
+                            String userId = prefs.getString("id", "");
+                            ServiceHandler sh = new ServiceHandler();
+                            String url = "http://nas2skupa.com/5do12/setRate.aspx?userId=" + userId + "&proId=" + provider[0] + "&rate=" + (int)userRating;
+                            msg = sh.makeServiceCall(url, ServiceHandler.GET);
+                            Log.d("Response: ", "> " + msg);
+                        } catch (Exception ex) {
+                            Log.d("Error :",ex.getMessage());
+                          }
+                        return msg;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        super.onPostExecute(o);
+                        ratingBar.setVisibility(View.VISIBLE);
+                        ratingBarBig.setVisibility(View.GONE);
+                        rateButton.setVisibility(View.GONE);
+                        if (o != null)
+                            new GetProvider().execute();
+                    }
+                }.execute(null, null, null);
+
+            }
+        });
     }
+
+    public void rateProvider(View view){
+        ratingBar.setVisibility(View.GONE);
+        ratingBarBig.setVisibility(View.VISIBLE);
+        rateButton.setVisibility(View.VISIBLE);
+    }
+
+
 	
 	 private class GetProvider extends AsyncTask<Void, Void, Void> {
 		 
@@ -181,9 +245,6 @@ public class SingleProvider  extends BaseActivity {
 	            TextView lblName = (TextView) findViewById(R.id.name_label);
 	            TextView lblAbout = (TextView) findViewById(R.id.about_label);
 	            lblAbout.setBackgroundColor(Color.parseColor(color));
-                RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-                LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-                stars.getDrawable(2).setColorFilter(Color.parseColor("#ffadbb02"), PorterDuff.Mode.SRC_IN);
 
 	            lblName.setText(provider[1]);
 	            lblAbout.setText(provider[5]);

@@ -15,15 +15,49 @@
 	        android:paddingLeft="20dp"
 	        android:paddingTop="20dp" />
 
-    <RatingBar
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ratingBar"
-        android:layout_gravity="left"
-        style="?android:attr/ratingBarStyleSmall"
-        android:numStars="5"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:onClick="rateProvider">
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingBar"
+            android:layout_gravity="left"
+            style="?android:attr/ratingBarStyleSmall"
+            android:numStars="5" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBarBig"
+                android:stepSize="1"
+                android:visibility="gone" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="DONE"
+                android:id="@+id/rateBtn"
+                android:visibility="gone"
+                android:textColor="#ffffffff"
+                android:background="#ffadbb02"
+                android:textStyle="bold"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_gravity="right" />
+        </LinearLayout>
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/about_label"
