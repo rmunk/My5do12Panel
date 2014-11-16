@@ -15,6 +15,8 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import org.json.JSONObject;
+
 /**
  * Created by Ranko on 23.10.2014..
  */
@@ -45,17 +47,15 @@ public class GcmIntentService extends IntentService {
              */
             if (GoogleCloudMessaging.
                     MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification("Send error: " + extras.toString());
+                sendNotification(intent);
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_DELETED.equals(messageType)) {
-                sendNotification("Deleted messages on server: " +
-                        extras.toString());
+                sendNotification(intent);
                 // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
                 // Post notification of received message.
-                sendNotification("Received: " + extras.toString());
+                sendNotification(intent);
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }
@@ -66,7 +66,10 @@ public class GcmIntentService extends IntentService {
     // Put the message into a notification and post it.
     // This is just one simple example of what you might choose to do with
     // a GCM message.
-    private void sendNotification(String msg) {
+    private void sendNotification(Intent intent) {
+        String msg = "";
+        if (intent.hasExtra("orderId"))
+            msg = intent.getStringExtra("provider") + " " + (intent.getStringExtra("confirmed").equals("1") ? "potvrđuje" : "otkazuje") + " predloženi termin.";
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -74,6 +77,7 @@ public class GcmIntentService extends IntentService {
         String userId = prefs.getString("id", "");
         Intent notificationIntent = new Intent();
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        notificationIntent.replaceExtras(intent);
 //        notificationIntent.setData(Uri.parse(action));
         if (userId == null || userId.isEmpty())
             notificationIntent.setComponent(new ComponentName(this, LoginScreen.class));

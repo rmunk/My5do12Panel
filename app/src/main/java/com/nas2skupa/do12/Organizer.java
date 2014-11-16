@@ -2,6 +2,7 @@ package com.nas2skupa.do12;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -58,6 +59,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.organizer);
 
+        Intent callingIntent = getIntent();
+
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
         year = _calendar.get(Calendar.YEAR);
@@ -80,6 +83,11 @@ public class Organizer extends BaseActivity implements OnClickListener {
         adapter = new GridCellAdapter(getApplicationContext(), R.id.calendar_day_gridcell, month, year);
 
         eventsDetails = (TextView) this.findViewById(R.id.eventsDetails);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 
     /**
@@ -136,11 +144,12 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
         private final List<String> list;
         private static final int DAY_OFFSET = 1;
-        private final String[] weekdays = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-        private final String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        private final String[] weekdays = new String[]{"Ned", "Pon", "Uto", "Sri", "Čet", "Pet", "Sub"};
+        private final String[] months = {"Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"};
         private final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
         private final int month, year;
         private int daysInMonth, prevMonthDays;
+        private Calendar currentDate;
         private int currentDayOfMonth;
         private int currentWeekDay;
         private Button gridcell;
@@ -162,6 +171,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
             Log.d(tag, "==> Passed in Date FOR Month: " + month + " " + "Year: " + year);
             Calendar calendar = Calendar.getInstance();
+            currentDate = new GregorianCalendar();
             setCurrentDayOfMonth(calendar.get(Calendar.DAY_OF_MONTH));
             setCurrentWeekDay(calendar.get(Calendar.DAY_OF_WEEK));
             Log.d(tag, "New Calendar:= " + calendar.getTime().toString());
@@ -272,8 +282,11 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
             // Current Month Days
             for (int i = 1; i <= daysInMonth; i++) {
+                cal.set(Calendar.DAY_OF_MONTH, i);
                 Log.d(currentMonthName, String.valueOf(i) + " " + getMonthAsString(currentMonth) + " " + yy);
-                if (i == getCurrentDayOfMonth()) {
+                if (cal.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR)
+                        && cal.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH)
+                        && cal.get(Calendar.DAY_OF_MONTH) == currentDate.get(Calendar.DAY_OF_MONTH)) {
                     list.add(String.valueOf(i) + "-BLUE" + "-" + (currentMonth + 1) + "-" + yy);
                 } else {
                     list.add(String.valueOf(i) + "-WHITE" + "-" + (currentMonth + 1) + "-" + yy);
@@ -334,7 +347,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 gridcell.setTextColor(Color.WHITE);
             }
             if (color.equals("BLUE")) {
-                gridcell.setTextColor(getResources().getColor(R.color.static_text_color));
+                gridcell.setTextColor(Color.DKGRAY);
             }
             return row;
         }
