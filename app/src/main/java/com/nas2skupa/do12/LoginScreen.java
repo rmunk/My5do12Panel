@@ -77,6 +77,25 @@ public class LoginScreen extends Activity {
             Log.i(TAG, "No valid Google Play Services APK found.");
 
         prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
+        Intent intent = getIntent();
+        if(intent.getAction() == "logout")
+            prefs.edit().clear().commit();
+        userId = prefs.getString(TAG_ID, "");
+        if (userId.isEmpty()) {
+            setContentView(R.layout.login);
+        } else {
+            regid = getRegistrationId(context);
+            if (regid.isEmpty()) registerInBackground();
+            else goHome();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
+        if(intent.getAction() == "logout")
+            prefs.edit().clear().commit();
         userId = prefs.getString(TAG_ID, "");
         if (userId.isEmpty()) {
             setContentView(R.layout.login);

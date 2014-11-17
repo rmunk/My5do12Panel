@@ -141,5 +141,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/breakline" />
- 
+
+    <TextView
+        android:id="@+id/odjavabtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/side_meni_logout"
+        android:text="ODJAVA"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:src="@drawable/pocetnabtn" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/breakline" />
+
 </LinearLayout>

@@ -17,7 +17,6 @@ public class BaseActivity extends Activity {
 	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getActionBar().setIcon(android.R.color.transparent);
 		getMenuInflater().inflate(R.menu.main, menu);
         
         slide_me = new SimpleSideDrawer(this);
@@ -26,6 +25,7 @@ public class BaseActivity extends Activity {
         TextView orgTV = (TextView) findViewById(R.id.organizatorbtn);
         TextView favTV = (TextView) findViewById(R.id.favoritibtn);
         TextView akcTV = (TextView) findViewById(R.id.akcijebtn);
+        TextView odjTV = (TextView) findViewById(R.id.odjavabtn);
         pocTV.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -55,6 +55,14 @@ public class BaseActivity extends Activity {
             @Override
             public void onClick(View v) {
                 vaznoActivity();
+                finish();
+            }
+        });
+        odjTV.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                logoutActivity();
                 finish();
             }
         });
@@ -112,6 +120,12 @@ public class BaseActivity extends Activity {
         startActivity(i);
 	}
 	
+	public void logoutActivity() {
+        Intent i = new Intent(this, LoginScreen.class);
+        i.setAction("logout");
+        startActivity(i);
+	}
+
 	public void optionActivity() {
 		slide_me.toggleRightDrawer();
 	}
