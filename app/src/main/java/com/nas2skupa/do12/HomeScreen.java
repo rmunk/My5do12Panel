@@ -20,18 +20,6 @@ public class HomeScreen extends BaseActivity {
         //repositionBtn(null);
     }
 
-    public void repositionBtn(View v){
-        RelativeLayout rl = (RelativeLayout) findViewById(R.id.homeview);
-
-        ImageButton iv =(ImageButton)findViewById( R.id.servisbtn);
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(30, 40);
-        params.leftMargin = 50;
-        params.topMargin = 60;
-        rl.addView(iv, params);
-
-
-    }
 	public void getSubcats(View v){
 	String cat=null;
     switch (v.getId()) {
