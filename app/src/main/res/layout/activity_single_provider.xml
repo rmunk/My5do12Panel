@@ -33,30 +33,12 @@
             style="?android:attr/ratingBarStyleSmall"
             android:numStars="5" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ratingBarBig"
-                android:stepSize="1"
-                android:visibility="gone" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="DONE"
-                android:id="@+id/rateBtn"
-                android:visibility="gone"
-                android:textColor="#ffffffff"
-                android:background="#ffadbb02"
-                android:textStyle="bold"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_gravity="right" />
-        </LinearLayout>
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingBarBig"
+            android:stepSize="1"
+            android:visibility="gone" />
 
     </FrameLayout>
 
