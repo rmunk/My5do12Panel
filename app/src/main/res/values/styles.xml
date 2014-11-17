@@ -5,8 +5,14 @@
         <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
 
+    <style name="NoActionBarTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">#adbb00</item>
+        <item name="android:displayOptions">useLogo|showHome</item>
     </style>
 
 	<style name="foodRatingBar" parent="@android:style/Widget.RatingBar">

@@ -79,7 +79,6 @@ public class LoginScreen extends Activity {
         prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
         userId = prefs.getString(TAG_ID, "");
         if (userId.isEmpty()) {
-            getActionBar().setIcon(android.R.color.transparent);
             setContentView(R.layout.login);
         } else {
             regid = getRegistrationId(context);
