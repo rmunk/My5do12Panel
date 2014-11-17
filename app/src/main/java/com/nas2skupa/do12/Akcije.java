@@ -17,7 +17,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,16 +24,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Favorites extends BaseActivity {
+public class Akcije extends BaseActivity {
 
     private ListView listView1;
 	public RatingBar rating;
 	private ProgressDialog pDialog;
 	ArrayList<Provider> listArray=new ArrayList<Provider>();
 	// URL to get contacts JSON
-    private String url = "http://nas2skupa.com/5do12/getFav.aspx?u=";
+    private String url = "http://nas2skupa.com/5do12/getAkc.aspx?u=";
     // JSON Node names
-    private static final String TAG_ARRAY = "favorites";
+    private static final String TAG_ARRAY = "akcije";
     private static final String TAG_ID = "ID";
     private static final String TAG_NAME = "name";
     private static final String TAG_CAT = "category";
@@ -48,7 +47,7 @@ public class Favorites extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.favlist);
+        setContentView(R.layout.akclist);
        // Bundle extras = getIntent().getExtras();
         //String subcat = extras.getString("subcat");
         //color = extras.getString("color");
@@ -62,7 +61,7 @@ public class Favorites extends BaseActivity {
         // Calling async task to get json
         new GetProvider().execute();
         header = (View)getLayoutInflater().inflate(R.layout.listview_header_row, null);
-        getSubCatSettings("favorites", "#AAB812", header);
+        getSubCatSettings("akcija", "#AAB812", header);
 
         listView1 = (ListView)findViewById(R.id.listView1);
      // Listview on item click listener
@@ -111,7 +110,7 @@ public class Favorites extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             // Showing progress dialog
-            pDialog = new ProgressDialog(Favorites.this);
+            pDialog = new ProgressDialog(Akcije.this);
             pDialog.setMessage("Please wait...");
             pDialog.setCancelable(false);
             pDialog.show();
@@ -143,7 +142,7 @@ public class Favorites extends BaseActivity {
                         String id = c.getString(TAG_ID);
                        String name = c.getString(TAG_NAME);
                        String catID = c.getString(TAG_CAT);
-                        String favore = "1";//c.getString("favorite");
+                        String favore = c.getString("fav");
                         String action = c.getString("akcija");
                         int fav=R.drawable.blank;
                         int akcija=R.drawable.blank;
@@ -179,7 +178,7 @@ public class Favorites extends BaseActivity {
             /**
              * Updating parsed JSON data into ListView
              * */
-            ProviderAdapter adapter = new ProviderAdapter(Favorites.this,
+            ProviderAdapter adapter = new ProviderAdapter(Akcije.this,
             		R.layout.listview_item_row, listArray);
            
            

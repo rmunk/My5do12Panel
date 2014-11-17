@@ -6,25 +6,28 @@
     tools:context=".OrderActivity">
 
     <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Odaberite datum!"
-            android:id="@+id/activity_datepickertest_datebutton"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Odaberite datum!"
+        android:id="@+id/activity_datepickertest_datebutton"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/calendar_bar_edit" />
     <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Odaberite termin!"
-            android:id="@+id/activity_timepickertest_datebutton"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Odaberite termin!"
+        android:id="@+id/activity_timepickertest_datebutton"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/calendar_bar_edit" />
 
     <Spinner
         android:id="@+id/service"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
-      <TextView
+
+    <TextView
         android:id="@+id/naruci"
         android:layout_width="fill_parent"
         android:layout_height="50dp"

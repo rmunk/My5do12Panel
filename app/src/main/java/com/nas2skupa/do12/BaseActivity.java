@@ -22,9 +22,11 @@ public class BaseActivity extends Activity {
         
         slide_me = new SimpleSideDrawer(this);
         slide_me.setRightBehindContentView(R.layout.sidemenu);
-        TextView poc = (TextView) findViewById(R.id.pocetnabtn);
-        TextView prof = (TextView) findViewById(R.id.profilbtn);
-        poc.setOnClickListener(new OnClickListener() {
+        TextView pocTV = (TextView) findViewById(R.id.pocetnabtn);
+        TextView orgTV = (TextView) findViewById(R.id.organizatorbtn);
+        TextView favTV = (TextView) findViewById(R.id.favoritibtn);
+        TextView akcTV = (TextView) findViewById(R.id.akcijebtn);
+        pocTV.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -32,13 +34,28 @@ public class BaseActivity extends Activity {
     			finish();
             }
         });
-        prof.setOnClickListener(new OnClickListener() {
+        orgTV.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-        		//Intent i = new Intent(this, Profile.class);
-        	    //startActivity(i);
-        	    finish();
+                listActivity();
+                finish();
+            }
+        });
+        favTV.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                favActivity();
+                finish();
+            }
+        });
+        akcTV.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                vaznoActivity();
+                finish();
             }
         });
 		return true;
@@ -91,10 +108,61 @@ public class BaseActivity extends Activity {
 	}
 
 	public void vaznoActivity() {
-		Toast.makeText(this, "Va�no Option Selected", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, Akcije.class);
+        startActivity(i);
 	}
 	
 	public void optionActivity() {
 		slide_me.toggleRightDrawer();
 	}
+
+    public String[] catSettings = new String[2];
+
+    public String[] getCatSett(int CatId) {
+
+        switch (CatId) {
+
+            case 1:
+                catSettings[0]="zdrastvene usluge";
+                catSettings[1]="#7ec5c4";
+                return catSettings;
+            case 2:
+                catSettings[0]="servis i održavanje";
+                catSettings[1]="#8c7c66";
+                return catSettings;
+            case 3:
+                catSettings[0]="ljepota";
+                catSettings[1]="#f5b2b5";
+                return catSettings;
+            case 4:
+                catSettings[0]="intelektualne usluge";
+                catSettings[1]="#fad12f";
+                return catSettings;
+            case 5:
+                catSettings[0]="dom i obitelj";
+                catSettings[1]="#687f95";
+                return catSettings;
+            case 6:
+                catSettings[0]="sport i rekreacija";
+                catSettings[1]="#7dad91";
+                return catSettings;
+            case 7:
+                catSettings[0]="turizam i ugostiteljstvo";
+                catSettings[1]="#e2a217";
+                return catSettings;
+            case 8:
+                catSettings[0]="prijevoz";
+                catSettings[1]="#919294";
+                return catSettings;
+            case 9:
+                catSettings[0]="kultura i zabava";
+                catSettings[1]="#826882";
+                return catSettings;
+
+
+
+            default:
+                return catSettings;
+        }
+    }
 }
