@@ -1,223 +1,136 @@
 package com.nas2skupa.do12;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Spinner;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
-public class OrderActivity extends BaseActivity {
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
-Button datePickerShowDialogButton = null;
-Button timePickerShowDialogButton = null;
+public class OrderActivity extends BaseActivity{
 
-private ProgressDialog pDialog;
-private String url = "http://nas2skupa.com/5do12/getWorking.aspx?id=";
-private String color;
-// subcats JSONArray
-JSONArray working = null;
-ArrayList<HashMap<String, String>> workingList;
- 
-@Override
+    // Widget GUI
+    Button btnCalendar, btnTimePicker, btnNaruci;
+    EditText txtDate, txtTime, txtNote;
+    TextView txtService;
+
+    // Variable for storing current date and time
+    private int mYear, mMonth, mDay, mHour, mMinute;
+    private String serviceID,providerID,userId;
+    private ProgressDialog pDialog;
+
+    /** Called when the activity is first created. */
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.orderold2);
-        // Button to show datepicker
-        datePickerShowDialogButton = 
-        (Button) this.findViewById(
-           R.id.activity_datepickertest_datebutton
-        );
-        
-        datePickerShowDialogButton.setOnClickListener(
-          new View.OnClickListener() {
-             public void onClick(View v) {
-                 showDatePicker();
-             }
-          });
-        // Button to show timepicker
-        timePickerShowDialogButton = 
-        (Button) this.findViewById(
-           R.id.activity_timepickertest_datebutton
-        );
-        
-        timePickerShowDialogButton.setOnClickListener(
-          new View.OnClickListener() {
-             public void onClick(View v) {
-                 showTimePicker();
-             }
-          });
-        Bundle extras = getIntent().getExtras();
-        color = extras.getString("color");
-        String ID = extras.getString("ID");
-        url+=ID;
-    }
- 
-    /**
-     * Builds a custom dialog based on the defined layout 
-     * 'res/layout/datepicker_layout.xml' and shows it
-     */
-    public void showDatePicker() {/*
-        // Initializiation
-        LayoutInflater inflater = (LayoutInflater) getLayoutInflater();
-        final AlertDialog.Builder dialogBuilder = 
-        new AlertDialog.Builder(this);
-        Locale loc=new Locale("hr", "HR");
-        View customView = inflater.inflate(R.layout.datepicker_layout, null);
-        dialogBuilder.setView(customView);
-        final Calendar now = Calendar.getInstance();
-        final DatePicker datePicker = 
-            (DatePicker) customView.findViewById(R.id.dialog_datepicker);
-        final TextView dateTextView = 
-            (TextView) customView.findViewById(R.id.dialog_dateview);
-        final SimpleDateFormat dateViewFormatter = 
-            new SimpleDateFormat("EEEE, dd.MM.yyyy", loc);
-        final SimpleDateFormat formatter = 
-            new SimpleDateFormat("dd.MM.yyyy", loc);
-        // Minimum date
-        Calendar minDate = Calendar.getInstance();
-        try {
-            minDate.setTime(formatter.parse("12.12.2010"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        datePicker.setMinDate(minDate.getTimeInMillis());
-        // View settings
-        dialogBuilder.setTitle("Odaberite datum");
-        Calendar choosenDate = Calendar.getInstance();
-        int year = choosenDate.get(Calendar.YEAR);
-        int month = choosenDate.get(Calendar.MONTH);
-        int day = choosenDate.get(Calendar.DAY_OF_MONTH);
-        try {
-            Date choosenDateFromUI = formatter.parse(
-                datePickerShowDialogButton.getText().toString()
-            );
-            choosenDate.setTime(choosenDateFromUI);
-            year = choosenDate.get(Calendar.YEAR);
-            month = choosenDate.get(Calendar.MONTH);
-            day = choosenDate.get(Calendar.DAY_OF_MONTH);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Calendar dateToDisplay = Calendar.getInstance();
-        dateToDisplay.set(year, month, day);
-        dateTextView.setText(
-            dateViewFormatter.format(dateToDisplay.getTime())
-        );
-        // Buttons
-        dialogBuilder.setNegativeButton(
-            "Danas", 
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    datePickerShowDialogButton.setText(
-                        formatter.format(now.getTime())
-                    );
-                    dialog.dismiss();
-                }
-            }
-        );
-        dialogBuilder.setPositiveButton(
-            "Odaberi", 
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Calendar choosen = Calendar.getInstance();
-                    choosen.set(
-                        datePicker.getYear(), 
-                        datePicker.getMonth(), 
-                        datePicker.getDayOfMonth()
-                    );
-                    datePickerShowDialogButton.setText(
-                        dateViewFormatter.format(choosen.getTime())
-                    );
-                    dialog.dismiss();
-                 // Calling async task to get json
-                    new GetProvider().execute();
-                    
-                }
-            }
-        );
-        final AlertDialog dialog = dialogBuilder.create();
-        // Initialize datepicker in dialog atepicker
-        datePicker.init(
-            year, 
-            month, 
-            day, 
-            new DatePicker.OnDateChangedListener() {
-                public void onDateChanged(DatePicker view, int year, 
-                    int monthOfYear, int dayOfMonth) {
-                    Calendar choosenDate = Calendar.getInstance();
-                    choosenDate.set(year, monthOfYear, dayOfMonth);
-                    dateTextView.setText(
-                        dateViewFormatter.format(choosenDate.getTime())
-                    );
-                    if (choosenDate.compareTo(now) < 0) {
-                        dateTextView.setTextColor(
-                            Color.parseColor("#ff0000")
-                        );
-                        ((Button) dialog.getButton(
-                        AlertDialog.BUTTON_POSITIVE))
-                            .setEnabled(false);
-                    } else {
-                        dateTextView.setTextColor(
-                            Color.parseColor("#000000")
-                        );
-                        ((Button) dialog.getButton(
-                        AlertDialog.BUTTON_POSITIVE))
-                            .setEnabled(true);
-                    }
-                }
-            }
-        );
-        // Finish
-        dialog.show();*/
-    }
-    
-    
-    /**
-     * Builds a custom dialog based on the defined layout 
-     * 'res/layout/datepicker_layout.xml' and shows it
-     */
-    public void showTimePicker() {
-       
-    }
-    
-    
-    
-    public void setSpinner(){
+        setContentView(R.layout.order);
 
-        
+        Bundle extras = getIntent().getExtras();
+        serviceID = extras.getString("sID");
+        providerID = extras.getString("proID");
+        final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
+        userId = prefs.getString("id", "");
+
+        btnCalendar = (Button) findViewById(R.id.btnCalendar);
+        btnTimePicker = (Button) findViewById(R.id.btnTimePicker);
+        btnNaruci = (Button) findViewById(R.id.btnNaruci);
+
+        txtDate = (EditText) findViewById(R.id.txtDate);
+        txtTime = (EditText) findViewById(R.id.txtTime);
+        txtNote = (EditText) findViewById(R.id.txtNote);
+        txtService = (TextView) findViewById(R.id.txtService);
+
+        //txtService.setText(serviceID);
+
+
+        btnCalendar.setOnClickListener(clickHandler);
+        btnTimePicker.setOnClickListener(clickHandler);
+        btnNaruci.setOnClickListener(clickHandler);
+
+
     }
-    
-    private class GetProvider extends AsyncTask<Void, Void, Void> {
-		 
+
+    View.OnClickListener clickHandler = new View.OnClickListener() {
+        public void onClick(View v) {
+            if (v == btnCalendar) {
+
+                // Process to get Current Date
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                // Launch Date Picker Dialog
+                DatePickerDialog dpd = new DatePickerDialog(OrderActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // Display Selected date in textbox
+                                txtDate.setText(dayOfMonth + "-"
+                                        + (monthOfYear + 1) + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                dpd.show();
+            }
+            if (v == btnTimePicker) {
+
+                // Process to get Current Time
+                final Calendar c = Calendar.getInstance();
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog tpd = new TimePickerDialog(OrderActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                // Display Selected time in textbox
+                                txtTime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                tpd.show();
+            }
+            if (v == btnNaruci){
+                new setOrder().execute();
+            }
+        }
+    };
+
+    private class setOrder extends AsyncTask<Void, Void, Void> {
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -226,71 +139,62 @@ ArrayList<HashMap<String, String>> workingList;
             pDialog.setMessage("Please wait...");
             pDialog.setCancelable(false);
             pDialog.show();
- 
         }
- 
+
+        @SuppressLint("DefaultLocale")
         @Override
         protected Void doInBackground(Void... arg0) {
-            // Creating service handler class instance
-            ServiceHandler sh = new ServiceHandler();
- 
-            // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
- 
-            Log.d("Response: ", "> " + jsonStr);
- 
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                     
-                    // Getting JSON Array node
-                    working = jsonObj.getJSONArray("working");
+            // Create a new HttpClient and Post Header
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost("http://nas2skupa.com/5do12/clientOrder.aspx");
 
-                    
-                    
-                   for (int i = 0; i < working.length(); i++) {
-                        JSONObject c = working.getJSONObject(i);
-                         
-                        String day = c.getString("day");
-                        String startHour = c.getString("startHour");
-                        String endHour = c.getString("endHour");
-                        // tmp hashmap for detail view 
-                        HashMap<String, String> wh = new HashMap<String, String>();
- 
-                        // adding each child node to HashMap key => value
-                        wh.put("day", day);
-                        wh.put("startHour", startHour);
-                        wh.put("endHour", endHour);
- 
-                        workingList.add(wh);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            try {
+                // Add your data
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+                nameValuePairs.add(new BasicNameValuePair("uid", userId));
+                nameValuePairs.add(new BasicNameValuePair("proid", providerID));
+                nameValuePairs.add(new BasicNameValuePair("datum", txtDate.getText().toString()));
+                nameValuePairs.add(new BasicNameValuePair("vrijeme", txtTime.getText().toString()));
+                nameValuePairs.add(new BasicNameValuePair("serviceid", serviceID));
+                nameValuePairs.add(new BasicNameValuePair("userNote", txtNote.getText().toString()));
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                // Execute HTTP Post Request
+                HttpResponse response = httpclient.execute(httppost);
+
+                HttpEntity resEntity = response.getEntity();
+                String responseBody;
+                if (resEntity != null) {
+                     responseBody = EntityUtils.toString(response.getEntity());
+                }else{
+                    responseBody="no response";
                 }
-            } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the url");
+                Log.i("uid",userId);
+                Log.i("proId",providerID);
+                Log.i("DATE",txtDate.getText().toString());
+                Log.i("TIME",txtTime.getText().toString());
+                Log.i("sID",serviceID);
+                Log.i("NOTE",txtNote.getText().toString());
+                Log.i("RESPONSE",responseBody);
 
+
+            } catch (ClientProtocolException e) {
+                // TODO Auto-generated catch block
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
             }
- 
             return null;
+
         }
- 
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
-            /**
-             * Updating parsed JSON data into ListView
-             * */
-            setSpinner();
+
         }
-        
-        
-        
-        
     }
+
     
     
 }

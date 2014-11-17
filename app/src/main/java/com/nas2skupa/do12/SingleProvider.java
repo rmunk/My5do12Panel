@@ -87,7 +87,10 @@ public class SingleProvider  extends BaseActivity {
                     int position, long id) {
             	Intent in = new Intent(getApplicationContext(),
                             OrderActivity.class);
-                    in.putExtra(TAG_ID, proId);
+                        String sID = ((TextView) view.findViewById(R.id.serviceID))
+                        .getText().toString();
+                    in.putExtra("sID",sID);
+                    in.putExtra("proID", proId);
                     in.putExtra("color", color);
                     startActivity(in);
             }

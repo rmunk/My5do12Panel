@@ -1,28 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView android:text="date text" 
-    android:id="@+id/TextView01" 
-    android:layout_width="wrap_content" 
-    android:layout_height="wrap_content" 
-    android:textSize="26px" 
-    android:typeface="sans"></TextView>
-<Button android:text="date btn" 
-    android:id="@+id/Button01" 
-    android:layout_width="wrap_content" 
-    android:layout_height="wrap_content"></Button>
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="30dp" android:id="@+id/linearLayout4">
 
-<TextView android:text="time text" 
-    android:id="@+id/TextView02" 
-    android:layout_width="wrap_content" 
-    android:layout_height="wrap_content"
-    android:textSize="26px" 
-    android:typeface="sans"></TextView>
-<Button android:text="time button" 
-    android:id="@+id/Button02" 
-    android:layout_width="wrap_content" 
-    android:layout_height="wrap_content"></Button>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/usluga"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:id="@+id/linearLayout1">
+        <EditText android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:id="@+id/txtDate">
+            <requestFocus></requestFocus>
+        </EditText>
+        <Button android:layout_height="wrap_content"
+            android:layout_weight="0" android:id="@+id/btnCalendar" android:text="Datum"
+            android:layout_width="100dp"
+            android:background="@drawable/calendar_centralheader"></Button>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:id="@+id/linearLayout2">
+        <EditText android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:id="@+id/txtTime">
+            <requestFocus></requestFocus>
+        </EditText>
+        <Button android:layout_height="wrap_content"
+            android:layout_weight="0" android:id="@+id/btnTimePicker"
+            android:text="Vrijeme" android:layout_width="100dp"
+            android:background="@drawable/calendar_centralheader"></Button>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:id="@+id/linearLayout3">
+        <EditText android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:id="@+id/txtNote">
+            <requestFocus></requestFocus>
+        </EditText>
+    </LinearLayout>
+    <Button android:layout_height="wrap_content"
+        android:layout_weight="0" android:id="@+id/btnNaruci"
+        android:text="Naruči" android:layout_width="100dp"
+        android:background="@drawable/calendar_centralheader"
+        android:layout_gravity="center_horizontal"></Button>
 </LinearLayout>
