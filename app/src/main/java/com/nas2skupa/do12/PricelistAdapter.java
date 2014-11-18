@@ -35,6 +35,7 @@ public class PricelistAdapter extends ArrayAdapter<Pricelist>{
             row = inflater.inflate(layoutResourceId, parent, false);
            
             holder = new PricelistHolder();
+            holder.serviceID=(TextView)row.findViewById(R.id.serviceID);
             holder.akcijaIcon = (ImageView)row.findViewById(R.id.akcijaServiceIcon);
             holder.service = (TextView)row.findViewById(R.id.txtService);
             holder.price = (TextView)row.findViewById(R.id.txtPrice);
@@ -47,6 +48,7 @@ public class PricelistAdapter extends ArrayAdapter<Pricelist>{
         }
        
         Pricelist pricelist = data.get(position);
+        holder.serviceID.setText(pricelist.ID);
         holder.service.setText(pricelist.service);
         holder.price.setText(pricelist.price);
         holder.akcijaIcon.setImageResource(pricelist.action);
@@ -56,6 +58,7 @@ public class PricelistAdapter extends ArrayAdapter<Pricelist>{
    
     static class PricelistHolder
     {
+        TextView serviceID;
         ImageView akcijaIcon;
         TextView service;
         TextView price;

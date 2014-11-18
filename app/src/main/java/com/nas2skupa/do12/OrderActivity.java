@@ -168,13 +168,13 @@ public class OrderActivity extends BaseActivity{
                 }else{
                     responseBody="no response";
                 }
-                Log.i("uid",userId);
-                Log.i("proId",providerID);
-                Log.i("DATE",txtDate.getText().toString());
-                Log.i("TIME",txtTime.getText().toString());
-                Log.i("sID",serviceID);
-                Log.i("NOTE",txtNote.getText().toString());
-                Log.i("RESPONSE",responseBody);
+                Log.d("uid",userId);
+                Log.d("proId",providerID);
+                Log.d("DATE",txtDate.getText().toString());
+                Log.d("TIME",txtTime.getText().toString());
+                Log.d("sID",serviceID);
+                Log.d("NOTE",txtNote.getText().toString());
+                Log.d("RESPONSE",responseBody);
 
 
             } catch (ClientProtocolException e) {

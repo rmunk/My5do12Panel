@@ -236,7 +236,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
             Log.d(tag, "CurrentDayOfMonth :" + getCurrentDayOfMonth());
 
             // Print Month
-            currentMonth.setText(getMonthAsString(month - 1));
+            currentMonth.setText(getMonthAsString(month - 1)+", "+year+".");
             printMonth(month, year);
 
             final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);

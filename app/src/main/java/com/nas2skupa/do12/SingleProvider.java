@@ -87,6 +87,7 @@ public class SingleProvider extends BaseActivity {
                         OrderActivity.class);
                 String sID = ((TextView) view.findViewById(R.id.serviceID))
                         .getText().toString();
+                Log.d("SERVICE ID from ClickListener", sID);
                 in.putExtra("sID", sID);
                 in.putExtra("proID", proId);
                 in.putExtra("color", color);
@@ -214,6 +215,7 @@ public class SingleProvider extends BaseActivity {
                                 price = p.getString("action_price") + " " + getString(R.string.currency);
                                 akcija = R.drawable.akcija_icon_small;
                             }
+                            Log.d("ServiceID in populate:"+service,serviceID);
                             listArray.add(new Pricelist(serviceID, service, price, akcija));
                         }
                     }
