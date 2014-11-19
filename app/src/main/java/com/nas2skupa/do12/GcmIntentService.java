@@ -1,30 +1,28 @@
 package com.nas2skupa.do12;
 
+import android.app.ActivityManager;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import org.json.JSONObject;
+import java.util.Stack;
 
 /**
  * Created by Ranko on 23.10.2014..
  */
 public class GcmIntentService extends IntentService {
-    public static final int NOTIFICATION_ID = 1;
     private static final String TAG = "5do12";
     private NotificationManager mNotificationManager;
-    NotificationCompat.Builder builder;
+    public static final Stack<Intent> pendingNotifications = new Stack<Intent>();
+    private static int notificationId = 0;
 
     public GcmIntentService() {
         super("GcmIntentService");
@@ -56,7 +54,7 @@ public class GcmIntentService extends IntentService {
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 // Post notification of received message.
                 sendNotification(intent);
-                Log.i(TAG, "Received: " + extras.toString());
+                Log.d(TAG, "Received: " + extras.toString());
             }
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.
@@ -70,22 +68,23 @@ public class GcmIntentService extends IntentService {
         String msg = "";
         if (intent.hasExtra("orderId"))
             msg = intent.getStringExtra("provider") + " " + (intent.getStringExtra("confirmed").equals("1") ? "potvrđuje" : "otkazuje") + " predloženi termin.";
-        mNotificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userId = prefs.getString("id", "");
-        Intent notificationIntent = new Intent();
+        mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Intent notificationIntent = new Intent("appointment");
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         notificationIntent.replaceExtras(intent);
-//        notificationIntent.setData(Uri.parse(action));
-        if (userId == null || userId.isEmpty())
-            notificationIntent.setComponent(new ComponentName(this, LoginScreen.class));
-        else
-            notificationIntent.setComponent(new ComponentName(this, Organizer.class));
+        notificationIntent.putExtra("notificationId", notificationId);
+        notificationIntent.setComponent(new ComponentName(this, LoginScreen.class));
+        pendingNotifications.push(notificationIntent);
+
+        // App is in the foreground
+        if (getPackageName().equalsIgnoreCase(((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE)).getRunningTasks(1).get(0).topActivity.getPackageName())) {
+            startActivity(notificationIntent);
+            return;
+        }
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.akcija_icon)
@@ -96,6 +95,6 @@ public class GcmIntentService extends IntentService {
                         .setAutoCancel(true);
 
         mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        mNotificationManager.notify(notificationId++, mBuilder.build());
     }
 }

@@ -1,6 +1,7 @@
 package com.nas2skupa.do12;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Dictionary;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -59,12 +60,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.organizer);
 
-        Intent callingIntent = getIntent();
-        Bundle data = callingIntent.getExtras();
-        if (data != null)
-            showNotificationDialog(data);
+        setContentView(R.layout.organizer);
 
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
@@ -88,14 +85,18 @@ public class Organizer extends BaseActivity implements OnClickListener {
         adapter = new GridCellAdapter(getApplicationContext(), R.id.calendar_day_gridcell, month, year);
 
         eventsDetails = (TextView) this.findViewById(R.id.eventsDetails);
+        eventsDetails.setMovementMethod(new ScrollingMovementMethod());
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        Bundle data = intent.getExtras();
-        if (data != null)
-            showNotificationDialog(data);
+    protected void onResume() {
+        super.onResume();
+        while (GcmIntentService.class != null && !GcmIntentService.pendingNotifications.isEmpty()) {
+            Intent notification = GcmIntentService.pendingNotifications.pop();
+            showNotificationDialog(notification.getExtras());
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(notification.getIntExtra("notificationId", -1));
+        }
     }
 
     public void showNotificationDialog(Bundle data) {
@@ -108,7 +109,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
         String date = null;
         try {
             date = outputDateFormatter.format(inputDateFormatter.parse(data.getString("date")));
-        } catch (ParseException e) { }
+        } catch (ParseException e) {
+        }
         String startTime = data.getString("startTime");
         String endTime = data.getString("endTime");
         String message = String.format("Vaš termin %s u %s sati je %s", date, startTime.substring(0, 5), confirmed ? "potvrđen." : "otkazan.");
@@ -141,7 +143,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 String msg = sh.makeServiceCall(url, ServiceHandler.GET);
                 Log.d("Response: ", "> " + msg);
             } catch (Exception ex) {
-                Log.d("Error :",ex.getMessage());
+                Log.d("Error :", ex.getMessage());
             }
             return null;
         }
@@ -236,7 +238,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
             Log.d(tag, "CurrentDayOfMonth :" + getCurrentDayOfMonth());
 
             // Print Month
-            currentMonth.setText(getMonthAsString(month - 1)+", "+year+".");
+            currentMonth.setText(getMonthAsString(month - 1) + ", " + year + ".");
             printMonth(month, year);
 
             final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
@@ -412,7 +414,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
         @Override
         public void onClick(View view) {
             String date_month_year = (String) view.getTag();
-            eventsDetails.setText(date_month_year.replace('-','.').concat("."));
+            eventsDetails.setText(date_month_year.replace('-', '.').concat("."));
             if (orders.containsKey(date_month_year)) {
                 ArrayList<Order> events = orders.get(date_month_year);
                 SimpleDateFormat tf = new SimpleDateFormat("HH:mm");

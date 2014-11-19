@@ -3,12 +3,10 @@ package com.nas2skupa.do12;
 import com.navdrawer.SimpleSideDrawer;
 
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 public class HomeScreen extends BaseActivity {   
 	
@@ -17,10 +15,16 @@ public class HomeScreen extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homescreen);
-        //repositionBtn(null);
     }
 
-	public void getSubcats(View v){
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(GcmIntentService.class != null && !GcmIntentService.pendingNotifications.isEmpty())
+            startActivity(new Intent(this, Organizer.class));
+    }
+
+    public void getSubcats(View v){
 	String cat=null;
     switch (v.getId()) {
     case R.id.zdravljebtn:

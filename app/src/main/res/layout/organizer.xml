@@ -54,15 +54,17 @@
 	</GridView>
 
     <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/eventsDetails"
-        android:background="@drawable/calendar_top_header"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FFFFFF"
-        android:paddingTop="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="20dp" />
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/eventsDetails"
+            android:background="@drawable/calendar_top_header"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:scrollbars="vertical"
+            android:maxLines = "4"
+            android:textColor="#FFFFFF"
+            android:paddingTop="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp" />
 
 </LinearLayout>
