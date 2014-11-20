@@ -2,6 +2,7 @@ package com.nas2skupa.do12;
 
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -43,7 +46,6 @@ public class SingleProvider extends BaseActivity {
     private String color;
 
     private String url = "http://nas2skupa.com/5do12/getSinglePro.aspx?id=";
-
     PricelistAdapter adapter;
     private ListView listView1;
     JSONArray providers = null;
@@ -56,14 +58,14 @@ public class SingleProvider extends BaseActivity {
     private RatingBar ratingBar;
     private RatingBar ratingBarBig;
     private float userRating;
-
+    ImageView btnFav, btnVise;
+    Dialog favDialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_provider);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         // getting intent data
         Intent in = getIntent();
 
@@ -72,6 +74,10 @@ public class SingleProvider extends BaseActivity {
         color = in.getStringExtra("color");
         url += proId;
 
+        btnFav = (ImageView) findViewById(R.id.tofav);
+        btnVise = (ImageView) findViewById(R.id.details);
+        btnFav.setOnClickListener(clickHandler);
+        btnVise.setOnClickListener(clickHandler);
         // Displaying all values on the screen
 
         // Calling async task to get json
@@ -110,6 +116,54 @@ public class SingleProvider extends BaseActivity {
                 }
             }
         });
+    }
+
+    View.OnClickListener clickHandler = new View.OnClickListener() {
+        public void onClick(View v) {
+            if (v == btnFav) {
+                new addToFav().execute(null,null,null);
+            }
+
+            if (v == btnVise) {
+                Log.d("btnVise, proId", proId);
+            }
+        }
+    };
+    private class addToFav extends AsyncTask<Object, Object, Object> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+            pDialog = new ProgressDialog(SingleProvider.this);
+            pDialog.setMessage("Please wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+        }
+        @Override
+        protected Object doInBackground(Object[] params) {
+            String msg = "";
+            try {
+                final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
+                String userId = prefs.getString("id", "");
+                ServiceHandler sh = new ServiceHandler();
+                String url = "http://nas2skupa.com/5do12/setFav.aspx?userId=" + userId + "&proId=" + provider[0] + "&fav="+1;
+                msg = sh.makeServiceCall(url, ServiceHandler.GET);
+                Log.d("Response: ", "> " + msg);
+            } catch (Exception ex) {
+                Log.d("Error :", ex.getMessage());
+            }
+            return msg;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            if (pDialog.isShowing())
+                pDialog.dismiss();
+            Log.d("Post exe",o.toString());
+            btnFav.setImageResource(R.drawable.fav_icon_enabled);
+        }
     }
 
     public void rateProvider(View view) {

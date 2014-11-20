@@ -22,11 +22,11 @@
         android:title="Favorites"/>
     
     <item
-        android:id="@+id/vazno"
-        android:icon="@drawable/imp"
+        android:id="@+id/akcije"
+        android:icon="@drawable/akcijebtn_new"
         android:orderInCategory="4"
         android:showAsAction="always"
-        android:title="Važno"/>
+        android:title="Akcije"/>
     
     <item
         android:id="@+id/option"

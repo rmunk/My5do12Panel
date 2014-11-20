@@ -60,7 +60,7 @@ public class BaseListActivity extends ListActivity {
 			favActivity();
 			return true;
 
-		case R.id.vazno:
+		case R.id.akcije:
 			vaznoActivity();
 			return true;
 			

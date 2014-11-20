@@ -39,7 +39,7 @@ public class MenuClass extends Activity {
 			favActivity();
 			return true;
 
-		case R.id.vazno:
+		case R.id.akcije:
 			vaznoActivity();
 			return true;
 			

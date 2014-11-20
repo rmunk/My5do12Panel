@@ -5,7 +5,7 @@
     android:background="#adbb00"
     android:orientation="vertical" >
 
-    <EditText android:id="@+id/inputSearch"
+    <AutoCompleteTextView android:id="@+id/inputSearch"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:drawableLeft="@drawable/trazilicabtn"
@@ -93,7 +93,7 @@
         android:id="@+id/akcijebtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/akcijebtn"
+        android:drawableLeft="@drawable/akcije"
         android:text="AKCIJE"
         android:textColor="#FFFFFF"
         android:textStyle="bold"

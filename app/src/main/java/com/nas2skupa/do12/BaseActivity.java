@@ -85,7 +85,7 @@ public class BaseActivity extends Activity {
 			favActivity();
 			return true;
 
-		case R.id.vazno:
+		case R.id.akcije:
 			vaznoActivity();
 			return true;
 			

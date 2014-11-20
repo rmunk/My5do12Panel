@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -76,6 +77,8 @@ public class ProviderList extends BaseActivity {
                 // getting values from selected ListItem
                 String proID = ((TextView) view.findViewById(R.id.providerID))
                         .getText().toString();
+                String favVal = ((ImageView) view.findViewById(R.id.favIcon)).getDrawable().toString();
+                Log.d("favVal", favVal);
                 // Starting detail view
                 Intent in = new Intent(getApplicationContext(),
                         SingleProvider.class);

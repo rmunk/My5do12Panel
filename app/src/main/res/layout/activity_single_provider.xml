@@ -24,14 +24,27 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:onClick="rateProvider">
-
-        <RatingBar
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ratingBar"
-            android:layout_gravity="left"
-            style="?android:attr/ratingBarStyleSmall"
-            android:numStars="5" />
+            android:layout_height="wrap_content">
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar"
+                android:layout_gravity="left"
+                style="?android:attr/ratingBarStyleSmall"
+                android:numStars="5" />
+
+            <ImageView
+                android:id="@+id/tofav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fav_icon"
+                android:layout_marginLeft="10dp"
+                />
+
+            </LinearLayout>
 
         <RatingBar
             android:layout_width="wrap_content"
@@ -48,12 +61,31 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
         android:padding="5dp"
         android:textColor="#FFFFFF"
         android:textSize="13sp"
         android:gravity="top"
         android:text="test"/>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/more_arrow_down"
+            android:text="Više"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
   <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
