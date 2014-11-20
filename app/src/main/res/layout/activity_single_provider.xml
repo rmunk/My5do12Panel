@@ -7,15 +7,31 @@
   android:padding="10dp"
   android:background="@drawable/back">
   <!-- Name Label -->
-  <TextView android:id="@+id/name_label"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-	        android:textColor="#666666"
-	        android:textSize="16sp"
-	        android:textStyle="bold"
-	        android:paddingLeft="20dp"
-	        android:paddingTop="20dp" />
+  <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+          <TextView android:id="@+id/name_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#666666"
+                    android:textSize="16sp"
+                    android:text="Poliklinika sunce"
+                    android:textStyle="bold"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="20dp" />
 
+      <ImageView
+          android:id="@+id/tofav"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:src="@drawable/fav_icon"
+          android:paddingTop="20dp"
+          android:layout_marginLeft="10dp"
+          />
+
+
+    </LinearLayout>
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,9 +40,6 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:onClick="rateProvider">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
 
             <RatingBar
                 android:layout_width="wrap_content"
@@ -35,16 +48,6 @@
                 android:layout_gravity="left"
                 style="?android:attr/ratingBarStyleSmall"
                 android:numStars="5" />
-
-            <ImageView
-                android:id="@+id/tofav"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/fav_icon"
-                android:layout_marginLeft="10dp"
-                />
-
-            </LinearLayout>
 
         <RatingBar
             android:layout_width="wrap_content"
