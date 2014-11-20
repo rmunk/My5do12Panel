@@ -16,7 +16,6 @@
                     android:layout_height="wrap_content"
                     android:textColor="#666666"
                     android:textSize="16sp"
-                    android:text="Poliklinika sunce"
                     android:textStyle="bold"
                     android:paddingLeft="20dp"
                     android:paddingTop="20dp" />
