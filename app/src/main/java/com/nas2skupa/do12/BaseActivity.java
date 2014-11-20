@@ -31,7 +31,6 @@ public class BaseActivity extends Activity {
             @Override
             public void onClick(View v) {
     			homeActivity();
-    			finish();
             }
         });
         orgTV.setOnClickListener(new OnClickListener() {
@@ -39,7 +38,6 @@ public class BaseActivity extends Activity {
             @Override
             public void onClick(View v) {
                 listActivity();
-                finish();
             }
         });
         favTV.setOnClickListener(new OnClickListener() {
@@ -47,7 +45,6 @@ public class BaseActivity extends Activity {
             @Override
             public void onClick(View v) {
                 favActivity();
-                finish();
             }
         });
         akcTV.setOnClickListener(new OnClickListener() {
@@ -55,7 +52,6 @@ public class BaseActivity extends Activity {
             @Override
             public void onClick(View v) {
                 vaznoActivity();
-                finish();
             }
         });
         odjTV.setOnClickListener(new OnClickListener() {
@@ -63,7 +59,6 @@ public class BaseActivity extends Activity {
             @Override
             public void onClick(View v) {
                 logoutActivity();
-                finish();
             }
         });
 		return true;
