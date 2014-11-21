@@ -88,6 +88,39 @@
             android:layout_alignParentRight="true"/>
 
     </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/detailsLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/tofav2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fav_icon"
+            android:paddingTop="20dp"
+            android:layout_marginLeft="10dp"
+            />
+        <ImageView
+            android:id="@+id/tofav3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fav_icon"
+            android:paddingTop="20dp"
+            android:layout_marginLeft="10dp"
+            />
+        <ImageView
+            android:id="@+id/tofav4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fav_icon"
+            android:paddingTop="20dp"
+            android:layout_marginLeft="10dp"
+            />
+        </LinearLayout>
   <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >

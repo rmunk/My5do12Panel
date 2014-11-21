@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -53,13 +54,17 @@ public class SingleProvider extends BaseActivity {
     private ProgressDialog pDialog;
     private String provider[] = new String[10];
     private String proId;
-    ArrayList<Pricelist> listArray = new ArrayList<Pricelist>();
+    ArrayList<PricelistClass> listArray = new ArrayList<PricelistClass>();
     View footer = null;
     private RatingBar ratingBar;
     private RatingBar ratingBarBig;
     private float userRating;
     ImageView btnFav, btnVise;
     Dialog favDialog;
+    LinearLayout moreLayout;
+    Boolean detailOn = false, isFav=false;
+    ProviderClass proClass;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,10 +73,10 @@ public class SingleProvider extends BaseActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // getting intent data
         Intent in = getIntent();
-
-        // Get JSON values from previous intent
-        proId = in.getStringExtra(TAG_ID);
-        color = in.getStringExtra("color");
+        Bundle bundle = in.getExtras();
+        proClass = bundle.getParcelable("providerclass");
+        color = bundle.getString("color");
+        proId=proClass.proID;
         url += proId;
 
         btnFav = (ImageView) findViewById(R.id.tofav);
@@ -80,6 +85,10 @@ public class SingleProvider extends BaseActivity {
         btnVise.setOnClickListener(clickHandler);
         // Displaying all values on the screen
 
+        if(proClass.proFav.equals("1")){
+            isFav=true;
+            btnFav.setImageResource(R.drawable.fav_icon_enabled);
+        }
         // Calling async task to get json
         new GetProvider().execute();
         footer = (View) getLayoutInflater().inflate(R.layout.service_listview_footer_row, null);
@@ -89,14 +98,15 @@ public class SingleProvider extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+
+                PricelistClass pricelistclass = (PricelistClass)view.getTag();
+                Bundle b = new Bundle();
+                b.putParcelable("pricelistclass", pricelistclass);
+                b.putParcelable("providerclass", proClass);
+                b.putString("color", color);
                 Intent in = new Intent(getApplicationContext(),
                         OrderActivity.class);
-                String sID = ((TextView) view.findViewById(R.id.serviceID))
-                        .getText().toString();
-                Log.d("SERVICE ID from ClickListener", sID);
-                in.putExtra("sID", sID);
-                in.putExtra("proID", proId);
-                in.putExtra("color", color);
+                in.putExtras(b);
                 startActivity(in);
             }
         });
@@ -125,7 +135,17 @@ public class SingleProvider extends BaseActivity {
             }
 
             if (v == btnVise) {
-                Log.d("btnVise, proId", proId);
+                moreLayout = (LinearLayout) findViewById(R.id.detailsLayout);
+                if (detailOn==false) {
+                    Log.d("btnVise, proId", proId);
+                    moreLayout.setVisibility(View.VISIBLE);
+                    detailOn=true;
+                    btnVise.setImageResource(R.drawable.more_arrow_up);
+                }else{
+                    moreLayout.setVisibility(View.GONE);
+                    detailOn=false;
+                    btnVise.setImageResource(R.drawable.more_arrow_down);
+                }
             }
         }
     };
@@ -147,7 +167,12 @@ public class SingleProvider extends BaseActivity {
                 final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
                 String userId = prefs.getString("id", "");
                 ServiceHandler sh = new ServiceHandler();
-                String url = "http://nas2skupa.com/5do12/setFav.aspx?userId=" + userId + "&proId=" + provider[0] + "&fav="+1;
+                String setFav="1";
+                if(isFav==true){
+                    setFav="0";
+
+                }
+                String url = "http://nas2skupa.com/5do12/setFav.aspx?userId=" + userId + "&proId=" + provider[0] + "&fav="+setFav;
                 msg = sh.makeServiceCall(url, ServiceHandler.GET);
                 Log.d("Response: ", "> " + msg);
             } catch (Exception ex) {
@@ -162,13 +187,20 @@ public class SingleProvider extends BaseActivity {
             if (pDialog.isShowing())
                 pDialog.dismiss();
             Log.d("Post exe",o.toString());
-            btnFav.setImageResource(R.drawable.fav_icon_enabled);
+            if(isFav==false){
+                isFav=true;
+                btnFav.setImageResource(R.drawable.fav_icon_enabled);
+            }else{
+                isFav=false;
+                btnFav.setImageResource(R.drawable.fav_icon);
+            }
         }
     }
 
     public void rateProvider(View view) {
         ratingBar.setVisibility(View.GONE);
         ratingBarBig.setVisibility(View.VISIBLE);
+        btnFav.setVisibility(View.GONE);
     }
 
 
@@ -195,6 +227,7 @@ public class SingleProvider extends BaseActivity {
             super.onPostExecute(o);
             ratingBar.setVisibility(View.VISIBLE);
             ratingBarBig.setVisibility(View.GONE);
+            btnFav.setVisibility(View.VISIBLE);
             if (o != null) {
                 listArray.clear();
                 adapter.clear();
@@ -270,7 +303,8 @@ public class SingleProvider extends BaseActivity {
                                 akcija = R.drawable.akcija_icon_small;
                             }
                             Log.d("ServiceID in populate:"+service,serviceID);
-                            listArray.add(new Pricelist(serviceID, service, price, akcija));
+                            PricelistClass currPrice = new PricelistClass(serviceID, service, price, akcija);
+                            listArray.add(currPrice);
                         }
                     }
                 } catch (JSONException e) {

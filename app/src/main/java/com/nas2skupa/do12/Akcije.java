@@ -29,7 +29,7 @@ public class Akcije extends BaseActivity {
     private ListView listView1;
 	public RatingBar rating;
 	private ProgressDialog pDialog;
-	ArrayList<Provider> listArray=new ArrayList<Provider>();
+	ArrayList<ProviderClass> listArray=new ArrayList<ProviderClass>();
 	// URL to get contacts JSON
     private String url = "http://nas2skupa.com/5do12/getAkc.aspx?u=";
     // JSON Node names
@@ -61,7 +61,7 @@ public class Akcije extends BaseActivity {
         // Calling async task to get json
         new GetProvider().execute();
         header = (View)getLayoutInflater().inflate(R.layout.listview_header_row, null);
-        getSubCatSettings("akcija", "#AAB812", header);
+        getSubCatSettings("akcija", "#3366FF", header);
 
         listView1 = (ListView)findViewById(R.id.listView1);
      // Listview on item click listener
@@ -72,19 +72,16 @@ public class Akcije extends BaseActivity {
             @SuppressLint("NewApi") public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 // getting values from selected ListItem
-                String proID = ((TextView) view.findViewById(R.id.providerID))
-                        .getText().toString();
-                String catID = ((TextView) view.findViewById(R.id.catID))
-                        .getText().toString();
-                // Starting detail view
-                catSettings=getCatSett(Integer.parseInt(catID));
 
-               Intent in = new Intent(getApplicationContext(),
-                       SingleProvider.class);
-               in.putExtra(TAG_ID, proID);
-               in.putExtra("color", catSettings[1]);
-               startActivity(in);
-               //Toast.makeText(Favorites.this, "neko ime="+catID, Toast.LENGTH_SHORT).show();
+                ProviderClass providerclass = (ProviderClass)view.getTag();
+                Bundle b = new Bundle();
+                b.putParcelable("providerclass", providerclass);
+                catSettings=getCatSett(Integer.parseInt(providerclass.catID));
+                b.putString("color", catSettings[1]);
+                Intent in = new Intent(getApplicationContext(),
+                        SingleProvider.class);
+                in.putExtras(b);
+                startActivity(in);
             }
         });
        
@@ -156,7 +153,8 @@ public class Akcije extends BaseActivity {
                        try {
                            rating = Float.parseFloat(c.getString("rating"));
                        }catch (NumberFormatException e) {}
-                       listArray.add(new Provider(fav, name, id, akcija, rating,catID));
+                       ProviderClass currProvider = new ProviderClass(id, name, favore,catID, fav, akcija, rating);
+                       listArray.add(currProvider);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

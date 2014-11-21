@@ -34,7 +34,7 @@ public class ProviderList extends BaseActivity {
     private ListView listView1;
 	public RatingBar rating;
 	private ProgressDialog pDialog;
-	ArrayList<Provider> listArray=new ArrayList<Provider>();
+	ArrayList<ProviderClass> listArray=new ArrayList<ProviderClass>();
 	// URL to get contacts JSON
     private String url = "http://nas2skupa.com/5do12/getPro.aspx?id=";
     // JSON Node names
@@ -75,17 +75,16 @@ public class ProviderList extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 // getting values from selected ListItem
-                String proID = ((TextView) view.findViewById(R.id.providerID))
-                        .getText().toString();
-                String favVal = ((ImageView) view.findViewById(R.id.favIcon)).getDrawable().toString();
-                Log.d("favVal", favVal);
-                // Starting detail view
+
+
+                ProviderClass providerclass = (ProviderClass)view.getTag();
+                Bundle b = new Bundle();
+                b.putParcelable("providerclass", providerclass);
+                b.putString("color", color);
                 Intent in = new Intent(getApplicationContext(),
                         SingleProvider.class);
-                in.putExtra(TAG_ID, proID);
-                in.putExtra("color", color);
+                in.putExtras(b);
                 startActivity(in);
-            	//Toast.makeText(ProviderList.this, "neko ime="+color, Toast.LENGTH_SHORT).show();
             }
         });
        
@@ -156,7 +155,8 @@ public class ProviderList extends BaseActivity {
                        try {
                            rating = Float.parseFloat(c.getString("rating"));
                        }catch (NumberFormatException e) {}
-                       listArray.add(new Provider(fav, name, id, akcija, rating,null));
+                       ProviderClass currProvider = new ProviderClass(id, name, favore,null, fav, akcija, rating);
+                       listArray.add(currProvider);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

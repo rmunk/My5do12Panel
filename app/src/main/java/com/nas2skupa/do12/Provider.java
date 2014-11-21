@@ -1,5 +1,7 @@
 package com.nas2skupa.do12;
 
+import android.os.Parcelable;
+
 public class Provider {
     public int favIcon;
     public int akcijaIcon;

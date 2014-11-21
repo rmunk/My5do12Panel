@@ -1,8 +1,10 @@
 package com.nas2skupa.do12;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -11,6 +13,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,13 +42,15 @@ public class OrderActivity extends BaseActivity{
 
     // Widget GUI
     Button btnCalendar, btnTimePicker, btnNaruci;
-    EditText txtDate, txtTime, txtNote;
-    TextView txtService;
+    EditText  txtNote;
+    TextView txtDate, txtTime, txtService,name_label;
 
     // Variable for storing current date and time
     private int mYear, mMonth, mDay, mHour, mMinute;
-    private String serviceID,providerID,userId;
+    private String serviceID,providerID,userId, provider, service, color;
     private ProgressDialog pDialog;
+    ProviderClass proClass;
+    PricelistClass priceClass;
 
     /** Called when the activity is first created. */
     @Override
@@ -53,26 +58,33 @@ public class OrderActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order);
 
-        Bundle extras = getIntent().getExtras();
-        serviceID = extras.getString("sID");
-        providerID = extras.getString("proID");
+        Intent in = getIntent();
+        Bundle bundle = in.getExtras();
+        proClass = bundle.getParcelable("providerclass");
+        priceClass = bundle.getParcelable("pricelistclass");
+        color = bundle.getString("color");
+
+        serviceID = priceClass.plID;
+        providerID = proClass.proID;
+        provider = proClass.proName;
+        service = priceClass.plName;
         final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
         userId = prefs.getString("id", "");
 
-        btnCalendar = (Button) findViewById(R.id.btnCalendar);
-        btnTimePicker = (Button) findViewById(R.id.btnTimePicker);
+        txtService = (TextView) findViewById(R.id.usluga);
+        txtService.setText(service);
+        name_label=(TextView) findViewById(R.id.name_label);
+        name_label.setText(provider);
+
         btnNaruci = (Button) findViewById(R.id.btnNaruci);
-
-        txtDate = (EditText) findViewById(R.id.txtDate);
-        txtTime = (EditText) findViewById(R.id.txtTime);
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        txtDate = (TextView) findViewById(R.id.txtDate);
+        txtTime = (TextView) findViewById(R.id.txtTime);
         txtNote = (EditText) findViewById(R.id.txtNote);
-        txtService = (TextView) findViewById(R.id.txtService);
-
-        //txtService.setText(serviceID);
 
 
-        btnCalendar.setOnClickListener(clickHandler);
-        btnTimePicker.setOnClickListener(clickHandler);
+        txtDate.setOnClickListener(clickHandler);
+        txtTime.setOnClickListener(clickHandler);
         btnNaruci.setOnClickListener(clickHandler);
 
 
@@ -80,7 +92,7 @@ public class OrderActivity extends BaseActivity{
 
     View.OnClickListener clickHandler = new View.OnClickListener() {
         public void onClick(View v) {
-            if (v == btnCalendar) {
+            if (v == txtDate) {
 
                 // Process to get Current Date
                 final Calendar c = Calendar.getInstance();
@@ -103,7 +115,7 @@ public class OrderActivity extends BaseActivity{
                         }, mYear, mMonth, mDay);
                 dpd.show();
             }
-            if (v == btnTimePicker) {
+            if (v == txtTime) {
 
                 // Process to get Current Time
                 final Calendar c = Calendar.getInstance();

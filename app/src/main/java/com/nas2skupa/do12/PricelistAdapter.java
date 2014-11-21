@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class PricelistAdapter extends ArrayAdapter<Pricelist>{
+public class PricelistAdapter extends ArrayAdapter<PricelistClass>{
 
     Context context;
     int layoutResourceId;   
-    ArrayList<Pricelist> data = null;
+    ArrayList<PricelistClass> data = null;
    
-    public PricelistAdapter(Context context, int layoutResourceId, ArrayList<Pricelist> data) {
+    public PricelistAdapter(Context context, int layoutResourceId, ArrayList<PricelistClass> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -35,7 +36,6 @@ public class PricelistAdapter extends ArrayAdapter<Pricelist>{
             row = inflater.inflate(layoutResourceId, parent, false);
            
             holder = new PricelistHolder();
-            holder.serviceID=(TextView)row.findViewById(R.id.serviceID);
             holder.akcijaIcon = (ImageView)row.findViewById(R.id.akcijaServiceIcon);
             holder.service = (TextView)row.findViewById(R.id.txtService);
             holder.price = (TextView)row.findViewById(R.id.txtPrice);
@@ -47,20 +47,20 @@ public class PricelistAdapter extends ArrayAdapter<Pricelist>{
             holder = (PricelistHolder)row.getTag();
         }
        
-        Pricelist pricelist = data.get(position);
-        holder.serviceID.setText(pricelist.ID);
-        holder.service.setText(pricelist.service);
-        holder.price.setText(pricelist.price);
-        holder.akcijaIcon.setImageResource(pricelist.action);
-       
+        PricelistClass pricelist = data.get(position);
+        holder.service.setText(pricelist.plName);
+        holder.price.setText(pricelist.plPrice);
+        holder.akcijaIcon.setImageResource(pricelist.akcijaIcon);
+        holder.priceObj = pricelist;
+        row.setTag(pricelist);
         return row;
     }
    
     static class PricelistHolder
     {
-        TextView serviceID;
         ImageView akcijaIcon;
         TextView service;
         TextView price;
+        Parcelable priceObj;
     }
 }
