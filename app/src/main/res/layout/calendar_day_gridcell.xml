@@ -4,13 +4,13 @@
 	android:orientation="vertical"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
-	android:background="@drawable/calendar_button_selector">
+	android:background="@layout/calendar_button_selector">
 
 	<Button
 		android:id="@+id/calendar_day_gridcell"
 		android:layout_gravity="center"
-		android:textColor="#FFFFFF"
-		android:background="@drawable/calendar_button_selector"
+		android:textColor="#abb900"
+		android:background="@layout/calendar_button_selector"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content">
