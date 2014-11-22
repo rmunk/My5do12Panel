@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:showDividers="middle"
+    android:dividerPadding="8dp">
 
     <Spinner
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
         android:id="@+id/cities"
-        style="@style/FilterButton"
-        android:spinnerMode="dropdown" />
+        style="@style/FilterButton" />
+
+    <Space
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_gravity="center_horizontal" />
 
     <Spinner
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
         android:id="@+id/districts"
-        android:layout_marginTop="18dp"
-        style="@style/FilterButton"
-        android:spinnerMode="dropdown" />
+        style="@style/FilterButton" />
 
 </LinearLayout>

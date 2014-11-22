@@ -1,69 +1,78 @@
 package com.nas2skupa.do12;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 import android.app.Application;
 
-public class Globals extends Application{
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
-    static ArrayList<City> cities = new ArrayList<City>();
+public class Globals extends Application {
+
+    static LinkedHashMap<String, City> cities = new LinkedHashMap<String, City>();
 
     static ArrayList<String> getCities() {
         ArrayList<String> ret = new ArrayList<String>();
-        for (City city : cities)
+        ret.add("Svi gradovi");
+        for (City city : cities.values())
             ret.add(city.name);
         return ret;
     }
 
-	private String[] catSettings = new String[2];
-	
-	public String[] getCatSettings(int CatId) {
-		
-		switch (CatId) {
+    static ArrayList<String> getDistricts(String city) {
+        ArrayList<String> ret = new ArrayList<String>();
+        ret.add("Svi kvartovi");
+        if (cities.containsKey(city))
+            for (District district : cities.get(city).districts)
+                ret.add(district.name);
+        return ret;
+    }
 
-		case 1:
-			catSettings[0]="zdrastvene usluge";
-			catSettings[1]="#7ec5c4";
-			return catSettings;
-		case 2:
-			catSettings[0]="servis i održavanje";
-			catSettings[1]="#8c7c66";
-			return catSettings;
-		case 3:
-			catSettings[0]="ljepota";
-			catSettings[1]="#f5b2b5";
-			return catSettings;
-		case 4:
-			catSettings[0]="intelektualne usluge";
-			catSettings[1]="#fad12f";
-			return catSettings;
-		case 5:
-			catSettings[0]="dom i obitelj";
-			catSettings[1]="#687f95";
-			return catSettings;
-		case 6:
-			catSettings[0]="sport i rekreacija";
-			catSettings[1]="#7dad91";
-			return catSettings;
-		case 7:
-			catSettings[0]="turizam i ugostiteljstvo";
-			catSettings[1]="#e2a217";
-			return catSettings;
-		case 8:
-			catSettings[0]="prijevoz";
-			catSettings[1]="#919294";
-			return catSettings;
-		case 9:
-			catSettings[0]="kultura i zabava";
-			catSettings[1]="#826882";
-			return catSettings;
+    private String[] catSettings = new String[2];
 
-		
+    public String[] getCatSettings(int CatId) {
 
-		default:
-			return catSettings;
-		}
+        switch (CatId) {
+
+            case 1:
+                catSettings[0] = "zdrastvene usluge";
+                catSettings[1] = "#7ec5c4";
+                return catSettings;
+            case 2:
+                catSettings[0] = "servis i održavanje";
+                catSettings[1] = "#8c7c66";
+                return catSettings;
+            case 3:
+                catSettings[0] = "ljepota";
+                catSettings[1] = "#f5b2b5";
+                return catSettings;
+            case 4:
+                catSettings[0] = "intelektualne usluge";
+                catSettings[1] = "#fad12f";
+                return catSettings;
+            case 5:
+                catSettings[0] = "dom i obitelj";
+                catSettings[1] = "#687f95";
+                return catSettings;
+            case 6:
+                catSettings[0] = "sport i rekreacija";
+                catSettings[1] = "#7dad91";
+                return catSettings;
+            case 7:
+                catSettings[0] = "turizam i ugostiteljstvo";
+                catSettings[1] = "#e2a217";
+                return catSettings;
+            case 8:
+                catSettings[0] = "prijevoz";
+                catSettings[1] = "#919294";
+                return catSettings;
+            case 9:
+                catSettings[0] = "kultura i zabava";
+                catSettings[1] = "#826882";
+                return catSettings;
+
+
+            default:
+                return catSettings;
+        }
     }
 
 }

@@ -58,7 +58,7 @@ public class ProviderAdapter extends ArrayAdapter<ProviderClass>{
         holder.akcijaIcon.setImageResource(provider.akcijaIcon);
         holder.rating.setRating(provider.rating);
         holder.proObj = provider;
-        row.setTag(provider);
+        row.setTag(holder);
         return row;
     }
    

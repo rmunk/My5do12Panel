@@ -56,8 +56,10 @@ public class SplashScreen extends Activity {
                 if (jsonStr != null) {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     JSONArray jsonArray = jsonObj.getJSONArray("city");
-                    for (int i = 0; i < jsonArray.length(); i++)
-                        Globals.cities.add(new City(jsonArray.getJSONObject(i)));
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject cityObj = jsonArray.getJSONObject(i);
+                        Globals.cities.put(cityObj.getString("city"), new City(cityObj));
+                    }
                 }
             } catch (Exception ex) {
                 Log.d("Error :", ex.getMessage());

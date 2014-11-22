@@ -23,11 +23,4 @@ public class City {
         for (int i = 0; i < jsonArray.length(); i++)
             districts.add(new District(jsonArray.getJSONObject(i)));
     }
-
-    public ArrayList<String> getDistricts() {
-        ArrayList<String> ret = new ArrayList<String>();
-        for (District district : districts)
-            ret.add(district.name);
-        return ret;
-    }
 }

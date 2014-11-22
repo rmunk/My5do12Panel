@@ -1,12 +1,5 @@
 package com.nas2skupa.do12;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,31 +13,35 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ProviderList extends BaseActivity {
 
     private ListView listView1;
-	public RatingBar rating;
-	private ProgressDialog pDialog;
-	ArrayList<ProviderClass> listArray=new ArrayList<ProviderClass>();
-	// URL to get contacts JSON
+    public RatingBar rating;
+    private ProgressDialog pDialog;
+    ArrayList<ProviderClass> listArray = new ArrayList<ProviderClass>();
+    // URL to get contacts JSON
     private String url = "http://nas2skupa.com/5do12/getPro.aspx?id=";
     // JSON Node names
     private static final String TAG_ARRAY = "provider";
     private static final String TAG_ID = "ID";
     private static final String TAG_NAME = "name";
     private String color;
- // subcats JSONArray
+    // subcats JSONArray
     JSONArray providers = null;
     View header = null;
+    View filter = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,26 +55,27 @@ public class ProviderList extends BaseActivity {
         String userId = prefs.getString("id", "");
 
 
-        url+=ID+"&u="+userId;
+        url += ID + "&u=" + userId;
 
 
         // Calling async task to get json
         new GetProvider().execute();
-        header = (View)getLayoutInflater().inflate(R.layout.listview_header_row, null);
+        header = (View) getLayoutInflater().inflate(R.layout.listview_header_row, null);
+        filter = (View) getLayoutInflater().inflate(R.layout.listview_filter_row, null);
         getSubCatSettings(subcat, color, header);
 
-        listView1 = (ListView)findViewById(R.id.listView1);
-     // Listview on item click listener
-        
+        listView1 = (ListView) findViewById(R.id.listView1);
+        listView1.addHeaderView(header);
+        listView1.addHeaderView(filter);
         listView1.setOnItemClickListener(new OnItemClickListener() {
- 
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
+                                    int position, long id) {
                 // getting values from selected ListItem
 
 
-                ProviderClass providerclass = (ProviderClass)view.getTag();
+                ProviderClass providerclass = (ProviderClass) view.getTag();
                 Bundle b = new Bundle();
                 b.putParcelable("providerclass", providerclass);
                 b.putString("color", color);
@@ -87,25 +85,26 @@ public class ProviderList extends BaseActivity {
                 startActivity(in);
             }
         });
-       
-        
-        
+        new CitiesFilter(this, (Spinner) findViewById(R.id.cities), (Spinner) findViewById(R.id.districts));
     }
+
+
     @SuppressLint("NewApi")
-	public void getSubCatSettings(String subcatTitle, String color, View header){
-		TextView naslov = (TextView) header.findViewById(R.id.subcatname);
-		naslov.setText(subcatTitle);
-		Typeface face = Typeface.createFromAsset(getAssets(),"fonts/Helvetica.ttf");
-		naslov.setTypeface(face);
-		naslov.setTextSize(16);
-		naslov.setAllCaps(true);
-		naslov.setTextColor(Color.parseColor("#FFFFFF"));
-		naslov.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
-		String bckclr=color; 
-		naslov.setBackgroundColor(Color.parseColor(bckclr));
+    public void getSubCatSettings(String subcatTitle, String color, View header) {
+        TextView naslov = (TextView) header.findViewById(R.id.subcatname);
+        naslov.setText(subcatTitle);
+        Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Helvetica.ttf");
+        naslov.setTypeface(face);
+        naslov.setTextSize(16);
+        naslov.setAllCaps(true);
+        naslov.setTextColor(Color.parseColor("#FFFFFF"));
+        naslov.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+        String bckclr = color;
+        naslov.setBackgroundColor(Color.parseColor(bckclr));
     }
+
     private class GetProvider extends AsyncTask<Void, Void, Void> {
-		 
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -114,49 +113,49 @@ public class ProviderList extends BaseActivity {
             pDialog.setMessage("Please wait...");
             pDialog.setCancelable(false);
             pDialog.show();
- 
+
         }
- 
+
         @Override
         protected Void doInBackground(Void... arg0) {
             // Creating service handler class instance
             ServiceHandler sh = new ServiceHandler();
- 
+
             // Making a request to url and getting response
             String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
- 
+
             Log.d("Response: ", "> " + jsonStr);
- 
+
             if (jsonStr != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
-                     
+
                     // Getting JSON Array node
                     providers = jsonObj.getJSONArray(TAG_ARRAY);
 
-                    
-                    
-                   for (int i = 0; i < providers.length(); i++) {
+
+                    for (int i = 0; i < providers.length(); i++) {
                         JSONObject c = providers.getJSONObject(i);
-                         
+
                         String id = c.getString(TAG_ID);
                         String name = c.getString(TAG_NAME);
                         String favore = c.getString("favorite");
                         String action = c.getString("akcija");
-                        int fav=R.drawable.blank;
-                        int akcija=R.drawable.blank;
-                        if(favore.equals("1")){
-                        	fav=R.drawable.fav_icon;
+                        int fav = R.drawable.blank;
+                        int akcija = R.drawable.blank;
+                        if (favore.equals("1")) {
+                            fav = R.drawable.fav_icon;
                         }
-                        if(action.equals("1")){
-                        	akcija=R.drawable.akcija_icon;
+                        if (action.equals("1")) {
+                            akcija = R.drawable.akcija_icon;
                         }
-                       float rating = 0;
-                       try {
-                           rating = Float.parseFloat(c.getString("rating"));
-                       }catch (NumberFormatException e) {}
-                       ProviderClass currProvider = new ProviderClass(id, name, favore,null, fav, akcija, rating);
-                       listArray.add(currProvider);
+                        float rating = 0;
+                        try {
+                            rating = Float.parseFloat(c.getString("rating"));
+                        } catch (NumberFormatException e) {
+                        }
+                        ProviderClass currProvider = new ProviderClass(id, name, favore, null, fav, akcija, rating);
+                        listArray.add(currProvider);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -165,10 +164,10 @@ public class ProviderList extends BaseActivity {
                 Log.e("ServiceHandler", "Couldn't get any data from the url");
 
             }
- 
+
             return null;
         }
- 
+
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
@@ -178,17 +177,10 @@ public class ProviderList extends BaseActivity {
             /**
              * Updating parsed JSON data into ListView
              * */
-            ProviderAdapter adapter = new ProviderAdapter(ProviderList.this,
-            		R.layout.listview_item_row, listArray);
-           
-           
-           
-            listView1.addHeaderView(header);     
+            ProviderAdapter adapter = new ProviderAdapter(ProviderList.this, R.layout.listview_item_row, listArray);
             listView1.setAdapter(adapter);
         }
-        
-        
-        
-        
+
+
     }
 }
