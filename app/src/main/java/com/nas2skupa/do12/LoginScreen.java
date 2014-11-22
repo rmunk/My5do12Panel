@@ -64,6 +64,9 @@ public class LoginScreen extends Activity {
     private static final String TAG_EMAIL = "email";
     private static final String TAG_GENDER = "gender";
     private static final String TAG_GCMID = "gcmId";
+    private static final String TAG_COUNTRY = "country";
+    private static final String TAG_CITY = "city";
+    private static final String TAG_QUART = "quart";
 
     // subcats JSONArray
     JSONArray user = null;
@@ -318,6 +321,9 @@ public class LoginScreen extends Activity {
                     editor.putString(TAG_EMAIL, c.getString(TAG_EMAIL));
                     editor.putString(TAG_GENDER, c.getString(TAG_GENDER));
                     editor.putString(TAG_GCMID, c.getString(TAG_GCMID));
+                    editor.putString(TAG_COUNTRY, c.getString(TAG_COUNTRY));
+                    editor.putString(TAG_CITY, c.getString(TAG_CITY));
+                    editor.putString(TAG_QUART, c.getString(TAG_QUART));
                     editor.commit();
                     loged = true;
                 } catch (JSONException e) {
