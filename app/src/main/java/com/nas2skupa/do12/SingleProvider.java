@@ -98,8 +98,8 @@ public class SingleProvider extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
-                PricelistClass pricelistclass = (PricelistClass)view.getTag();
+                PricelistAdapter.PricelistHolder holder = (PricelistAdapter.PricelistHolder)view.getTag();
+                PricelistClass pricelistclass = (PricelistClass)holder.priceObj;
                 Bundle b = new Bundle();
                 b.putParcelable("pricelistclass", pricelistclass);
                 b.putParcelable("providerclass", proClass);
@@ -135,9 +135,8 @@ public class SingleProvider extends BaseActivity {
             }
 
             if (v == btnVise) {
-                moreLayout = (LinearLayout) findViewById(R.id.detailsLayout);
+                moreLayout = (LinearLayout) findViewById(R.id.moreLayout);
                 if (detailOn==false) {
-                    Log.d("btnVise, proId", proId);
                     moreLayout.setVisibility(View.VISIBLE);
                     detailOn=true;
                     btnVise.setImageResource(R.drawable.more_arrow_up);
@@ -293,8 +292,7 @@ public class SingleProvider extends BaseActivity {
                         for (int j = 0; j < pricelists.length(); j++) {
                             JSONObject p = pricelists.getJSONObject(j);
                             String serviceID = p.getString("serviceID");
-                            String service = p.getString("service").substring(0, 1).toUpperCase() + p.getString("service").substring(1).toLowerCase();
-                            ;
+                            String service = p.getString("service");
                             String action = p.getString("action");
                             int akcija = 0;
                             String price = p.getString("reg_price") + " " + getString(R.string.currency);

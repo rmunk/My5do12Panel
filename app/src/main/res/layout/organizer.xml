@@ -21,11 +21,13 @@
 		<Button
 			android:id="@+id/currentMonth"
 			android:layout_weight="0.6"
-			android:textColor="#FFFFFF"
+			android:textColor="#697202"
 			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:background="@drawable/droplist_dark_new"
+			android:background="@drawable/calendar_tile_new"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+            android:text="TEST"
+            android:textSize="15dp">
 		</Button>
 		<ImageView
 			android:id="@+id/nextMonth"

@@ -403,7 +403,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 gridcell.setClickable(false);
             }
             if (color.equals("WHITE")) {
-                gridcell.setTextColor(Color.parseColor("#abb900"));
+                gridcell.setTextColor(Color.parseColor("#697202"));
             }
             if (color.equals("BLUE")) {
                 gridcell.setTextColor(Color.DKGRAY);

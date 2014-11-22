@@ -75,14 +75,9 @@ public class Akcije extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // getting values from selected ListItem
-                String proID = ((TextView) view.findViewById(R.id.providerID))
-                        .getText().toString();
-                String catID = ((TextView) view.findViewById(R.id.catID))
-                        .getText().toString();
-                // Starting detail view
-                catSettings = getCatSett(Integer.parseInt(catID));
 
-                ProviderClass providerclass = (ProviderClass) view.getTag();
+                ProviderAdapter.ProviderHolder holder = (ProviderAdapter.ProviderHolder)view.getTag();
+                ProviderClass providerclass = (ProviderClass)holder.proObj;
                 Bundle b = new Bundle();
                 b.putParcelable("providerclass", providerclass);
                 catSettings = getCatSett(Integer.parseInt(providerclass.catID));

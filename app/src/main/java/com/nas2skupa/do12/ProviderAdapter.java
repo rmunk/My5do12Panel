@@ -62,7 +62,7 @@ public class ProviderAdapter extends ArrayAdapter<ProviderClass>{
         return row;
     }
    
-    static class ProviderHolder
+    public static class ProviderHolder
     {
         ImageView favIcon;
         ImageView akcijaIcon;

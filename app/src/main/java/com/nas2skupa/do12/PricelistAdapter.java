@@ -52,11 +52,11 @@ public class PricelistAdapter extends ArrayAdapter<PricelistClass>{
         holder.price.setText(pricelist.plPrice);
         holder.akcijaIcon.setImageResource(pricelist.akcijaIcon);
         holder.priceObj = pricelist;
-        row.setTag(pricelist);
+        row.setTag(holder);
         return row;
     }
    
-    static class PricelistHolder
+    public static class PricelistHolder
     {
         ImageView akcijaIcon;
         TextView service;

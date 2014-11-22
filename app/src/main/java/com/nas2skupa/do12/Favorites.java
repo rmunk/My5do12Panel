@@ -74,7 +74,8 @@ public class Favorites extends BaseActivity {
                     int position, long id) {
                 // getting values from selected ListItem
 
-                ProviderClass providerclass = (ProviderClass)view.getTag();
+                ProviderAdapter.ProviderHolder holder = (ProviderAdapter.ProviderHolder)view.getTag();
+                ProviderClass providerclass = (ProviderClass)holder.proObj;
                 Bundle b = new Bundle();
                 b.putParcelable("providerclass", providerclass);
                 catSettings=getCatSett(Integer.parseInt(providerclass.catID));

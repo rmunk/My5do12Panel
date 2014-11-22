@@ -27,6 +27,8 @@
           android:src="@drawable/fav_icon"
           android:paddingTop="20dp"
           android:layout_marginLeft="10dp"
+          android:scaleX="1.5"
+          android:scaleY="1.5"
           />
 
 
@@ -61,8 +63,6 @@
         android:id="@+id/about_label"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="15dp"
@@ -85,42 +85,33 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
             android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            />
 
     </RelativeLayout>
     <LinearLayout
-        android:id="@+id/detailsLayout"
+        android:id="@+id/moreLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
         android:orientation="vertical"
         android:visibility="gone">
 
-        <ImageView
-            android:id="@+id/tofav2"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/nekitekst"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/fav_icon"
-            android:paddingTop="20dp"
-            android:layout_marginLeft="10dp"
-            />
-        <ImageView
-            android:id="@+id/tofav3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/fav_icon"
-            android:paddingTop="20dp"
-            android:layout_marginLeft="10dp"
-            />
-        <ImageView
-            android:id="@+id/tofav4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/fav_icon"
-            android:paddingTop="20dp"
-            android:layout_marginLeft="10dp"
-            />
-        </LinearLayout>
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:padding="5dp"
+            android:textColor="#000000"
+            android:textSize="13sp"
+            android:gravity="top"
+            android:text="test"/>
+    </LinearLayout>
   <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >

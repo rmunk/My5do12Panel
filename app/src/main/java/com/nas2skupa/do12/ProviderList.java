@@ -73,9 +73,8 @@ public class ProviderList extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // getting values from selected ListItem
-
-
-                ProviderClass providerclass = (ProviderClass) view.getTag();
+                ProviderAdapter.ProviderHolder holder = (ProviderAdapter.ProviderHolder)view.getTag();
+                ProviderClass providerclass = (ProviderClass)holder.proObj;
                 Bundle b = new Bundle();
                 b.putParcelable("providerclass", providerclass);
                 b.putString("color", color);
