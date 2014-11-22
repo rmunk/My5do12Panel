@@ -1,11 +1,21 @@
 package com.nas2skupa.do12;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import android.app.Application;
 
 public class Globals extends Application{
-	
+
+    static ArrayList<City> cities = new ArrayList<City>();
+
+    static ArrayList<String> getCities() {
+        ArrayList<String> ret = new ArrayList<String>();
+        for (City city : cities)
+            ret.add(city.name);
+        return ret;
+    }
+
 	private String[] catSettings = new String[2];
 	
 	public String[] getCatSettings(int CatId) {

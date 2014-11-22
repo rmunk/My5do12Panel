@@ -12,6 +12,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class SplashScreen extends Activity {
     @SuppressLint("NewApi")
     @Override
@@ -19,6 +22,7 @@ public class SplashScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashscreen);
 //        sendNotification();
+        new getCities().execute(null, null, null);
         new Handler().postDelayed(new Runnable() {
 
             /*
@@ -38,6 +42,28 @@ public class SplashScreen extends Activity {
                 finish();
             }
         }, 3000);
+    }
+
+    private class getCities extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            String jsonStr = "";
+            try {
+                ServiceHandler sh = new ServiceHandler();
+                String url = "http://nas2skupa.com/5do12/getCities.aspx";
+                jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
+                Log.d("Response: ", "> " + jsonStr);
+                if (jsonStr != null) {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    JSONArray jsonArray = jsonObj.getJSONArray("city");
+                    for (int i = 0; i < jsonArray.length(); i++)
+                        Globals.cities.add(new City(jsonArray.getJSONObject(i)));
+                }
+            } catch (Exception ex) {
+                Log.d("Error :", ex.getMessage());
+            }
+            return null;
+        }
     }
 
     // For testing notifications receiver

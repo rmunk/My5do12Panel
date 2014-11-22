@@ -14,8 +14,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -27,6 +29,8 @@ import java.util.ArrayList;
 public class Akcije extends BaseActivity {
 
     private ListView listView1;
+    private Spinner citiesSpinner;
+    private Spinner districtsSpinner;
 	public RatingBar rating;
 	private ProgressDialog pDialog;
 	ArrayList<ProviderClass> listArray=new ArrayList<ProviderClass>();
@@ -43,6 +47,7 @@ public class Akcije extends BaseActivity {
  // subcats JSONArray
     JSONArray providers = null;
     View header = null;
+    View filter = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +66,8 @@ public class Akcije extends BaseActivity {
         // Calling async task to get json
         new GetProvider().execute();
         header = (View)getLayoutInflater().inflate(R.layout.listview_header_row, null);
-        getSubCatSettings("akcija", "#3366FF", header);
+        filter = (View)getLayoutInflater().inflate(R.layout.listview_filter_row, null);
+        getSubCatSettings("akcija", "#AAB812", header);
 
         listView1 = (ListView)findViewById(R.id.listView1);
      // Listview on item click listener
@@ -72,6 +78,12 @@ public class Akcije extends BaseActivity {
             @SuppressLint("NewApi") public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 // getting values from selected ListItem
+                String proID = ((TextView) view.findViewById(R.id.providerID))
+                        .getText().toString();
+                String catID = ((TextView) view.findViewById(R.id.catID))
+                        .getText().toString();
+                // Starting detail view
+                catSettings=getCatSett(Integer.parseInt(catID));
 
                 ProviderClass providerclass = (ProviderClass)view.getTag();
                 Bundle b = new Bundle();
@@ -178,11 +190,16 @@ public class Akcije extends BaseActivity {
              * */
             ProviderAdapter adapter = new ProviderAdapter(Akcije.this,
             		R.layout.listview_item_row, listArray);
-           
-           
-           
-            listView1.addHeaderView(header);     
+
+            listView1.addHeaderView(header);
+            listView1.addHeaderView(filter);
             listView1.setAdapter(adapter);
+
+            ArrayAdapter<String> citiesAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                    android.R.layout.simple_spinner_dropdown_item, Globals.getCities());
+            citiesSpinner = (Spinner)findViewById(R.id.cities);
+            districtsSpinner = (Spinner)findViewById(R.id.districts);
+            citiesSpinner.setAdapter(citiesAdapter);
         }
         
         
