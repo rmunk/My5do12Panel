@@ -1,48 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/splash">
-    
+    android:background="@drawable/splash"
+    android:foregroundGravity="center">
 
-    <EditText
-        android:id="@+id/username"
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/password"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="26dp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#CCCCCC"
-        android:ems="10"
-        android:hint="@string/usernametxt" />
+        android:layout_height="320dp"
+        android:gravity="center_horizontal|top"
+        android:layout_gravity="center_vertical">
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnLogin"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="78dp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#CCCCCC"
-        android:ems="10"
-        android:hint="@string/passtxt"
-        android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/password"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="26dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#CCCCCC"
+            android:ems="10"
+            android:singleLine="true"
+            android:nextFocusDown="@+id/password"
+            android:imeOptions="actionNext"
+            android:hint="@string/usernametxt" />
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="152dp"
-        android:onClick="tryLogin"
-        android:text="@string/btnLogin" />
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="78dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#CCCCCC"
+            android:ems="10"
+            android:hint="@string/passtxt"
+            android:inputType="textPassword"
+            android:layout_above="@+id/loginButtons" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginButtons"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                style="@style/LoginButton"
+                android:id="@+id/btnLogin"
+                android:onClick="tryLogin"
+                android:text="@string/btnLogin" />
+
+            <Button
+                style="@style/LoginButton"
+                android:id="@+id/btnRegister"
+                android:text="@string/btnRegister" />
+        </LinearLayout>
+    </LinearLayout>
 
 
-
-</RelativeLayout>
+</FrameLayout>
 
 

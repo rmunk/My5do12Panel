@@ -4,10 +4,10 @@
     <string name="app_name">5do12</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="usernametxt">Username</string>
-    <string name="passtxt">Password</string>
+    <string name="usernametxt">Korisničko ime</string>
+    <string name="passtxt">Lozinka</string>
     <string name="btntxt">Klik</string>
-    <string name="btnLogin">Login</string>
+    <string name="btnLogin">Prijavi se</string>
     <string name="home_title">Home</string>
     <string name="fav_title">Favorites</string>
     <string name="currency"> kn</string>
@@ -23,7 +23,8 @@
     </string-array>
     
     <string name="block_prompt">KVART</string>
- 
+    <string name="btnRegister">Registriraj se</string>
+
     <string-array name="block_arrays">
         <item>Brezovica</item>
         <item>Črnomerec</item>
