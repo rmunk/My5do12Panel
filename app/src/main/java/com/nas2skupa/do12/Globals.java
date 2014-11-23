@@ -21,7 +21,7 @@ public class Globals extends Application {
         ArrayList<String> ret = new ArrayList<String>();
         ret.add("Svi kvartovi");
         if (cities.containsKey(city))
-            for (District district : cities.get(city).districts)
+            for (District district : cities.get(city).districts.values())
                 ret.add(district.name);
         return ret;
     }

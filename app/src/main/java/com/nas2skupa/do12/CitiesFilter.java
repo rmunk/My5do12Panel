@@ -23,7 +23,6 @@ public class CitiesFilter {
     private String currentCity;
     private String currentDistrict;
 
-
     public CitiesFilter(Context context, Spinner citiesSpinner, final Spinner districtsSpinner) {
         this.citiesSpinner = citiesSpinner;
         this.districtsSpinner = districtsSpinner;
@@ -41,10 +40,16 @@ public class CitiesFilter {
         citiesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (cities.get(position).equals(currentCity)) return;
                 currentCity = cities.get(position);
                 sharedPreferences.edit().putString("city", currentCity).commit();
-                cityChanged();
-                if (districts.contains(currentDistrict)) districtsSpinner.setSelection(districts.indexOf(currentDistrict));
+                districts.clear();
+                districts.addAll(Globals.getDistricts(currentCity));
+                if (!districts.contains(currentDistrict))
+                    currentDistrict = districts.get(0);
+                CitiesFilter.this.districtsSpinner.setSelection(districts.indexOf(currentDistrict));
+                if (onFilterChangedListener != null)
+                    onFilterChangedListener.onFilterChanged(currentCity, currentDistrict);
             }
 
             @Override
@@ -56,8 +61,11 @@ public class CitiesFilter {
         districtsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (districts.get(position).equals(currentDistrict)) return;
                 currentDistrict = districts.get(position);
                 sharedPreferences.edit().putString("district", currentDistrict).commit();
+                if (onFilterChangedListener != null)
+                    onFilterChangedListener.onFilterChanged(currentCity, currentDistrict);
             }
 
             @Override
@@ -69,15 +77,22 @@ public class CitiesFilter {
         sharedPreferences = context.getSharedPreferences("filter", Context.MODE_PRIVATE);
         currentCity = sharedPreferences.getString("city", "");
         currentDistrict = sharedPreferences.getString("district", "");
-        if (cities.contains(currentCity)) citiesSpinner.setSelection(cities.indexOf(currentCity));
-//        cityChanged();
-        if (districts.contains(currentDistrict)) districtsSpinner.setSelection(districts.indexOf(currentDistrict));
-
+        if (cities.contains(currentCity))
+            citiesSpinner.setSelection(cities.indexOf(currentCity));
+        districts.addAll(Globals.getDistricts(currentCity));
+        if (districts.contains(currentDistrict))
+            CitiesFilter.this.districtsSpinner.setSelection(districts.indexOf(currentDistrict));
     }
 
-    private void cityChanged() {
-        districts.clear();
-        districts.addAll(Globals.getDistricts(currentCity));
-        districtsSpinner.setSelection(0);
+    private OnFilterChangedListener onFilterChangedListener;
+
+    public interface OnFilterChangedListener {
+        public void onFilterChanged(String city, String district);
+    }
+
+    public void setOnFilterChangedListener(OnFilterChangedListener listener) {
+        onFilterChangedListener = listener;
+        if (onFilterChangedListener != null)
+            onFilterChangedListener.onFilterChanged(currentCity, currentDistrict);
     }
 }

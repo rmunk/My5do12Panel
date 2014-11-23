@@ -1,0 +1,54 @@
+package com.nas2skupa.do12;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.Uri;
+import android.os.AsyncTask;
+
+/**
+ * Created by Ranko on 22.11.2014..
+ */
+public class HttpRequest {
+    private Context context;
+    private ProgressDialog progressDialog;
+
+    public HttpRequest(Context context, Uri uri) {
+        this.context = context;
+        new HttpWorker().execute(uri);
+    }
+
+    private class HttpWorker extends AsyncTask<Uri, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Molimo pričekajte...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Uri... params) {
+            ServiceHandler serviceHandler = new ServiceHandler();
+            return serviceHandler.makeServiceCall(params[0].toString(), ServiceHandler.GET);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
+            onHttpResultListener.onHttpResult(result);
+        }
+    }
+
+    private OnHttpResultListener onHttpResultListener;
+
+    public interface OnHttpResultListener {
+        public void onHttpResult(String result);
+    }
+
+    public void setOnHttpResultListener(OnHttpResultListener listener) {
+        onHttpResultListener = listener;
+    }
+}
