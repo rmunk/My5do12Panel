@@ -61,8 +61,7 @@ public class OrderActivity extends BaseActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.order);
-
+        initialize();
         Intent in = getIntent();
         Bundle bundle = in.getExtras();
         proClass = bundle.getParcelable("providerclass");
@@ -77,11 +76,16 @@ public class OrderActivity extends BaseActivity{
         final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
         userId = prefs.getString("id", "");
 
-        txtService = (TextView) findViewById(R.id.usluga);
-        txtService.setText(service);
-        name_label=(TextView) findViewById(R.id.name_label);
-        name_label.setText(provider);
+        try {
+            txtService = (TextView) findViewById(R.id.usluga);
+            txtService.setText(service);
+            name_label=(TextView) findViewById(R.id.name_label);
+            name_label.setText(provider);
 
+            Log.d("SERVICE////////////////", service);
+        }catch (Exception e){
+            Log.e("ERROR//////////////////", e.toString());
+        }
         btnNaruci = (ImageView) findViewById(R.id.btnNaruci);
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTime = (TextView) findViewById(R.id.txtTime);
@@ -106,7 +110,6 @@ public class OrderActivity extends BaseActivity{
                 payO.setVisibility(View.VISIBLE);
             }
         }
-        initialize();
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
         txtDate.setText(today.monthDay + "-" + (today.month + 1) + "-" + today.year);
