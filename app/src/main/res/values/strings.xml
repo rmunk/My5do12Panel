@@ -24,6 +24,13 @@
     
     <string name="block_prompt">KVART</string>
     <string name="btnRegister">Registriraj se</string>
+    <string name="mon">PON</string>
+    <string name="tue">UTO</string>
+    <string name="wen">SRI</string>
+    <string name="thu">ČET</string>
+    <string name="fri">PET</string>
+    <string name="sat">SUB</string>
+    <string name="sun">NED</string>
 
     <string-array name="block_arrays">
         <item>Brezovica</item>

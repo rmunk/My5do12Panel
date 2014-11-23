@@ -202,7 +202,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
         private final Context _context;
 
         private final List<String> list;
-        private static final int DAY_OFFSET = 1;
+        private static final int DAY_OFFSET = 2;
         private final String[] weekdays = new String[]{"Ned", "Pon", "Uto", "Sri", "Čet", "Pet", "Sub"};
         private final String[] months = {"Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"};
         private final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -399,14 +399,14 @@ public class Organizer extends BaseActivity implements OnClickListener {
             Log.d(tag, "Setting GridCell " + theday + "-" + themonth + "-" + theyear);
 
             if (color.equals("GREY")) {
-                gridcell.setTextColor(Color.LTGRAY);
+                gridcell.setTextAppearance(_context, R.style.passive_month_day);
                 gridcell.setClickable(false);
             }
             if (color.equals("WHITE")) {
-                gridcell.setTextColor(Color.parseColor("#697202"));
+                gridcell.setTextAppearance(_context, R.style.active_month_day);
             }
             if (color.equals("BLUE")) {
-                gridcell.setTextColor(Color.DKGRAY);
+                gridcell.setTextAppearance(_context, R.style.current_day);
             }
             return row;
         }
