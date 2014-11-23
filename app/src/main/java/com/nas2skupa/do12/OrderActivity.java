@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.content.SharedPreferences;
@@ -68,6 +69,12 @@ public class OrderActivity extends BaseActivity{
         priceClass = bundle.getParcelable("pricelistclass");
         color = bundle.getString("color");
         payOpts=bundle.getIntArray("paying");
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar2);
+        try {
+            float rating = proClass.rating;
+            ratingBar.setRating(rating);
+        } catch (NumberFormatException e) {
+        }
 
         serviceID = priceClass.plID;
         providerID = proClass.proID;
@@ -86,7 +93,6 @@ public class OrderActivity extends BaseActivity{
         }catch (Exception e){
             Log.e("ERROR//////////////////", e.toString());
         }
-        btnNaruci = (ImageView) findViewById(R.id.btnNaruci);
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTime = (TextView) findViewById(R.id.txtTime);
         txtPrice = (TextView) findViewById(R.id.txtPrice);
@@ -174,6 +180,7 @@ public class OrderActivity extends BaseActivity{
     private void initialize() {
         setContentView(R.layout.order);
         txtNote = (EditText) findViewById(R.id.txtNote);
+        btnNaruci = (ImageView) findViewById(R.id.btnNaruci);
         txtNote.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
