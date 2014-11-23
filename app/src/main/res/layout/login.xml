@@ -40,6 +40,7 @@
             android:ems="10"
             android:hint="@string/passtxt"
             android:inputType="textPassword"
+            android:imeOptions="actionGo"
             android:layout_above="@+id/loginButtons" />
 
         <LinearLayout
