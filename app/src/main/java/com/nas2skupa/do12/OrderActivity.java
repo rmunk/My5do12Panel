@@ -61,6 +61,7 @@ public class OrderActivity extends BaseActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.order);
 
         Intent in = getIntent();
         Bundle bundle = in.getExtras();
