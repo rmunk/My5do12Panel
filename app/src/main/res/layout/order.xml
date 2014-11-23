@@ -4,6 +4,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/back">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp">
 
         <TextView
         android:id="@+id/name_label"
@@ -12,42 +17,155 @@
         android:textColor="#666666"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:paddingLeft="20dp"
         android:paddingTop="20dp" />
 
-        <TextView
+        <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar2"
+        style="?android:attr/ratingBarStyleSmall" />
+
+        <LinearLayout
+            android:id="@+id/payingoptions"
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:id="@+id/usluga" />
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/american"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/american_icon"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/master"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/master_icon"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/visa"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/visa_icon"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/diners"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/diners_icon"
+                android:visibility="gone"/>
+            </LinearLayout>
 
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#666666"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:paddingTop="20dp"
+                android:text="Naručujem uslugu:"/>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <TextView
+                    android:id="@+id/usluga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="#666666"
+                    android:textSize="15sp" />
+                <ImageView
+                    android:id="@+id/akcijaServiceIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@id/txtPrice"
+                    android:layout_alignTop="@+id/txtPrice"
+                    android:src="@drawable/akcija_icon_small" />
+                <TextView
+                    android:id="@+id/txtPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="#666666"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
+             <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#666666"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:paddingTop="10dp"
+                    android:text="Datum:"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:paddingTop="10dp"
+            android:textColor="#666666"
+            android:textSize="15sp"
             android:id="@+id/txtDate"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#666666"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:paddingTop="10dp"
+        android:text="Vrijeme:"/>
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:paddingTop="10dp"
+            android:textColor="#666666"
+            android:textSize="15sp"
             android:id="@+id/txtTime"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#666666"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:paddingTop="20dp"
+        android:text="Napomena:"/>
 
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:id="@+id/txtNote">
+            android:id="@+id/txtNote"
+            android:textColor="#666666"
+            android:textSize="15sp">
             <requestFocus></requestFocus>
         </EditText>
 
-    <Button
+    <ImageView
         android:id="@+id/btnNaruci"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="Naruči"
-        android:layout_width="100dp"
-        android:background="@drawable/calendar_centralheader"
-        android:layout_gravity="center_horizontal"></Button>
-
+        android:layout_width="wrap_content"
+        android:src="@drawable/order_btn"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"></ImageView>
+    </LinearLayout>
 </LinearLayout>

@@ -29,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SingleProvider extends BaseActivity {
 
@@ -50,11 +51,17 @@ public class SingleProvider extends BaseActivity {
     PricelistAdapter adapter;
     private ListView listView1;
     JSONArray providers = null;
+    JSONObject provider = null;
     JSONArray pricelists = null;
+    JSONObject pricelist = null;
+    JSONArray phones = null;
+    JSONObject phone = null;
+    JSONArray payopt = null;
+    JSONObject paying = null;
     private ProgressDialog pDialog;
-    private String provider[] = new String[10];
     private String proId;
     ArrayList<PricelistClass> listArray = new ArrayList<PricelistClass>();
+    List<Integer> payingArr = new ArrayList<Integer>();
     View footer = null;
     private RatingBar ratingBar;
     private RatingBar ratingBarBig;
@@ -103,6 +110,9 @@ public class SingleProvider extends BaseActivity {
                 Bundle b = new Bundle();
                 b.putParcelable("pricelistclass", pricelistclass);
                 b.putParcelable("providerclass", proClass);
+                int[] payArray = new int[payingArr.size()];
+                for(int i = 0; i < payingArr.size(); i++) payArray[i] = payingArr.get(i);
+                b.putIntArray("paying",payArray);
                 b.putString("color", color);
                 Intent in = new Intent(getApplicationContext(),
                         OrderActivity.class);
@@ -171,7 +181,7 @@ public class SingleProvider extends BaseActivity {
                     setFav="0";
 
                 }
-                String url = "http://nas2skupa.com/5do12/setFav.aspx?userId=" + userId + "&proId=" + provider[0] + "&fav="+setFav;
+                String url = "http://nas2skupa.com/5do12/setFav.aspx?userId=" + userId + "&proId=" + provider.getString(TAG_ID) + "&fav="+setFav;
                 msg = sh.makeServiceCall(url, ServiceHandler.GET);
                 Log.d("Response: ", "> " + msg);
             } catch (Exception ex) {
@@ -212,7 +222,7 @@ public class SingleProvider extends BaseActivity {
                 final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
                 String userId = prefs.getString("id", "");
                 ServiceHandler sh = new ServiceHandler();
-                String url = "http://nas2skupa.com/5do12/setRate.aspx?userId=" + userId + "&proId=" + provider[0] + "&rate=" + (int) userRating;
+                String url = "http://nas2skupa.com/5do12/setRate.aspx?userId=" + userId + "&proId=" + provider.getString(TAG_ID) + "&rate=" + (int) userRating;
                 msg = sh.makeServiceCall(url, ServiceHandler.GET);
                 Log.d("Response: ", "> " + msg);
             } catch (Exception ex) {
@@ -265,30 +275,9 @@ public class SingleProvider extends BaseActivity {
 
                     // Getting JSON Array node
                     providers = jsonObj.getJSONArray(TAG_ARRAY);
-
-
                     for (int i = 0; i < providers.length(); i++) {
-                        JSONObject c = providers.getJSONObject(i);
-
-                        String id = c.getString(TAG_ID);
-                        String name = c.getString(TAG_NAME).toUpperCase();
-                        String email = c.getString(TAG_EMAIL);
-                        String address = c.getString(TAG_ADDRESS);
-                        String gmap = c.getString(TAG_GMAP);
-                        String about = c.getString(TAG_ABOUT);
-                        String category = c.getString(TAG_CATEGORY);
-                        String subcat = c.getString(TAG_SUBCAT);
-                        String rating = c.getString(TAG_RATING);
-                        provider[0] = id;
-                        provider[1] = name;
-                        provider[2] = email;
-                        provider[3] = address;
-                        provider[4] = gmap;
-                        provider[5] = about;
-                        provider[6] = category;
-                        provider[7] = subcat;
-                        provider[8] = rating;
-                        pricelists = c.getJSONArray("cjenik");
+                        provider = providers.getJSONObject(i);
+                        pricelists = provider.getJSONArray("cjenik");
                         for (int j = 0; j < pricelists.length(); j++) {
                             JSONObject p = pricelists.getJSONObject(j);
                             String serviceID = p.getString("serviceID");
@@ -303,6 +292,11 @@ public class SingleProvider extends BaseActivity {
                             Log.d("ServiceID in populate:"+service,serviceID);
                             PricelistClass currPrice = new PricelistClass(serviceID, service, price, akcija);
                             listArray.add(currPrice);
+                        }
+                        payopt = provider.getJSONArray("payopt");
+                        for (int j = 0; j < payopt.length(); j++) {
+                            JSONObject p = payopt.getJSONObject(j);
+                            payingArr.add(Integer.parseInt(p.getString("paying")));
                         }
                     }
                 } catch (JSONException e) {
@@ -330,14 +324,18 @@ public class SingleProvider extends BaseActivity {
             TextView lblName = (TextView) findViewById(R.id.name_label);
             TextView lblAbout = (TextView) findViewById(R.id.about_label);
             lblAbout.setBackgroundColor(Color.parseColor(color));
-
-            lblName.setText(provider[1]);
-            lblAbout.setText(provider[5]);
             try {
-                float rating = Float.parseFloat(provider[8]);
-                ratingBar.setRating(rating);
-            } catch (NumberFormatException e) {
+                lblName.setText(provider.getString(TAG_NAME));
+                lblAbout.setText(provider.getString(TAG_ABOUT));
+                try {
+                    float rating = Float.parseFloat(provider.getString(TAG_RATING));
+                    ratingBar.setRating(rating);
+                } catch (NumberFormatException e) {
+                }
+            }catch (JSONException e){
+                Log.e("JSON EXC", e.toString());
             }
+
 
             adapter = new PricelistAdapter(SingleProvider.this,
                     R.layout.listview_service_row, listArray);

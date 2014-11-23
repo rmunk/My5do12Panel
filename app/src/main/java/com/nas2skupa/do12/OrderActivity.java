@@ -1,31 +1,32 @@
 package com.nas2skupa.do12;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -41,28 +42,32 @@ import org.apache.http.util.EntityUtils;
 public class OrderActivity extends BaseActivity{
 
     // Widget GUI
-    Button btnCalendar, btnTimePicker, btnNaruci;
+    Button btnCalendar, btnTimePicker;
+    ImageView btnNaruci;
+
     EditText  txtNote;
-    TextView txtDate, txtTime, txtService,name_label;
+    TextView txtDate, txtTime, txtService,name_label, txtPrice;
 
     // Variable for storing current date and time
     private int mYear, mMonth, mDay, mHour, mMinute;
-    private String serviceID,providerID,userId, provider, service, color;
+    private String serviceID,providerID,userId, provider, service, color, responseBody;
     private ProgressDialog pDialog;
+    Boolean orderok=false;
     ProviderClass proClass;
     PricelistClass priceClass;
+    int[] payOpts;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.order);
 
         Intent in = getIntent();
         Bundle bundle = in.getExtras();
         proClass = bundle.getParcelable("providerclass");
         priceClass = bundle.getParcelable("pricelistclass");
         color = bundle.getString("color");
+        payOpts=bundle.getIntArray("paying");
 
         serviceID = priceClass.plID;
         providerID = proClass.proID;
@@ -76,13 +81,35 @@ public class OrderActivity extends BaseActivity{
         name_label=(TextView) findViewById(R.id.name_label);
         name_label.setText(provider);
 
-        btnNaruci = (Button) findViewById(R.id.btnNaruci);
-        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        btnNaruci = (ImageView) findViewById(R.id.btnNaruci);
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTime = (TextView) findViewById(R.id.txtTime);
-        txtNote = (EditText) findViewById(R.id.txtNote);
-
-
+        txtPrice = (TextView) findViewById(R.id.txtPrice);
+        txtPrice.setText(priceClass.plPrice);
+        for(int i=0;i<payOpts.length;i++){
+            ImageView payO;
+            if(payOpts[i]==2){
+                payO = (ImageView) findViewById(R.id.visa);
+                payO.setVisibility(View.VISIBLE);
+            }
+            if(payOpts[i]==3){
+                payO = (ImageView) findViewById(R.id.american);
+                payO.setVisibility(View.VISIBLE);
+            }
+            if(payOpts[i]==4){
+                payO = (ImageView) findViewById(R.id.master);
+                payO.setVisibility(View.VISIBLE);
+            }
+            if(payOpts[i]==5){
+                payO = (ImageView) findViewById(R.id.diners);
+                payO.setVisibility(View.VISIBLE);
+            }
+        }
+        initialize();
+        Time today = new Time(Time.getCurrentTimezone());
+        today.setToNow();
+        txtDate.setText(today.monthDay + "-" + (today.month + 1) + "-" + today.year);
+        txtTime.setText(today.format("%H:%M"));
         txtDate.setOnClickListener(clickHandler);
         txtTime.setOnClickListener(clickHandler);
         btnNaruci.setOnClickListener(clickHandler);
@@ -140,7 +167,31 @@ public class OrderActivity extends BaseActivity{
             }
         }
     };
-
+    private void initialize() {
+        setContentView(R.layout.order);
+        txtNote = (EditText) findViewById(R.id.txtNote);
+        txtNote.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    btnNaruci.performClick();
+                }
+                return false;
+            }
+        });
+    }
+    static boolean isNumeric(String str)
+    {
+        try
+        {
+            int i = Integer.parseInt(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
+    }
     private class setOrder extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -174,7 +225,6 @@ public class OrderActivity extends BaseActivity{
                 HttpResponse response = httpclient.execute(httppost);
 
                 HttpEntity resEntity = response.getEntity();
-                String responseBody;
                 if (resEntity != null) {
                      responseBody = EntityUtils.toString(response.getEntity());
                 }else{
@@ -203,7 +253,44 @@ public class OrderActivity extends BaseActivity{
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
+            // Create custom dialog object
+            final Dialog dialog = new Dialog(OrderActivity.this);
+            // Include dialog.xml file
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.orderdialog);
+            // Set dialog title
+            dialog.setTitle("Custom Dialog");
 
+            // set values for custom dialog components - text, image and button
+            TextView text = (TextView) dialog.findViewById(R.id.textDialog);
+            String msg;
+            msg="Ups, nešto nije prošlo ok. Probajte ponovno!";
+            orderok=isNumeric(responseBody);
+            if(orderok)
+                msg="Upit je poslan!";
+            text.setText(msg);
+            ImageView okButton = (ImageView) dialog.findViewById(R.id.okButton);
+            okButton.setImageResource(R.drawable.popup_green);
+
+            dialog.show();
+
+            // if decline button is clicked, close the custom dialog
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Close dialog
+                    if(orderok){
+                        Bundle b = new Bundle();
+                        b.putParcelable("providerclass", proClass);
+                        b.putString("color", color);
+                        Intent in = new Intent(getApplicationContext(),
+                                SingleProvider.class);
+                        in.putExtras(b);
+                        startActivity(in);
+                    }
+                    dialog.dismiss();
+                }
+            });
         }
     }
 
