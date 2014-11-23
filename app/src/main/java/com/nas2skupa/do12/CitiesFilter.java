@@ -47,7 +47,7 @@ public class CitiesFilter {
                 districts.addAll(Globals.getDistricts(currentCity));
                 if (!districts.contains(currentDistrict))
                     currentDistrict = districts.get(0);
-                CitiesFilter.this.districtsSpinner.setSelection(districts.indexOf(currentDistrict));
+                districtsSpinner.setSelection(districts.indexOf(currentDistrict));
                 if (onFilterChangedListener != null)
                     onFilterChangedListener.onFilterChanged(currentCity, currentDistrict);
             }
@@ -81,7 +81,7 @@ public class CitiesFilter {
             citiesSpinner.setSelection(cities.indexOf(currentCity));
         districts.addAll(Globals.getDistricts(currentCity));
         if (districts.contains(currentDistrict))
-            CitiesFilter.this.districtsSpinner.setSelection(districts.indexOf(currentDistrict));
+            districtsSpinner.setSelection(districts.indexOf(currentDistrict));
     }
 
     private OnFilterChangedListener onFilterChangedListener;

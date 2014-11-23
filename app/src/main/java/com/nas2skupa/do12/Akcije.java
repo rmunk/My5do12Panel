@@ -44,9 +44,9 @@ public class Akcije extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
         setContentView(R.layout.akclist);
 
+        context = this;
         header = getLayoutInflater().inflate(R.layout.listview_header_row, null);
         filter = getLayoutInflater().inflate(R.layout.listview_filter_row, null);
         adapter = new ProviderAdapter(this, R.layout.listview_item_row, listArray);

@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -32,7 +32,8 @@ public class ProviderList extends BaseActivity {
     private ProgressDialog pDialog;
     ArrayList<ProviderClass> listArray = new ArrayList<ProviderClass>();
     // URL to get contacts JSON
-    private String url = "http://nas2skupa.com/5do12/getPro.aspx?id=";
+    private Uri baseUri = new Uri.Builder().encodedPath("http://nas2skupa.com/5do12/getPro.aspx").build();
+    private String subcategoryId;
     // JSON Node names
     private static final String TAG_ARRAY = "provider";
     private static final String TAG_ID = "ID";
@@ -42,6 +43,9 @@ public class ProviderList extends BaseActivity {
     JSONArray providers = null;
     View header = null;
     View filter = null;
+    private Context context;
+    private ProviderAdapter adapter;
+    private SharedPreferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,31 +54,27 @@ public class ProviderList extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         String subcat = extras.getString("subcat");
         color = extras.getString("color");
-        String ID = extras.getString("ID");
-        final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
-        String userId = prefs.getString("id", "");
+        subcategoryId = extras.getString("ID");
 
-
-        url += ID + "&u=" + userId;
-
-
-        // Calling async task to get json
-        new GetProvider().execute();
-        header = (View) getLayoutInflater().inflate(R.layout.listview_header_row, null);
-        filter = (View) getLayoutInflater().inflate(R.layout.listview_filter_row, null);
+        context = this;
+        header = getLayoutInflater().inflate(R.layout.listview_header_row, null);
+        filter = getLayoutInflater().inflate(R.layout.listview_filter_row, null);
+        adapter = new ProviderAdapter(this, R.layout.listview_item_row, listArray);
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         getSubCatSettings(subcat, color, header);
 
         listView1 = (ListView) findViewById(R.id.listView1);
         listView1.addHeaderView(header);
         listView1.addHeaderView(filter);
+        listView1.setAdapter(adapter);
         listView1.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // getting values from selected ListItem
-                ProviderAdapter.ProviderHolder holder = (ProviderAdapter.ProviderHolder)view.getTag();
-                ProviderClass providerclass = (ProviderClass)holder.proObj;
+                ProviderAdapter.ProviderHolder holder = (ProviderAdapter.ProviderHolder) view.getTag();
+                ProviderClass providerclass = (ProviderClass) holder.proObj;
                 Bundle b = new Bundle();
                 b.putParcelable("providerclass", providerclass);
                 b.putString("color", color);
@@ -84,9 +84,65 @@ public class ProviderList extends BaseActivity {
                 startActivity(in);
             }
         });
-        new CitiesFilter(this, (Spinner) findViewById(R.id.cities), (Spinner) findViewById(R.id.districts));
+
+        CitiesFilter citiesFilter = new CitiesFilter(this, (Spinner) findViewById(R.id.cities), (Spinner) findViewById(R.id.districts));
+        citiesFilter.setOnFilterChangedListener(new CitiesFilter.OnFilterChangedListener() {
+            @Override
+            public void onFilterChanged(String city, String district) {
+                Uri.Builder builder = baseUri.buildUpon();
+                builder.appendQueryParameter("ID", subcategoryId);
+                builder.appendQueryParameter("u", preferences.getString("id", ""));
+                builder.appendQueryParameter("countId", "1");
+                City cityObj = Globals.cities.get(city);
+                if (cityObj != null) {
+                    builder.appendQueryParameter("cid", cityObj.id);
+                    District districtObj = cityObj.districts.get(district);
+                    if (districtObj != null)
+                        builder.appendQueryParameter("qid", districtObj.id);
+                }
+                new HttpRequest(context, builder.build()).setOnHttpResultListener(new HttpRequest.OnHttpResultListener() {
+                    @Override
+                    public void onHttpResult(String result) {
+                        parseServerResult(result);
+                    }
+                });
+            }
+        });
     }
 
+    private void parseServerResult(String result) {
+        listArray.clear();
+        try {
+            JSONObject jsonObj = new JSONObject(result);
+            providers = jsonObj.getJSONArray(TAG_ARRAY);
+            for (int i = 0; i < providers.length(); i++) {
+                JSONObject c = providers.getJSONObject(i);
+                String id = c.getString(TAG_ID);
+                String name = c.getString(TAG_NAME);
+                String favore = c.getString("favorite");
+                String action = c.getString("akcija");
+                int fav = R.drawable.blank;
+                int akcija = R.drawable.blank;
+                if (favore.equals("1")) {
+                    fav = R.drawable.fav_icon;
+                }
+                if (action.equals("1")) {
+                    akcija = R.drawable.akcija_icon;
+                }
+                float rating = 0;
+                try {
+                    rating = Float.parseFloat(c.getString("rating"));
+                } catch (NumberFormatException e) {
+                }
+                ProviderClass currProvider = new ProviderClass(id, name, favore, null, fav, akcija, rating);
+                listArray.add(currProvider);
+            }
+        } catch (JSONException e) {
+            Log.e("ProviderListHttpRequest", "Error parsing server data.");
+            e.printStackTrace();
+        }
+        listView1.setAdapter(adapter);
+    }
 
     @SuppressLint("NewApi")
     public void getSubCatSettings(String subcatTitle, String color, View header) {
@@ -100,86 +156,5 @@ public class ProviderList extends BaseActivity {
         naslov.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
         String bckclr = color;
         naslov.setBackgroundColor(Color.parseColor(bckclr));
-    }
-
-    private class GetProvider extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Showing progress dialog
-            pDialog = new ProgressDialog(ProviderList.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            // Creating service handler class instance
-            ServiceHandler sh = new ServiceHandler();
-
-            // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(url, ServiceHandler.GET);
-
-            Log.d("Response: ", "> " + jsonStr);
-
-            if (jsonStr != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-
-                    // Getting JSON Array node
-                    providers = jsonObj.getJSONArray(TAG_ARRAY);
-
-
-                    for (int i = 0; i < providers.length(); i++) {
-                        JSONObject c = providers.getJSONObject(i);
-
-                        String id = c.getString(TAG_ID);
-                        String name = c.getString(TAG_NAME);
-                        String favore = c.getString("favorite");
-                        String action = c.getString("akcija");
-                        int fav = R.drawable.blank;
-                        int akcija = R.drawable.blank;
-                        if (favore.equals("1")) {
-                            fav = R.drawable.fav_icon;
-                        }
-                        if (action.equals("1")) {
-                            akcija = R.drawable.akcija_icon;
-                        }
-                        float rating = 0;
-                        try {
-                            rating = Float.parseFloat(c.getString("rating"));
-                        } catch (NumberFormatException e) {
-                        }
-                        ProviderClass currProvider = new ProviderClass(id, name, favore, null, fav, akcija, rating);
-                        listArray.add(currProvider);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the url");
-
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-            /**
-             * Updating parsed JSON data into ListView
-             * */
-            ProviderAdapter adapter = new ProviderAdapter(ProviderList.this, R.layout.listview_item_row, listArray);
-            listView1.setAdapter(adapter);
-        }
-
-
     }
 }
