@@ -10,116 +10,125 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:columnCount="8"
-        android:rowCount="8" >
+        android:columnCount="3"
+        android:rowCount="3">
 
 
         <ImageButton
             android:id="@+id/zdravljebtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="left|top"
             android:background="@null"
-            android:padding="10dp"
-            android:layout_column="1"
-            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_row="0"
             android:src="@drawable/zdravlje"
-            android:onClick="getSubcats" />
+            android:onClick="getSubcats"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp" />
 
         <ImageButton
             android:id="@+id/servisbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="left|top"
             android:src="@drawable/servis"
             android:background="@null"
-            android:padding="10dp"
-            android:layout_column="2"
-            android:layout_row="1"
-            android:onClick="getSubcats" />
+            android:layout_column="1"
+            android:layout_row="0"
+            android:onClick="getSubcats"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp" />
 
         <ImageButton
             android:id="@+id/ljepotabtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="left|top"
             android:src="@drawable/ljepota"
             android:background="@null"
-            android:padding="10dp"
-            android:layout_column="3"
-            android:layout_row="1"
-            android:onClick="getSubcats" />
+            android:layout_column="2"
+            android:layout_row="0"
+            android:onClick="getSubcats"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp" />
 
         <ImageButton
             android:id="@+id/intelektbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="left|top"
             android:src="@drawable/intelekt"
             android:background="@null"
-            android:padding="10dp"
-            android:layout_column="1"
-            android:layout_row="2"
-            android:onClick="getSubcats" />
+            android:layout_column="0"
+            android:layout_row="1"
+            android:onClick="getSubcats"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp" />
 
         <ImageButton
             android:id="@+id/dombtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="left|top"
             android:src="@drawable/dom"
             android:background="@null"
-            android:padding="10dp"
-            android:layout_column="2"
-            android:layout_row="2"
-            android:onClick="getSubcats" />
+            android:layout_column="1"
+            android:layout_row="1"
+            android:onClick="getSubcats"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp" />
 
         <ImageButton
             android:id="@+id/sportbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="left|top"
             android:src="@drawable/sport"
             android:background="@null"
-            android:padding="10dp"
-            android:layout_column="3"
-            android:layout_row="2"
-            android:onClick="getSubcats" />
+            android:layout_column="2"
+            android:layout_row="1"
+            android:onClick="getSubcats"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp" />
 
         <ImageButton
             android:id="@+id/turizambtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="left|top"
             android:background="@null"
             android:src="@drawable/turizam"
-            android:padding="10dp"
-            android:layout_column="1"
-            android:layout_row="3"
-            android:onClick="getSubcats" />
+            android:layout_column="0"
+            android:layout_row="2"
+            android:onClick="getSubcats"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp" />
 
         <ImageButton
             android:id="@+id/prijevozbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="left|top"
             android:src="@drawable/prijevoz"
             android:background="@null"
-            android:padding="10dp"
-            android:layout_column="2"
-            android:layout_row="3"
-            android:onClick="getSubcats" />
+            android:layout_column="1"
+            android:layout_row="2"
+            android:onClick="getSubcats"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp" />
 
         <ImageButton
             android:id="@+id/kulturabtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
             android:layout_gravity="left|top"
             android:src="@drawable/kultura"
             android:background="@null"
-            android:padding="10dp"
-            android:layout_column="3"
-            android:layout_row="3"
-            android:onClick="getSubcats" />
+            android:layout_column="2"
+            android:layout_row="2"
+            android:onClick="getSubcats"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp" />
     </GridLayout>
 </RelativeLayout>

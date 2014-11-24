@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -127,7 +126,6 @@ public class Organizer extends BaseActivity implements OnClickListener {
                         new SendConfirmation().execute(orderId, "2");
                     }
                 })
-                .setIcon(android.R.drawable.ic_dialog_info)
                 .show();
     }
 
@@ -414,13 +412,16 @@ public class Organizer extends BaseActivity implements OnClickListener {
         @Override
         public void onClick(View view) {
             String date_month_year = (String) view.getTag();
-            eventsDetails.setText(date_month_year.replace('-', '.').concat("."));
+            String dateString = date_month_year.replace('-', '.').concat(".");
+            String eventsStr = "";
             if (orders.containsKey(date_month_year)) {
                 ArrayList<Order> events = orders.get(date_month_year);
                 SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
                 for (Order order : events) {
-                    eventsDetails.append(String.format("\n%s: %s - %s", order.proName, tf.format(order.startTime), tf.format(order.endTime)));
+                    eventsStr += String.format("%s\n%s - %s\n\n", order.proName, tf.format(order.startTime), tf.format(order.endTime));
                 }
+
+                showEventsDialog(dateString, eventsStr.substring(0, eventsStr.length() - 2));
             }
             try {
                 Date parsedDate = dateFormatter.parse(date_month_year);
@@ -429,6 +430,14 @@ public class Organizer extends BaseActivity implements OnClickListener {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+
+        public void showEventsDialog(String date, String events) {
+            new AlertDialog.Builder(Organizer.this)
+                    .setTitle(date)
+                    .setMessage(events)
+                    .setPositiveButton("Zatvori", null)
+                    .show();
         }
 
         public int getCurrentDayOfMonth() {
@@ -505,3 +514,4 @@ public class Organizer extends BaseActivity implements OnClickListener {
         }
     }
 }
+
