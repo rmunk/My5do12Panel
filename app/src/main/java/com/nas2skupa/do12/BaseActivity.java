@@ -5,15 +5,19 @@ import com.navdrawer.SimpleSideDrawer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class BaseActivity extends Activity {
 	SimpleSideDrawer slide_me;
+    EditText inputSearch;
 	@SuppressLint("NewApi")
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -26,6 +30,16 @@ public class BaseActivity extends Activity {
         TextView favTV = (TextView) findViewById(R.id.favoritibtn);
         TextView akcTV = (TextView) findViewById(R.id.akcijebtn);
         TextView odjTV = (TextView) findViewById(R.id.odjavabtn);
+        inputSearch = (EditText) findViewById(R.id.inputSearch);
+        inputSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    searchActivity();
+                }
+                return false;
+            }
+        });
         pocTV.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -93,6 +107,12 @@ public class BaseActivity extends Activity {
 		}
 
 	}
+    public void searchActivity(){
+        Intent i = new Intent(this, SearchActivity.class);
+        i.putExtra("search", inputSearch.getText().toString());
+        startActivity(i);
+
+    }
 	public void homeActivity() {
 		Intent i = new Intent(this, HomeScreen.class);
 	    startActivity(i);
@@ -141,7 +161,7 @@ public class BaseActivity extends Activity {
                 return catSettings;
             case 3:
                 catSettings[0]="ljepota";
-                catSettings[1]="#f5b2b5";
+                catSettings[1]="#ed145b";
                 return catSettings;
             case 4:
                 catSettings[0]="intelektualne usluge";

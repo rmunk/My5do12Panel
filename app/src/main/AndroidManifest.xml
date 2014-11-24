@@ -74,7 +74,7 @@
         </activity>
         <activity
             android:label="@string/app_name"
-            android:name="com.nas2skupa.do12.SingleContactActivity" >
+            android:name="com.nas2skupa.do12.SearchActivity" >
         </activity>
         <activity
             android:label="@string/app_name"

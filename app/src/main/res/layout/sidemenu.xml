@@ -5,11 +5,13 @@
     android:background="#adbb00"
     android:orientation="vertical" >
 
-    <AutoCompleteTextView android:id="@+id/inputSearch"
+    <EditText android:id="@+id/inputSearch"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:drawableLeft="@drawable/trazilicabtn"
     android:drawablePadding="10dp"
+    android:singleLine="true"
+    android:imeOptions="actionSearch"
     android:hint="Pretraži 5do12"
     android:inputType="text"/>
 
