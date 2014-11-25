@@ -62,7 +62,7 @@ public class Favorites extends BaseActivity {
         // Calling async task to get json
         new GetProvider().execute();
         header = (View)getLayoutInflater().inflate(R.layout.listview_header_row, null);
-        getSubCatSettings("favorites", "#CC3333", header);
+        getSubCatSettings("favoriti", "#CC3333", header);
 
         listView1 = (ListView)findViewById(R.id.listView1);
      // Listview on item click listener

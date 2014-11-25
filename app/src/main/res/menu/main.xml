@@ -12,14 +12,14 @@
         android:icon="@drawable/list"
         android:orderInCategory="2"
         android:showAsAction="always"
-        android:title="Pregled"/>
+        android:title="Organizator"/>
 
     <item
         android:id="@+id/fav"
         android:icon="@drawable/fav"
         android:orderInCategory="3"
         android:showAsAction="always"
-        android:title="Favorites"/>
+        android:title="Favoriti"/>
     
     <item
         android:id="@+id/akcije"

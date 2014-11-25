@@ -13,6 +13,8 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -62,6 +64,7 @@ public class SingleProvider extends BaseActivity {
     private String proId;
     ArrayList<PricelistClass> listArray = new ArrayList<PricelistClass>();
     List<Integer> payingArr = new ArrayList<Integer>();
+    List<String> phonesArr = new ArrayList<String>();
     View footer = null;
     private RatingBar ratingBar;
     private RatingBar ratingBarBig;
@@ -287,7 +290,7 @@ public class SingleProvider extends BaseActivity {
                             String price = p.getString("reg_price") + " " + getString(R.string.currency);
                             if (action.equals("1")) {
                                 price = p.getString("action_price") + " " + getString(R.string.currency);
-                                akcija = R.drawable.akcija_icon_small;
+                                akcija = R.drawable.akcija_icon;
                             }
                             Log.d("ServiceID in populate:"+service,serviceID);
                             PricelistClass currPrice = new PricelistClass(serviceID, service, price, akcija);
@@ -297,6 +300,11 @@ public class SingleProvider extends BaseActivity {
                         for (int j = 0; j < payopt.length(); j++) {
                             JSONObject p = payopt.getJSONObject(j);
                             payingArr.add(Integer.parseInt(p.getString("paying")));
+                        }
+                        phones = provider.getJSONArray("phones");
+                        for (int j = 0; j < phones.length(); j++) {
+                            JSONObject p = phones.getJSONObject(j);
+                            phonesArr.add(p.getString("phone"));
                         }
                     }
                 } catch (JSONException e) {
@@ -323,10 +331,30 @@ public class SingleProvider extends BaseActivity {
             //Toast.makeText(SingleProvider.this, pricelists.length(), Toast.LENGTH_SHORT).show();
             TextView lblName = (TextView) findViewById(R.id.name_label);
             TextView lblAbout = (TextView) findViewById(R.id.about_label);
+            TextView lblPhone = (TextView) findViewById(R.id.phones);
+            TextView lblAddress = (TextView) findViewById(R.id.address);
+            TextView lblWeb = (TextView) findViewById(R.id.web);
+            TextView lblEmail = (TextView) findViewById(R.id.email);
+            TextView lblWorking = (TextView) findViewById(R.id.working);
+            LinearLayout llMore = (LinearLayout) findViewById(R.id.moreLayout);
             lblAbout.setBackgroundColor(Color.parseColor(color));
+            llMore.setBackgroundColor(Color.parseColor(color));
             try {
                 lblName.setText(provider.getString(TAG_NAME));
                 lblAbout.setText(provider.getString(TAG_ABOUT));
+                String phoneString="";
+                for(int i = 0; i < phonesArr.size(); i++){
+                    phoneString+=phonesArr.get(i);
+                    if((i+1)< phonesArr.size()) phoneString+=System.getProperty("line.separator");
+                }
+                lblPhone.setText(phoneString);
+                lblAddress.setText(provider.getString("address"));
+                lblWeb.setText(Html.fromHtml(
+                        "<a href=\"" + provider.getString("web") + "\">" + provider.getString("web") + "</a> "));
+                lblWeb.setMovementMethod(LinkMovementMethod.getInstance());
+                lblEmail.setText(Html.fromHtml(
+                        "<a href=\"mailto:" + provider.getString("email") + "\">" + provider.getString("email") + "</a> "));
+                lblWorking.setText(provider.getString("workingH"));
                 try {
                     float rating = Float.parseFloat(provider.getString(TAG_RATING));
                     ratingBar.setRating(rating);

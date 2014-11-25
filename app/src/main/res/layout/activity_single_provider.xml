@@ -27,8 +27,6 @@
           android:src="@drawable/fav_icon"
           android:paddingTop="20dp"
           android:layout_marginLeft="10dp"
-          android:scaleX="1.5"
-          android:scaleY="1.5"
           />
 
 
@@ -66,15 +64,90 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
         android:padding="5dp"
         android:textColor="#FFFFFF"
         android:textSize="13sp"
-        android:gravity="top"
-        android:text="test"/>
+        android:gravity="top"/>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/moreLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:visibility="gone">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:padding="5dp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:text="Kontakt:"
+            android:textSize="11sp"/>
+
+        <TextView
+            android:id="@+id/phones"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"/>
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"/>
+        <TextView
+            android:id="@+id/web"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="#FFFFFF"
+            android:textColorLink="#FFFFFF"
+            android:textSize="11sp"/>
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="#FFFFFF"
+            android:textColorLink="#FFFFFF"
+            android:textSize="11sp"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:padding="5dp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:text="Radno vrijeme:"
+            android:textSize="11sp"/>
+        <TextView
+            android:id="@+id/working"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"/>
+    </LinearLayout>
+    </ScrollView>
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
         <ImageView
             android:id="@+id/details"
@@ -86,32 +159,9 @@
             android:layout_marginBottom="2dp"
             android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
             />
 
     </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/moreLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/nekitekst"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp"
-            android:padding="5dp"
-            android:textColor="#000000"
-            android:textSize="13sp"
-            android:gravity="top"
-            android:text="test"/>
-    </LinearLayout>
   <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
