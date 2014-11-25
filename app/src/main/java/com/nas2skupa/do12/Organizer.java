@@ -416,12 +416,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
             String eventsStr = "";
             if (orders.containsKey(date_month_year)) {
                 ArrayList<Order> events = orders.get(date_month_year);
-                SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
-                for (Order order : events) {
-                    eventsStr += String.format("%s\n%s - %s\n\n", order.proName, tf.format(order.startTime), tf.format(order.endTime));
-                }
-
-                showEventsDialog(dateString, eventsStr.substring(0, eventsStr.length() - 2));
+                showEventsDialog(dateString, events);
             }
             try {
                 Date parsedDate = dateFormatter.parse(date_month_year);
@@ -432,11 +427,37 @@ public class Organizer extends BaseActivity implements OnClickListener {
             }
         }
 
-        public void showEventsDialog(String date, String events) {
+        String eventToArray(Order o) {
+            return o.proName;
+        }
+
+        public void showEventsDialog(String date, final ArrayList<Order> events) {
+            final int count = events.size();
+            final boolean[] selectedItems = new boolean[count];
+            final String[] eventsDescriptions = new String[count];
+            SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
+            for (int i = 0; i < count; i++) {
+                Order order = events.get(i);
+                eventsDescriptions[i] = String.format("%s\n%s - %s", order.proName, tf.format(order.startTime), tf.format(order.endTime));
+            }
             new AlertDialog.Builder(Organizer.this)
                     .setTitle(date)
-                    .setMessage(events)
-                    .setPositiveButton("Zatvori", null)
+                    .setMultiChoiceItems(eventsDescriptions, null,
+                            new DialogInterface.OnMultiChoiceClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                                    selectedItems[which] = isChecked;
+                                }
+                            })
+                    .setPositiveButton("Otkaži označene", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            for (int i = 0; i < count; i++) {
+                                if (selectedItems[i])
+                                    new Organizer.SendConfirmation().execute(events.get(i).id, "3");
+                            }
+                        }
+                    })
+                    .setNegativeButton("Zatvori", null)
                     .show();
         }
 
@@ -513,5 +534,41 @@ public class Organizer extends BaseActivity implements OnClickListener {
             }
         }
     }
+
+/*
+    public class ShowEventsDialogFragment extends DialogFragment {
+        private ArrayList mSelectedItems;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            mSelectedItems = new ArrayList();  // Where we track the selected items
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.dialog_fire_missiles)
+                    .setTitle(date)
+                    .setMultiChoiceItems(events, null,
+                            new DialogInterface.OnMultiChoiceClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which,
+                                                    boolean isChecked) {
+                                    if (isChecked) {
+                                        // If the user checked the item, add it to the selected items
+                                        mSelectedItems.add(which);
+                                    } else if (mSelectedItems.contains(which)) {
+                                        // Else, if the item is already in the array, remove it
+                                        mSelectedItems.remove(Integer.valueOf(which));
+                                    }
+                                }
+                            })
+                    .setPositiveButton("Otkaži označene", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+//                            new Organizer.SendConfirmation().execute(orderId, "3");
+                        }
+                    })
+                    .setNegativeButton("Zatvori", null);
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+    }
+*/
 }
 
