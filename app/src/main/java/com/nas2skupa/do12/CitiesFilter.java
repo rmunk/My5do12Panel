@@ -27,15 +27,24 @@ public class CitiesFilter {
         this.citiesSpinner = citiesSpinner;
         this.districtsSpinner = districtsSpinner;
 
+        sharedPreferences = context.getSharedPreferences("filter", Context.MODE_PRIVATE);
+        currentCity = sharedPreferences.getString("city", "");
+        currentDistrict = sharedPreferences.getString("district", "");
+
         cities.addAll(Globals.getCities());
-        districts.addAll(Globals.getDistricts(""));
+        if (cities.contains(currentCity))
+            citiesSpinner.setSelection(cities.indexOf(currentCity));
+        districts.addAll(Globals.getDistricts(currentCity));
+        if (districts.contains(currentDistrict))
+            districtsSpinner.setSelection(districts.indexOf(currentDistrict));
 
         citiesAdapter = new ArrayAdapter<String>(context, R.layout.spinner_item, cities);
         districtsAdapter = new ArrayAdapter<String>(context, R.layout.spinner_item, districts);
-        this.citiesSpinner.setAdapter(citiesAdapter);
-        this.districtsSpinner.setAdapter(districtsAdapter);
         citiesAdapter.setDropDownViewResource(R.layout.spiner_dropdown_item);
         districtsAdapter.setDropDownViewResource(R.layout.spiner_dropdown_item);
+
+        this.citiesSpinner.setAdapter(citiesAdapter);
+        this.districtsSpinner.setAdapter(districtsAdapter);
 
         citiesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -73,15 +82,6 @@ public class CitiesFilter {
 
             }
         });
-
-        sharedPreferences = context.getSharedPreferences("filter", Context.MODE_PRIVATE);
-        currentCity = sharedPreferences.getString("city", "");
-        currentDistrict = sharedPreferences.getString("district", "");
-        if (cities.contains(currentCity))
-            citiesSpinner.setSelection(cities.indexOf(currentCity));
-        districts.addAll(Globals.getDistricts(currentCity));
-        if (districts.contains(currentDistrict))
-            districtsSpinner.setSelection(districts.indexOf(currentDistrict));
     }
 
     private OnFilterChangedListener onFilterChangedListener;

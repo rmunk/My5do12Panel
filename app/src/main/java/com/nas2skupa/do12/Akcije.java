@@ -91,7 +91,7 @@ public class Akcije extends BaseActivity {
                     if (districtObj != null)
                         builder.appendQueryParameter("qid", districtObj.id);
                 }
-                new HttpRequest(context, builder.build()).setOnHttpResultListener(new HttpRequest.OnHttpResultListener() {
+                new HttpRequest(context, builder.build(), false).setOnHttpResultListener(new HttpRequest.OnHttpResultListener() {
                     @Override
                     public void onHttpResult(String result) {
                         parseServerResult(result);
