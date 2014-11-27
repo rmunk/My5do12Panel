@@ -1,8 +1,10 @@
 package com.nas2skupa.do12;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -14,6 +16,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
@@ -43,6 +46,7 @@ public class ProviderList extends BaseActivity {
     JSONArray providers = null;
     View header = null;
     View filter = null;
+    Button listSettingsBtn;
     private Context context;
     private ProviderAdapter adapter;
     private SharedPreferences preferences;
@@ -85,6 +89,15 @@ public class ProviderList extends BaseActivity {
             }
         });
 
+        listSettingsBtn = (Button) findViewById(R.id.listSettingsBtn);
+        listSettingsBtn.setVisibility(View.VISIBLE);
+        listSettingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showListSettingDialog();
+            }
+        });
+
         CitiesFilter citiesFilter = new CitiesFilter(this, (Spinner) findViewById(R.id.cities), (Spinner) findViewById(R.id.districts));
         citiesFilter.setOnFilterChangedListener(new CitiesFilter.OnFilterChangedListener() {
             @Override
@@ -108,6 +121,30 @@ public class ProviderList extends BaseActivity {
                 });
             }
         });
+    }
+
+    public void showListSettingDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Poredaj pružatelje usluga")
+                .setView(getLayoutInflater().inflate(R.layout.list_settings, null))
+                .setPositiveButton("Primjeni", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+/*
+                        RadioGroup radioGroup = (RadioGroup) context.findViewById(R.id.sortGrp);
+                        switch (radioGroup.getCheckedRadioButtonId()) {
+                            case R.id.zadanoRbtn:
+                                break;
+                            case R.id.najnovijeRbtn:
+                                break;
+                            case R.id.ocjeneRbtn:
+                                break;
+                        }
+                        CheckBox actions = (CheckBox) findViewById(R.id.akcijeChbox);
+*/
+                    }
+                })
+                .setNegativeButton("Zatvori", null)
+                .show();
     }
 
     private void parseServerResult(String result) {
