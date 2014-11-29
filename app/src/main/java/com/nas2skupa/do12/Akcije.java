@@ -116,7 +116,7 @@ public class Akcije extends BaseActivity {
                 int fav = R.drawable.blank;
                 int akcija = R.drawable.blank;
                 if (favore.equals("1")) {
-                    fav = R.drawable.fav_icon;
+                    fav = R.drawable.fav_icon_enabled;
                 }
                 if (action.equals("1")) {
                     akcija = R.drawable.akcija_icon;
