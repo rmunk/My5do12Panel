@@ -117,6 +117,7 @@ public class SearchActivity extends BaseActivity {
                 JSONObject c = providers.getJSONObject(i);
                 String id = c.getString(TAG_ID);
                 String name = c.getString(TAG_NAME);
+                String catID = c.getString("category");
                 String favore = c.getString("favorite");
                 String action = c.getString("akcija");
                 int fav = R.drawable.blank;
@@ -132,7 +133,7 @@ public class SearchActivity extends BaseActivity {
                     rating = Float.parseFloat(c.getString("rating"));
                 } catch (NumberFormatException e) {
                 }
-                ProviderClass currProvider = new ProviderClass(id, name, favore, null, fav, akcija, rating);
+                ProviderClass currProvider = new ProviderClass(id, name, favore, catID, fav, akcija, rating);
                 listArray.add(currProvider);
             }
         } catch (JSONException e) {
