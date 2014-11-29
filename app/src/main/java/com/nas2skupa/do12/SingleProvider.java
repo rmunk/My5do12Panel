@@ -149,11 +149,14 @@ public class SingleProvider extends BaseActivity {
 
             if (v == btnVise) {
                 moreLayout = (LinearLayout) findViewById(R.id.moreLayout);
+                TextView lblAbout = (TextView) findViewById(R.id.about_label);
                 if (detailOn==false) {
+                    lblAbout.setMaxLines(Integer.MAX_VALUE);
                     moreLayout.setVisibility(View.VISIBLE);
                     detailOn=true;
                     btnVise.setImageResource(R.drawable.more_arrow_up);
                 }else{
+                    lblAbout.setMaxLines(4);
                     moreLayout.setVisibility(View.GONE);
                     detailOn=false;
                     btnVise.setImageResource(R.drawable.more_arrow_down);
@@ -355,6 +358,27 @@ public class SingleProvider extends BaseActivity {
                 lblEmail.setText(Html.fromHtml(
                         "<a href=\"mailto:" + provider.getString("email") + "\">" + provider.getString("email") + "</a> "));
                 lblWorking.setText(provider.getString("workingH"));
+                int[] payArray = new int[payingArr.size()];
+                for(int i = 0; i < payingArr.size(); i++) payArray[i] = payingArr.get(i);
+                for(int i=0;i<payArray.length;i++){
+                    ImageView payO;
+                    if(payArray[i]==2){
+                        payO = (ImageView) findViewById(R.id.visa);
+                        payO.setVisibility(View.VISIBLE);
+                    }
+                    if(payArray[i]==3){
+                        payO = (ImageView) findViewById(R.id.american);
+                        payO.setVisibility(View.VISIBLE);
+                    }
+                    if(payArray[i]==4){
+                        payO = (ImageView) findViewById(R.id.master);
+                        payO.setVisibility(View.VISIBLE);
+                    }
+                    if(payArray[i]==5){
+                        payO = (ImageView) findViewById(R.id.diners);
+                        payO.setVisibility(View.VISIBLE);
+                    }
+                }
                 try {
                     float rating = Float.parseFloat(provider.getString(TAG_RATING));
                     ratingBar.setRating(rating);
