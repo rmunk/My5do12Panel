@@ -16,9 +16,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class ProviderList extends BaseActivity {
 
@@ -124,24 +126,55 @@ public class ProviderList extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public void showListSettingDialog() {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(context)
                 .setTitle("Poredaj pružatelje usluga")
                 .setView(getLayoutInflater().inflate(R.layout.list_settings, null))
                 .setPositiveButton("Primjeni", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-/*
-                        RadioGroup radioGroup = (RadioGroup) context.findViewById(R.id.sortGrp);
+                    public void onClick(final DialogInterface dialog, int which) {
+                        CheckBox actions = (CheckBox) ((AlertDialog) dialog).findViewById(R.id.akcijeChbox);
+                        if (actions.isChecked()) {
+                            ArrayList<ProviderClass> filteredList = new ArrayList<ProviderClass>();
+                            for (ProviderClass provider : listArray)
+                                if (provider.akcijaIcon == R.drawable.akcija_icon)
+                                    filteredList.add(provider);
+                            adapter = new ProviderAdapter(context, R.layout.listview_item_row, filteredList);
+                        } else
+                            adapter = new ProviderAdapter(context, R.layout.listview_item_row, listArray);
+
+                        RadioGroup radioGroup = (RadioGroup) ((AlertDialog) dialog).findViewById(R.id.sortGrp);
                         switch (radioGroup.getCheckedRadioButtonId()) {
-                            case R.id.zadanoRbtn:
+                            case R.id.nazivRbtn:
+                                adapter.sort(new Comparator<ProviderClass>() {
+                                    public int compare(ProviderClass o1, ProviderClass o2) {
+                                        return o1.proName.compareTo(o2.proName);
+                                    }
+                                });
                                 break;
                             case R.id.najnovijeRbtn:
+                                adapter.sort(new Comparator<ProviderClass>() {
+                                    public int compare(ProviderClass o1, ProviderClass o2) {
+                                        return Integer.valueOf(o2.proID) - Integer.valueOf(o1.proID);
+                                    }
+                                });
                                 break;
                             case R.id.ocjeneRbtn:
+                                adapter.sort(new Comparator<ProviderClass>() {
+                                    public int compare(ProviderClass o1, ProviderClass o2) {
+                                        if (o2.rating > o1.rating) return 1;
+                                        else if (o2.rating < o1.rating) return -1;
+                                        else return 0;
+                                    }
+                                });
                                 break;
                         }
-                        CheckBox actions = (CheckBox) findViewById(R.id.akcijeChbox);
-*/
+//                        adapter.notifyDataSetChanged();
+                        listView1.setAdapter(adapter);
                     }
                 })
                 .setNegativeButton("Zatvori", null)

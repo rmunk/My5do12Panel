@@ -13,9 +13,9 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Zadano"
-            android:id="@+id/zadanoRbtn"
-            android:checked="true" />
+            android:text="Naziv"
+            android:id="@+id/nazivRbtn"
+            android:checked="false" />
 
         <RadioButton
             android:layout_width="wrap_content"
