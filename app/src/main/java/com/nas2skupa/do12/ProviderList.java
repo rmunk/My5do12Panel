@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
@@ -46,7 +47,7 @@ public class ProviderList extends BaseActivity {
     JSONArray providers = null;
     View header = null;
     View filter = null;
-    Button listSettingsBtn;
+    ImageView listSettingsBtn;
     private Context context;
     private ProviderAdapter adapter;
     private SharedPreferences preferences;
@@ -89,7 +90,7 @@ public class ProviderList extends BaseActivity {
             }
         });
 
-        listSettingsBtn = (Button) findViewById(R.id.listSettingsBtn);
+        listSettingsBtn = (ImageView) findViewById(R.id.listSettingsBtn);
         listSettingsBtn.setVisibility(View.VISIBLE);
         listSettingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override

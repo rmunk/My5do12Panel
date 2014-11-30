@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -11,6 +12,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -56,6 +58,7 @@ public class OrderActivity extends BaseActivity{
     Boolean orderok=false;
     ProviderClass proClass;
     PricelistClass priceClass;
+    TimePickerDialog tpd;
     int[] payOpts;
 
     /** Called when the activity is first created. */
@@ -87,6 +90,7 @@ public class OrderActivity extends BaseActivity{
             txtService = (TextView) findViewById(R.id.usluga);
             txtService.setText(service);
             name_label=(TextView) findViewById(R.id.name_label);
+            name_label.setOnClickListener(null);
             name_label.setText(provider);
 
             Log.d("SERVICE////////////////", service);
@@ -132,24 +136,26 @@ public class OrderActivity extends BaseActivity{
             if (v == txtDate) {
 
                 // Process to get Current Date
-                final Calendar c = Calendar.getInstance();
+                final Calendar c = Calendar.getInstance(new Locale("hr", "HR"));
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog.OnDateSetListener dsl=new DatePickerDialog.OnDateSetListener() {
 
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        // Display Selected date in textbox
+                        txtDate.setText(dayOfMonth + "-"
+                                + (monthOfYear + 1) + "-" + year);
+
+                    }
+                };
                 // Launch Date Picker Dialog
-                DatePickerDialog dpd = new DatePickerDialog(OrderActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                // Display Selected date in textbox
-                                txtDate.setText(dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
-
-                            }
-                        }, mYear, mMonth, mDay);
+                DatePickerDialog dpd = new DatePickerDialog(OrderActivity.this,dsl
+                        , mYear, mMonth, mDay);
+                dpd.setButton(DialogInterface.BUTTON_POSITIVE, "Odaberi",dpd);
+                dpd.setButton(DialogInterface.BUTTON_NEGATIVE, "Odustani",dpd);
                 dpd.show();
             }
             if (v == txtTime) {
@@ -160,20 +166,24 @@ public class OrderActivity extends BaseActivity{
                 mMinute = c.get(Calendar.MINUTE);
 
                 // Launch Time Picker Dialog
-                TimePickerDialog tpd = new TimePickerDialog(OrderActivity.this,
-                        new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog.OnTimeSetListener tsl=new TimePickerDialog.OnTimeSetListener() {
 
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                // Display Selected time in textbox
-                                txtTime.setText(hourOfDay + ":" + minute);
-                            }
-                        }, mHour, mMinute, false);
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+                        txtTime.setText(hourOfDay + ":" + minute);
+                    }
+                };
+                tpd = new TimePickerDialog(OrderActivity.this,tsl, mHour, mMinute, true);
+                tpd.setButton(DialogInterface.BUTTON_POSITIVE, "Odaberi",tpd);
+                tpd.setButton(DialogInterface.BUTTON_NEGATIVE, "Odustani",tpd);
+
                 tpd.show();
             }
             if (v == btnNaruci){
                 new setOrder().execute();
+            }else{
+
             }
         }
     };
@@ -251,9 +261,7 @@ public class OrderActivity extends BaseActivity{
 
 
             } catch (ClientProtocolException e) {
-                // TODO Auto-generated catch block
             } catch (IOException e) {
-                // TODO Auto-generated catch block
             }
             return null;
 

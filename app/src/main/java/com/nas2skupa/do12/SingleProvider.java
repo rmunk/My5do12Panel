@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -79,8 +80,6 @@ public class SingleProvider extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_provider);
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // getting intent data
         Intent in = getIntent();
         Bundle bundle = in.getExtras();
@@ -150,16 +149,21 @@ public class SingleProvider extends BaseActivity {
             if (v == btnVise) {
                 moreLayout = (LinearLayout) findViewById(R.id.moreLayout);
                 TextView lblAbout = (TextView) findViewById(R.id.about_label);
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)btnVise.getLayoutParams();
                 if (detailOn==false) {
                     lblAbout.setMaxLines(Integer.MAX_VALUE);
                     moreLayout.setVisibility(View.VISIBLE);
                     detailOn=true;
                     btnVise.setImageResource(R.drawable.more_arrow_up);
+                    params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    btnVise.setLayoutParams(params);
                 }else{
                     lblAbout.setMaxLines(4);
                     moreLayout.setVisibility(View.GONE);
                     detailOn=false;
                     btnVise.setImageResource(R.drawable.more_arrow_down);
+                    params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,0);
+                    btnVise.setLayoutParams(params);
                 }
             }
         }

@@ -25,21 +25,14 @@
         android:layout_weight="1"
         android:layout_marginTop="18dp" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
+    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sort"
         android:layout_marginTop="18dp"
         android:paddingRight="15dp"
-        android:text="¤"
         android:id="@+id/listSettingsBtn"
         android:layout_marginRight="5dp"
-        android:background="@android:color/transparent"
-        android:textColor="#ffadbb02"
-        android:textStyle="bold"
-        android:textSize="40dp"
         android:visibility="invisible" />
 
 </LinearLayout>
