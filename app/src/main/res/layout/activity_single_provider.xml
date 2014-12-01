@@ -52,7 +52,7 @@
     </FrameLayout>
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
                 <TextView
                     android:id="@+id/about_label"
@@ -72,7 +72,7 @@
             <ScrollView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="23dp">
+                android:layout_marginBottom="33dp">
                     <LinearLayout
                         android:id="@+id/moreLayout"
                         android:layout_width="fill_parent"
@@ -85,31 +85,43 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@android:color/darker_gray" />
+                            android:layout_marginTop="3dp"
+                            android:background="@android:color/white" />
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
                             android:padding="5dp"
                             android:textColor="#FFFFFF"
                             android:textStyle="bold"
                             android:text="Kontakt:"
-                            android:textSize="11sp"/>
+                            android:textSize="13sp"/>
                         <TextView
                             android:id="@+id/phones"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:textColor="#FFFFFF"
-                            android:textSize="11sp"/>
-                        <TextView
-                            android:id="@+id/address"
+                            android:textSize="13sp"/>
+                        <LinearLayout
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:textColor="#FFFFFF"
-                            android:textSize="11sp"/>
+                            android:layout_height="fill_parent">
+                            <TextView
+                                android:id="@+id/address"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:textColor="#FFFFFF"
+                                android:gravity="center_vertical"
+                                android:textSize="13sp"/>
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:src="@drawable/google_maps_logo_transparent"
+                                android:gravity="center_vertical"/>
+                        </LinearLayout>
                         <TextView
                             android:id="@+id/web"
                             android:layout_width="fill_parent"
@@ -117,7 +129,7 @@
                             android:padding="5dp"
                             android:textColor="#FFFFFF"
                             android:textColorLink="#FFFFFF"
-                            android:textSize="11sp"/>
+                            android:textSize="13sp"/>
                         <TextView
                             android:id="@+id/email"
                             android:layout_width="fill_parent"
@@ -125,38 +137,37 @@
                             android:padding="5dp"
                             android:textColor="#FFFFFF"
                             android:textColorLink="#FFFFFF"
-                            android:textSize="11sp"/>
+                            android:textSize="13sp"/>
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
                             android:padding="5dp"
                             android:textColor="#FFFFFF"
                             android:textStyle="bold"
                             android:text="Radno vrijeme:"
-                            android:textSize="11sp"/>
+                            android:textSize="13sp"/>
                         <TextView
                             android:id="@+id/working"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:textColor="#FFFFFF"
-                            android:textSize="11sp"/>
+                            android:textSize="13sp"/>
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@android:color/darker_gray" />
+                            android:layout_marginTop="3dp"
+                            android:background="@android:color/white" />
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
                             android:padding="5dp"
                             android:textColor="#FFFFFF"
                             android:textStyle="bold"
                             android:text="Opcije plaćanja:"
-                            android:textSize="11sp"/>
+                            android:textSize="13sp"/>
                         <LinearLayout
                             android:id="@+id/payingoptions"
                             android:layout_marginTop="5dp"

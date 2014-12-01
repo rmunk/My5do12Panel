@@ -14,6 +14,9 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.Time;
@@ -49,11 +52,11 @@ public class OrderActivity extends BaseActivity{
     ImageView btnNaruci;
 
     EditText  txtNote;
-    TextView txtDate, txtTime, txtService,name_label, txtPrice;
+    TextView txtDate, txtTime, txtService,name_label, txtPrice, txtTermin;
 
     // Variable for storing current date and time
     private int mYear, mMonth, mDay, mHour, mMinute;
-    private String serviceID,providerID,userId, provider, service, color, responseBody;
+    private String serviceID,providerID,userId, provider, service, termin, color, responseBody;
     private ProgressDialog pDialog;
     Boolean orderok=false;
     ProviderClass proClass;
@@ -73,6 +76,8 @@ public class OrderActivity extends BaseActivity{
         color = bundle.getString("color");
         payOpts=bundle.getIntArray("paying");
         RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar2);
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(Color.parseColor("#ffadbb02"), PorterDuff.Mode.SRC_IN);
         try {
             float rating = proClass.rating;
             ratingBar.setRating(rating);
@@ -83,6 +88,7 @@ public class OrderActivity extends BaseActivity{
         providerID = proClass.proID;
         provider = proClass.proName;
         service = priceClass.plName;
+        termin = priceClass.plTermin;
         final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
         userId = prefs.getString("id", "");
 
@@ -92,10 +98,10 @@ public class OrderActivity extends BaseActivity{
             name_label=(TextView) findViewById(R.id.name_label);
             name_label.setOnClickListener(null);
             name_label.setText(provider);
+            txtTermin = (TextView) findViewById(R.id.txtTermin);
+            txtTermin.setText(termin+"'");
 
-            Log.d("SERVICE////////////////", service);
         }catch (Exception e){
-            Log.e("ERROR//////////////////", e.toString());
         }
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTime = (TextView) findViewById(R.id.txtTime);

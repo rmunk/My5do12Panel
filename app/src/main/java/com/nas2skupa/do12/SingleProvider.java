@@ -293,6 +293,7 @@ public class SingleProvider extends BaseActivity {
                             String serviceID = p.getString("serviceID");
                             String service = p.getString("service");
                             String action = p.getString("action");
+                            String termin = p.getString("termin");
                             int akcija = 0;
                             String price = p.getString("reg_price") + " " + getString(R.string.currency);
                             if (action.equals("1")) {
@@ -300,7 +301,7 @@ public class SingleProvider extends BaseActivity {
                                 akcija = R.drawable.akcija_icon;
                             }
                             Log.d("ServiceID in populate:"+service,serviceID);
-                            PricelistClass currPrice = new PricelistClass(serviceID, service, price, akcija);
+                            PricelistClass currPrice = new PricelistClass(serviceID, service, price,termin, akcija);
                             listArray.add(currPrice);
                         }
                         payopt = provider.getJSONArray("payopt");
