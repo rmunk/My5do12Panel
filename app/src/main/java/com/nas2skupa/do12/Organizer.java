@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -365,7 +366,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
             // Trailing Month days
             for (int i = 0; i < trailingSpaces; i++) {
                 Log.d(tag, "PREV MONTH:= " + prevMonth + " => " + getMonthAsString(prevMonth) + " " + String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i));
-                list.add(String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i) + "-GREY" + "-" + (prevMonth + 1) + "-" + prevYear);
+                list.add(String.valueOf((daysInPrevMonth - trailingSpaces + DAY_OFFSET) + i) + "-PASSIVE" + "-" + (prevMonth + 1) + "-" + prevYear);
             }
 
             // Current Month Days
@@ -375,16 +376,16 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 if (cal.get(Calendar.YEAR) == currentDate.get(Calendar.YEAR)
                         && cal.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH)
                         && cal.get(Calendar.DAY_OF_MONTH) == currentDate.get(Calendar.DAY_OF_MONTH)) {
-                    list.add(String.valueOf(i) + "-BLUE" + "-" + (currentMonth + 1) + "-" + yy);
+                    list.add(String.valueOf(i) + "-CURRENT" + "-" + (currentMonth + 1) + "-" + yy);
                 } else {
-                    list.add(String.valueOf(i) + "-WHITE" + "-" + (currentMonth + 1) + "-" + yy);
+                    list.add(String.valueOf(i) + "-ACTIVE" + "-" + (currentMonth + 1) + "-" + yy);
                 }
             }
 
             // Leading Month days
             for (int i = 0; i < list.size() % 7; i++) {
                 Log.d(tag, "NEXT MONTH:= " + getMonthAsString(nextMonth));
-                list.add(String.valueOf(i + 1) + "-GREY" + "-" + (nextMonth + 1) + "-" + nextYear);
+                list.add(String.valueOf(i + 1) + "-PASSIVE" + "-" + (nextMonth + 1) + "-" + nextYear);
             }
         }
 
@@ -416,9 +417,17 @@ public class Organizer extends BaseActivity implements OnClickListener {
             final String key = theday + "-" + themonth + "-" + theyear;
             if (orders.size() > 0) {
                 if (orders.containsKey(key)) {
-                    num_events_per_day = (TextView) row.findViewById(R.id.num_events_per_day);
-                    Integer numEvents = orders.get(key).size();
-                    num_events_per_day.setText(numEvents.toString());
+                    try {
+                        Calendar orderDate = Calendar.getInstance();
+                        orderDate.setTime(new SimpleDateFormat("dd-MM-yyyy").parse(key));
+                        num_events_per_day = (TextView) row.findViewById(R.id.num_events_per_day);
+                        Integer numEvents = orders.get(key).size();
+                        num_events_per_day.setText(numEvents.toString());
+                        if (orderDate.before(currentDate))
+                            num_events_per_day.setTextColor(Color.parseColor("#B0C8CF"));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -427,14 +436,14 @@ public class Organizer extends BaseActivity implements OnClickListener {
             gridcell.setTag(theday + "-" + themonth + "-" + theyear);
             Log.d(tag, "Setting GridCell " + theday + "-" + themonth + "-" + theyear);
 
-            if (color.equals("GREY")) {
+            if (color.equals("PASSIVE")) {
                 gridcell.setTextAppearance(_context, R.style.passive_month_day);
                 gridcell.setClickable(false);
             }
-            if (color.equals("WHITE")) {
+            if (color.equals("ACTIVE")) {
                 gridcell.setTextAppearance(_context, R.style.active_month_day);
             }
-            if (color.equals("BLUE")) {
+            if (color.equals("CURRENT")) {
                 gridcell.setTextAppearance(_context, R.style.current_day);
             }
             return row;
@@ -444,7 +453,6 @@ public class Organizer extends BaseActivity implements OnClickListener {
         public void onClick(View view) {
             String date_month_year = (String) view.getTag();
             String dateString = date_month_year.replace('-', '.').concat(".");
-            String eventsStr = "";
             if (orders.containsKey(date_month_year)) {
                 ArrayList<Order> events = orders.get(date_month_year);
                 showEventsDialog(dateString, events);
@@ -462,30 +470,46 @@ public class Organizer extends BaseActivity implements OnClickListener {
             final int count = events.size();
             final boolean[] selectedItems = new boolean[count];
             final String[] eventsDescriptions = new String[count];
+            Calendar orderDate = Calendar.getInstance();
+            try {
+                orderDate.setTime(new SimpleDateFormat("dd.MM.yyyy.").parse(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return;
+            }
             SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
             for (int i = 0; i < count; i++) {
                 Order order = events.get(i);
-                eventsDescriptions[i] = String.format("%s\n%s - %s", order.proName, tf.format(order.startTime), tf.format(order.endTime));
+                eventsDescriptions[i] = String.format("%s\n%s - %s\n%s (%s kn)",
+                        order.proName,
+                        tf.format(order.startTime),
+                        tf.format(order.endTime),
+                        order.serviceName,
+                        order.servicePrice);
             }
-            new AlertDialog.Builder(Organizer.this)
-                    .setTitle(date)
-                    .setMultiChoiceItems(eventsDescriptions, null,
-                            new DialogInterface.OnMultiChoiceClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                                    selectedItems[which] = isChecked;
-                                }
-                            })
-                    .setPositiveButton("Otkaži označene", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            for (int i = 0; i < count; i++) {
-                                if (selectedItems[i])
-                                    sendConfirmation(events.get(i).id, "3");
+            AlertDialog.Builder builder = new AlertDialog.Builder(Organizer.this);
+            builder.setTitle(date);
+            if (orderDate.before(currentDate))
+                builder.setItems(eventsDescriptions, null);
+            else {
+                builder.setMultiChoiceItems(eventsDescriptions, null,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                                selectedItems[which] = isChecked;
                             }
+                        });
+                builder.setPositiveButton("Otkaži označene", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (int i = 0; i < count; i++) {
+                            if (selectedItems[i])
+                                sendConfirmation(events.get(i).id, "3");
                         }
-                    })
-                    .setNegativeButton("Zatvori", null)
-                    .show();
+                    }
+                });
+            }
+            builder.setNegativeButton("Zatvori", null);
+            builder.show();
         }
 
         public int getCurrentDayOfMonth() {
