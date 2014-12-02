@@ -1,8 +1,10 @@
 package com.nas2skupa.do12;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -63,6 +65,7 @@ public class OrderActivity extends BaseActivity{
     PricelistClass priceClass;
     TimePickerDialog tpd;
     int[] payOpts;
+    SimpleDateFormat outputDateFormatter = new SimpleDateFormat("dd-MM-yyyy.");
 
     /** Called when the activity is first created. */
     @Override
@@ -128,7 +131,8 @@ public class OrderActivity extends BaseActivity{
         }
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
-        txtDate.setText(today.monthDay + "-" + (today.month + 1) + "-" + today.year);
+
+        txtDate.setText(outputDateFormatter.format(today));
         txtTime.setText(today.format("%H:%M"));
         txtDate.setOnClickListener(clickHandler);
         txtTime.setOnClickListener(clickHandler);
@@ -152,8 +156,9 @@ public class OrderActivity extends BaseActivity{
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         // Display Selected date in textbox
-                        txtDate.setText(dayOfMonth + "-"
-                                + (monthOfYear + 1) + "-" + year);
+                        Date selDate=new Date( year, monthOfYear,dayOfMonth);
+
+                        txtDate.setText(outputDateFormatter.format(selDate));
 
                     }
                 };
