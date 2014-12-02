@@ -75,7 +75,7 @@ public class OrderActivity extends BaseActivity{
         priceClass = bundle.getParcelable("pricelistclass");
         color = bundle.getString("color");
         payOpts=bundle.getIntArray("paying");
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar2);
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBarOrder);
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.parseColor("#ffadbb02"), PorterDuff.Mode.SRC_IN);
         try {

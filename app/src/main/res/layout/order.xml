@@ -26,7 +26,7 @@
         <RatingBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ratingBar"
+            android:id="@+id/ratingBarOrder"
             android:layout_gravity="left"
             style="?android:attr/ratingBarStyleSmall"
             android:numStars="5" />
