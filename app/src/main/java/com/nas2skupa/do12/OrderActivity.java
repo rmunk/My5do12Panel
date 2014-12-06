@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,6 +22,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -65,7 +67,7 @@ public class OrderActivity extends BaseActivity{
     PricelistClass priceClass;
     TimePickerDialog tpd;
     int[] payOpts;
-    SimpleDateFormat outputDateFormatter = new SimpleDateFormat("dd-MM-yyyy.");
+    SimpleDateFormat outputDateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
     /** Called when the activity is first created. */
     @Override
@@ -131,9 +133,11 @@ public class OrderActivity extends BaseActivity{
         }
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
-
-        txtDate.setText(outputDateFormatter.format(today));
-        txtTime.setText(today.format("%H:%M"));
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        Date nowDate=Calendar.getInstance().getTime();
+        Log.d("DATUM:", DateFormat.format("dd-MM-yyyy", nowDate).toString());
+        txtDate.setText(DateFormat.format("dd-MM-yyyy", nowDate).toString());
+        txtTime.setText(String.format("%02d", today.hour)+":"+String.format("%02d", today.minute));
         txtDate.setOnClickListener(clickHandler);
         txtTime.setOnClickListener(clickHandler);
         btnNaruci.setOnClickListener(clickHandler);
@@ -156,9 +160,12 @@ public class OrderActivity extends BaseActivity{
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         // Display Selected date in textbox
-                        Date selDate=new Date( year, monthOfYear,dayOfMonth);
-
-                        txtDate.setText(outputDateFormatter.format(selDate));
+                        Calendar calendar = new GregorianCalendar();
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        calendar.set(Calendar.MONTH, monthOfYear);
+                        calendar.set(Calendar.YEAR, year);
+                        Date selDate=calendar.getTime();
+                        txtDate.setText(DateFormat.format("dd-MM-yyyy", selDate).toString());
 
                     }
                 };
@@ -182,7 +189,7 @@ public class OrderActivity extends BaseActivity{
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-                        txtTime.setText(hourOfDay + ":" + minute);
+                        txtTime.setText(String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute));
                     }
                 };
                 tpd = new TimePickerDialog(OrderActivity.this,tsl, mHour, mMinute, true);
