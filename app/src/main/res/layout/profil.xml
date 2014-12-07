@@ -17,7 +17,8 @@
         android:text="TextView" />
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -64,6 +65,27 @@
                 android:id="@+id/pName" />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/addressLL"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pAdresalbl"
+                android:textSize="15sp"
+                android:textColor="@color/greenApp"
+                android:textStyle="bold"
+                android:paddingTop="20dp"
+                android:text="Adresa: "/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/greenApp"
+                android:textSize="15sp"
+                android:id="@+id/pAdresa" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -84,6 +106,7 @@
                 android:id="@+id/pEmail" />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/mobLL"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -92,23 +115,17 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/pMobilelbl"
                 android:textSize="15sp"
-                android:textColor="#666666"
+                android:textColor="@color/greenApp"
                 android:textStyle="bold"
                 android:paddingTop="20dp"
                 android:text="Mobitel: "/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#666666"
+                android:textColor="@color/greenApp"
                 android:textSize="15sp"
                 android:id="@+id/pMobile" />
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="#666666" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,26 +135,6 @@
             android:paddingTop="20dp"
             android:textColor="@color/greenApp"
             android:text="Promijeni lozinku!"/>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/pAdresalbl"
-                android:textSize="15sp"
-                android:textColor="@color/greenApp"
-                android:textStyle="bold"
-                android:paddingTop="20dp"
-                android:text="Adresa: "/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/greenApp"
-                android:textSize="15sp"
-                android:id="@+id/pAdresa" />
-        </LinearLayout>
     </LinearLayout>
     </ScrollView>
 </LinearLayout>

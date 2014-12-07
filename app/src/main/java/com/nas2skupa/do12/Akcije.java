@@ -77,7 +77,7 @@ public class Akcije extends BaseActivity {
             }
         });
 
-        CitiesFilter citiesFilter = new CitiesFilter(this, (Spinner) findViewById(R.id.cities), (Spinner) findViewById(R.id.districts));
+        CitiesFilter citiesFilter = new CitiesFilter(this, (Spinner) findViewById(R.id.cities), (Spinner) findViewById(R.id.districts),0);
         citiesFilter.setOnFilterChangedListener(new CitiesFilter.OnFilterChangedListener() {
             @Override
             public void onFilterChanged(String city, String district) {

@@ -22,8 +22,10 @@ public class CitiesFilter {
     private SharedPreferences sharedPreferences;
     private String currentCity;
     private String currentDistrict;
+    private int addAll=0;
 
-    public CitiesFilter(Context context, Spinner citiesSpinner, final Spinner districtsSpinner) {
+    public CitiesFilter(Context context, Spinner citiesSpinner, final Spinner districtsSpinner, int iaddAll) {
+        this.addAll=iaddAll;
         this.citiesSpinner = citiesSpinner;
         this.districtsSpinner = districtsSpinner;
 
@@ -31,10 +33,10 @@ public class CitiesFilter {
         currentCity = sharedPreferences.getString("city", "");
         currentDistrict = sharedPreferences.getString("district", "");
 
-        cities.addAll(Globals.getCities());
+        cities.addAll(Globals.getCities(addAll));
         if (cities.contains(currentCity))
             citiesSpinner.setSelection(cities.indexOf(currentCity));
-        districts.addAll(Globals.getDistricts(currentCity));
+        districts.addAll(Globals.getDistricts(currentCity,addAll));
         if (districts.contains(currentDistrict))
             districtsSpinner.setSelection(districts.indexOf(currentDistrict));
 
@@ -53,7 +55,7 @@ public class CitiesFilter {
                 currentCity = cities.get(position);
                 sharedPreferences.edit().putString("city", currentCity).commit();
                 districts.clear();
-                districts.addAll(Globals.getDistricts(currentCity));
+                districts.addAll(Globals.getDistricts(currentCity,addAll));
                 if (!districts.contains(currentDistrict))
                     currentDistrict = districts.get(0);
                 districtsSpinner.setSelection(districts.indexOf(currentDistrict));

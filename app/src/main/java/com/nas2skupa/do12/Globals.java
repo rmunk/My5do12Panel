@@ -9,17 +9,21 @@ public class Globals extends Application {
 
     static LinkedHashMap<String, City> cities = new LinkedHashMap<String, City>();
 
-    static ArrayList<String> getCities() {
+    static ArrayList<String> getCities(int i) {
         ArrayList<String> ret = new ArrayList<String>();
-        ret.add("Svi gradovi");
+        if (i!=1) {
+            ret.add("Svi gradovi");
+        }
         for (City city : cities.values())
             ret.add(city.name);
         return ret;
     }
 
-    static ArrayList<String> getDistricts(String city) {
+    static ArrayList<String> getDistricts(String city, int i) {
         ArrayList<String> ret = new ArrayList<String>();
-        ret.add("Svi kvartovi");
+        if (i!=1) {
+            ret.add("Svi kvartovi");
+        }
         if (cities.containsKey(city))
             for (District district : cities.get(city).districts.values())
                 ret.add(district.name);
