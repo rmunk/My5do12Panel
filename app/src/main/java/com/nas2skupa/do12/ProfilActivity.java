@@ -277,7 +277,7 @@ public class ProfilActivity extends BaseActivity {
                     nameValuePairs.add(new BasicNameValuePair("city", cId));
                     nameValuePairs.add(new BasicNameValuePair("quart", qId));
                 }
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
                 // Execute HTTP Post Request
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity resEntity = response.getEntity();

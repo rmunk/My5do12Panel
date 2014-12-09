@@ -259,7 +259,7 @@ public class OrderActivity extends BaseActivity{
                 nameValuePairs.add(new BasicNameValuePair("vrijeme", txtTime.getText().toString()));
                 nameValuePairs.add(new BasicNameValuePair("serviceid", serviceID));
                 nameValuePairs.add(new BasicNameValuePair("userNote", txtNote.getText().toString()));
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
                 // Execute HTTP Post Request
                 HttpResponse response = httpclient.execute(httppost);
 
