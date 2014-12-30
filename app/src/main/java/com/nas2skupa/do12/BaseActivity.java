@@ -172,7 +172,7 @@ public class BaseActivity extends Activity {
         switch (CatId) {
 
             case 1:
-                catSettings[0]="zdrastvene usluge";
+                catSettings[0]="zdravstvene usluge";
                 catSettings[1]="#7ec5c4";
                 return catSettings;
             case 2:
@@ -185,7 +185,7 @@ public class BaseActivity extends Activity {
                 return catSettings;
             case 4:
                 catSettings[0]="intelektualne usluge";
-                catSettings[1]="#fad12f";
+                catSettings[1]="#49019a";
                 return catSettings;
             case 5:
                 catSettings[0]="dom i obitelj";
