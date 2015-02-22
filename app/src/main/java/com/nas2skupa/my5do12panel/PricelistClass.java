@@ -1,4 +1,4 @@
-package com.nas2skupa.do12;
+package com.nas2skupa.my5do12panel;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -5,14 +5,14 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "com.nas2skupa.do12"
+        applicationId "com.nas2skupa.my5do12panel"
         minSdkVersion 11
         targetSdkVersion 19
     }
 
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt', 'proguard-project.txt'
         }
     }

@@ -1,11 +1,10 @@
-package com.nas2skupa.do12;
+package com.nas2skupa.my5do12panel;
 
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Parcelable;

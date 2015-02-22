@@ -1,4 +1,4 @@
-package com.nas2skupa.do12;
+package com.nas2skupa.my5do12panel;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -33,7 +32,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class SingleProvider extends BaseActivity {
 

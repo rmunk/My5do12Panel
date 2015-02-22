@@ -1,7 +1,8 @@
-package com.nas2skupa.do12;
+package com.nas2skupa.my5do12panel;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -74,6 +75,7 @@ public class LoginScreen extends Activity {
     JSONArray user = null;
     private EditText pass;
     private Button login;
+    private Dialog errorDialog;
 
     @SuppressLint("NewApi")
     @Override
@@ -84,8 +86,11 @@ public class LoginScreen extends Activity {
 
         if (checkPlayServices())
             gcm = GoogleCloudMessaging.getInstance(this);
-        else
+        else {
             Log.i(TAG, "No valid Google Play Services APK found.");
+//            initialize();
+//            return;
+        }
 
         prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
         Intent intent = getIntent();
@@ -152,8 +157,10 @@ public class LoginScreen extends Activity {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                if(errorDialog != null) errorDialog.dismiss();
+                errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST);
+                errorDialog.show();
             } else {
                 Log.i(TAG, "This device is not supported.");
                 finish();
@@ -236,6 +243,7 @@ public class LoginScreen extends Activity {
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
                 Log.i(TAG, o.toString());
+                if(errorDialog != null) errorDialog.dismiss();
                 goHome();
             }
         }.execute(null, null, null);

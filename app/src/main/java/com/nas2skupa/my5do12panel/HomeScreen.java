@@ -1,6 +1,5 @@
-package com.nas2skupa.do12;
+package com.nas2skupa.my5do12panel;
  
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;

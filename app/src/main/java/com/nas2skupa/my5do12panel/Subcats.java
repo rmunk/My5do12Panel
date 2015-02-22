@@ -1,6 +1,5 @@
-package com.nas2skupa.do12;
+package com.nas2skupa.my5do12panel;
 
-import com.nas2skupa.do12.R;
 import java.util.ArrayList;
 import java.util.HashMap;
  
@@ -9,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
  
 import android.annotation.SuppressLint;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,8 +16,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -27,8 +23,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
- 
+
 public class Subcats extends BaseListActivity {
  
     private ProgressDialog pDialog;

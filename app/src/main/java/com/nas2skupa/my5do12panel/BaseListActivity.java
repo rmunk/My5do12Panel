@@ -1,12 +1,10 @@
-package com.nas2skupa.do12;
+package com.nas2skupa.my5do12panel;
 
 import com.navdrawer.SimpleSideDrawer;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,17 +13,15 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class BaseActivity extends Activity {
-	SimpleSideDrawer slide_me;
+public class BaseListActivity extends ListActivity {
+    SimpleSideDrawer slide_me;
     EditText inputSearch;
-	@SuppressLint("NewApi")
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        
+    @SuppressLint("NewApi")
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+
         slide_me = new SimpleSideDrawer(this);
         slide_me.setRightBehindContentView(R.layout.sidemenu);
         TextView pocTV = (TextView) findViewById(R.id.pocetnabtn);
@@ -45,9 +41,9 @@ public class BaseActivity extends Activity {
             }
         });
         pocTV.setOnClickListener(new OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","home");
                 homeActivity();
             }
         });
@@ -55,7 +51,6 @@ public class BaseActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","organizer");
                 listActivity();
             }
         });
@@ -63,7 +58,6 @@ public class BaseActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","favorites");
                 favActivity();
             }
         });
@@ -71,7 +65,6 @@ public class BaseActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","actions");
                 vaznoActivity();
             }
         });
@@ -79,7 +72,6 @@ public class BaseActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","profil");
                 profilActivity();
             }
         });
@@ -87,64 +79,63 @@ public class BaseActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","logout");
                 logoutActivity();
             }
         });
-		return true;
-	}
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-		switch (item.getItemId()) {
+        switch (item.getItemId()) {
 
-		case R.id.home:
-			homeActivity();
-			return true;
+            case R.id.home:
+                homeActivity();
+                return true;
 
-		case R.id.list:
-			listActivity();
-			return true;
+            case R.id.list:
+                listActivity();
+                return true;
 
-		case R.id.fav:
-			favActivity();
-			return true;
+            case R.id.fav:
+                favActivity();
+                return true;
 
-		case R.id.akcije:
-			vaznoActivity();
-			return true;
-			
-		case R.id.option:
-			optionActivity();
-			return true;
+            case R.id.akcije:
+                vaznoActivity();
+                return true;
 
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+            case R.id.option:
+                optionActivity();
+                return true;
 
-	}
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
     public void searchActivity(){
         Intent i = new Intent(this, SearchActivity.class);
         i.putExtra("search", inputSearch.getText().toString());
         startActivity(i);
 
     }
-	public void homeActivity() {
-		Intent i = new Intent(this, HomeScreen.class);
-	    startActivity(i);
-	}
+    public void homeActivity() {
+        Intent i = new Intent(this, HomeScreen.class);
+        startActivity(i);
+    }
 
-	public void listActivity() {
-		//Toast.makeText(this, "List Option Selexted", Toast.LENGTH_SHORT).show();
-    	Intent i = new Intent(this, Organizer.class);
-	    startActivity(i);
-	}
+    public void listActivity() {
+        //Toast.makeText(this, "List Option Selexted", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, Organizer.class);
+        startActivity(i);
+    }
 
-	public void favActivity() {
+    public void favActivity() {
 
         Intent i = new Intent(this, Favorites.class);
         startActivity(i);
-	}
+    }
 
     public void vaznoActivity() {
         Intent i = new Intent(this, Akcije.class);
@@ -154,16 +145,16 @@ public class BaseActivity extends Activity {
         Intent i = new Intent(this, ProfilActivity.class);
         startActivity(i);
     }
-	
-	public void logoutActivity() {
+
+    public void logoutActivity() {
         Intent i = new Intent(this, LoginScreen.class);
         i.setAction("logout");
         startActivity(i);
-	}
+    }
 
-	public void optionActivity() {
-		slide_me.toggleRightDrawer();
-	}
+    public void optionActivity() {
+        slide_me.toggleRightDrawer();
+    }
 
     public String[] catSettings = new String[2];
 

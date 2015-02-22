@@ -1,4 +1,4 @@
-package com.nas2skupa.do12;
+package com.nas2skupa.my5do12panel;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -17,7 +17,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
