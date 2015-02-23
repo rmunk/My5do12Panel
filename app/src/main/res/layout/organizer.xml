@@ -1,107 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical"
+    android:orientation="horizontal"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
     android:background="@drawable/back"
     android:weightSum="1">
 
     <LinearLayout
-		android:orientation="horizontal"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
-
-		<ImageView
-			android:id="@+id/prevMonth"
-			android:src="@layout/calendar_left_arrow_selector"
-			android:layout_width="48dp"
-            android:background="@drawable/calendar_tile_new"
-			android:layout_height="fill_parent">
-		</ImageView>
-		<Button
-			android:id="@+id/currentMonth"
-			android:layout_weight="0.6"
-			android:textColor="#697202"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:background="@drawable/calendar_tile_new"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-            android:text="TEST"
-            android:textSize="15dp">
-		</Button>
-		<ImageView
-			android:id="@+id/nextMonth"
-			android:src="@layout/calendar_right_arrow_selector"
-			android:layout_width="48dp"
-            android:background="@drawable/calendar_tile_new"
-			android:layout_height="fill_parent">
-		</ImageView>
-	</LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:background="@drawable/calendar_tile_new"
-        android:layout_height="48dp" >
+        android:layout_height="fill_parent"
+        android:layout_weight="0.7">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/prevMonth"
+                android:src="@layout/calendar_left_arrow_selector"
+                android:layout_width="48dp"
+                android:background="@drawable/calendar_tile_new"
+                android:layout_height="fill_parent" />
+
+            <Button
+                android:id="@+id/currentMonth"
+                android:layout_weight="0.6"
+                android:textColor="#697202"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:background="@drawable/calendar_tile_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TEST"
+                android:textSize="15dp" />
+
+            <ImageView
+                android:id="@+id/nextMonth"
+                android:src="@layout/calendar_right_arrow_selector"
+                android:layout_width="48dp"
+                android:background="@drawable/calendar_tile_new"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:background="@drawable/calendar_tile_new"
+            android:layout_height="48dp">
+
+            <TextView
+                android:text="@string/mon"
+                android:id="@+id/mon"
+                style="@style/week_day_text" />
+
+            <TextView
+                android:text="@string/tue"
+                android:id="@+id/tue"
+                style="@style/week_day_text" />
+
+            <TextView
+                android:text="@string/wen"
+                android:id="@+id/wen"
+                style="@style/week_day_text" />
+
+            <TextView
+                android:text="@string/thu"
+                android:id="@+id/thu"
+                style="@style/week_day_text" />
+
+            <TextView
+                android:text="@string/fri"
+                android:id="@+id/fri"
+                style="@style/week_day_text" />
+
+            <TextView
+                android:text="@string/sat"
+                android:id="@+id/sat"
+                style="@style/week_day_text" />
+
+            <TextView
+                android:text="@string/sun"
+                android:id="@+id/sun"
+                style="@style/week_day_text" />
+
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/calendar"
+            android:numColumns="7"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"></GridView>
 
         <TextView
-            android:text="@string/mon"
-            android:id="@+id/mon"
-            style="@style/week_day_text" />
-
-        <TextView
-            android:text="@string/tue"
-            android:id="@+id/tue"
-            style="@style/week_day_text" />
-
-        <TextView
-            android:text="@string/wen"
-            android:id="@+id/wen"
-            style="@style/week_day_text" />
-
-        <TextView
-            android:text="@string/thu"
-            android:id="@+id/thu"
-            style="@style/week_day_text" />
-
-        <TextView
-            android:text="@string/fri"
-            android:id="@+id/fri"
-            style="@style/week_day_text" />
-
-        <TextView
-            android:text="@string/sat"
-            android:id="@+id/sat"
-            style="@style/week_day_text" />
-
-        <TextView
-            android:text="@string/sun"
-            android:id="@+id/sun"
-            style="@style/week_day_text" />
-
-    </LinearLayout>
-
-    <GridView
-		android:id="@+id/calendar"
-		android:numColumns="7"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" >
-	</GridView>
-
-    <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/eventsDetails"
             android:background="@drawable/droplist_dark_new"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:scrollbars="vertical"
-            android:maxLines = "4"
+            android:maxLines="4"
             android:textColor="#FFFFFF"
             android:paddingTop="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingBottom="20dp"
-        android:visibility="gone" />
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gridView"
+        android:layout_weight="0.3"
+        android:numColumns="17" />
 
 </LinearLayout>
