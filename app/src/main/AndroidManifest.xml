@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nas2skupa.my5do12panel"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -10,8 +10,11 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 
-    <permission android:name="com.nas2skupa.my5do12panel.permission.C2D_MESSAGE"
+    <permission
+        android:name="com.nas2skupa.my5do12panel.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission android:name="com.nas2skupa.do12.permission.C2D_MESSAGE" />
 
@@ -25,12 +28,13 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <activity
             android:name="com.nas2skupa.my5do12panel.SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBarTheme" >
-            <intent-filter android:name="android.intent.filter.MAIN" >
+            android:theme="@style/NoActionBarTheme">
+            <intent-filter android:name="android.intent.filter.MAIN">
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -38,70 +42,64 @@
         <activity
             android:name="com.nas2skupa.my5do12panel.Organizer"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" >
-        </activity>
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name="com.nas2skupa.my5do12panel.LoginScreen"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@style/NoActionBarTheme" >
+            android:theme="@style/NoActionBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.nas2skupa.my5do12panel.HomeScreen"
-            android:screenOrientation="landscape" >
-        </activity>
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name="com.nas2skupa.my5do12panel.Subcats"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" >
-        </activity>
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name="com.nas2skupa.my5do12panel.ProviderList"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" >
-        </activity>
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name="com.nas2skupa.my5do12panel.Favorites"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" >
-        </activity>
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name="com.nas2skupa.my5do12panel.Akcije"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" >
-        </activity>
+            android:screenOrientation="landscape"></activity>
         <activity
             android:label="@string/app_name"
-            android:name="com.nas2skupa.my5do12panel.SearchActivity" >
-        </activity>
+            android:name="com.nas2skupa.my5do12panel.SearchActivity"></activity>
         <activity
             android:label="@string/app_name"
-            android:name="com.nas2skupa.my5do12panel.SingleProvider" >
-        </activity>
+            android:name="com.nas2skupa.my5do12panel.SingleProvider"></activity>
         <activity
             android:label="@string/app_name"
-            android:name="com.nas2skupa.my5do12panel.ProfilActivity" >
-        </activity>
+            android:name="com.nas2skupa.my5do12panel.ProfilActivity"></activity>
         <activity
             android:label="@string/app_name"
-            android:name="com.nas2skupa.my5do12panel.OrderActivity" >
-        </activity>
+            android:name="com.nas2skupa.my5do12panel.OrderActivity"></activity>
 
-         Google Cloud Messaging Service and Notifications
-        <service android:name="com.nas2skupa.my5do12panel.GcmIntentService" >
-            <meta-data android:name="GCM_PROJECT_ID" android:value="@string/gcm_project_id" />
+        Google Cloud Messaging Service and Notifications
+        <service android:name="com.nas2skupa.my5do12panel.GcmIntentService">
+            <meta-data
+                android:name="GCM_PROJECT_ID"
+                android:value="@string/gcm_project_id" />
         </service>
 
-        <receiver android:name="com.nas2skupa.my5do12panel.GcmBroadcastReceiver" >
+        <receiver android:name="com.nas2skupa.my5do12panel.GcmBroadcastReceiver">
             <!--android:permission="com.google.android.c2dm.permission.SEND" >-->
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>

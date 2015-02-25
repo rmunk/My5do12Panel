@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -94,7 +95,7 @@ public class LoginScreen extends Activity {
 
         prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
         Intent intent = getIntent();
-        if(intent.getAction() == "logout")
+        if (intent.getAction() == "logout")
             prefs.edit().clear().commit();
         userId = prefs.getString(TAG_ID, "");
         if (userId.isEmpty()) {
@@ -110,7 +111,7 @@ public class LoginScreen extends Activity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
-        if(intent.getAction() == "logout")
+        if (intent.getAction() == "logout")
             prefs.edit().clear().commit();
         userId = prefs.getString(TAG_ID, "");
         if (userId.isEmpty()) {
@@ -150,14 +151,46 @@ public class LoginScreen extends Activity {
     }
 
     public void tryLogin(View view) throws MalformedURLException, IOException {
-        new GetUser().execute();
+        EditText userText = (EditText) findViewById(R.id.username);
+        String userTxt = userText.getText().toString();
+        EditText passText = (EditText) findViewById(R.id.password);
+        String passTxt = passText.getText().toString();
+        Uri uri = new Uri.Builder().encodedPath("http://nas2skupa.com/5do12/prolog.aspx")
+                .appendQueryParameter("username", userTxt)
+                .appendQueryParameter("password", passTxt)
+                .build();
+        new HttpRequest(this, uri, false)
+                .setOnHttpResultListener(new HttpRequest.OnHttpResultListener() {
+                    @Override
+                    public void onHttpResult(String result) {
+                        try {
+                            JSONObject provider = new JSONObject(result).getJSONObject("provider");
+                            int id = provider.getInt("id");
+                            if (id > 0) {
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putString(TAG_ID, String.valueOf(id));
+                                editor.commit();
+                                regid = getRegistrationId(context);
+                                if (regid.isEmpty()) registerInBackground();
+                                else goHome();
+                            } else if (id == -1)
+                                Toast.makeText(LoginScreen.this, "Neispravno korisničko ime ili lozinka.", Toast.LENGTH_SHORT).show();
+                            else if (id == -2)
+                                Toast.makeText(LoginScreen.this, "Korisnik nije aktiviran.", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(LoginScreen.this, "Došlo je do pogreške prilikom prijavljivanja. Molimo pokušajte ponovo kasnije.", Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                if(errorDialog != null) errorDialog.dismiss();
+                if (errorDialog != null) errorDialog.dismiss();
                 errorDialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this,
                         PLAY_SERVICES_RESOLUTION_REQUEST);
                 errorDialog.show();
@@ -243,7 +276,7 @@ public class LoginScreen extends Activity {
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
                 Log.i(TAG, o.toString());
-                if(errorDialog != null) errorDialog.dismiss();
+                if (errorDialog != null) errorDialog.dismiss();
                 goHome();
             }
         }.execute(null, null, null);

@@ -16,10 +16,8 @@
 
         <EditText
             android:id="@+id/username"
-            android:layout_width="fill_parent"
+            android:layout_width="650dp"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/password"
-            android:layout_alignParentLeft="true"
             android:layout_marginBottom="26dp"
             android:textColor="#FFFFFF"
             android:textColorHint="#CCCCCC"
@@ -31,25 +29,21 @@
 
         <EditText
             android:id="@+id/password"
-            android:layout_width="fill_parent"
+            android:layout_width="650dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_marginBottom="78dp"
             android:textColor="#FFFFFF"
             android:textColorHint="#CCCCCC"
             android:ems="10"
             android:hint="@string/passtxt"
             android:inputType="textPassword"
-            android:imeOptions="actionGo"
-            android:layout_above="@+id/loginButtons" />
+            android:imeOptions="actionGo" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/loginButtons"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true">
+            android:id="@+id/loginButtons">
 
             <Button
                 style="@style/LoginButton"

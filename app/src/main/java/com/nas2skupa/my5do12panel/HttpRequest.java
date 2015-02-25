@@ -2,8 +2,11 @@ package com.nas2skupa.my5do12panel;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 /**
  * Created by Ranko on 22.11.2014..
@@ -12,6 +15,21 @@ public class HttpRequest {
     private boolean silent;
     private Context context;
     private ProgressDialog progressDialog;
+
+    private Boolean isNetAvailable(Context con) {
+
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) con.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+            if (wifiInfo.isConnected()) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     public HttpRequest(Context context, Uri uri, boolean silent) {
         this.context = context;
@@ -23,7 +41,12 @@ public class HttpRequest {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(silent) return;
+            if (!isNetAvailable(context)) {
+                Toast.makeText(context, "Mreža je nedostupna, molimo omogućite pristup mreži.", Toast.LENGTH_SHORT).show();
+                cancel(true);
+                return;
+            }
+            if (silent) return;
             progressDialog = new ProgressDialog(context);
             progressDialog.setMessage("Molimo pričekajte...");
             progressDialog.setCancelable(false);
