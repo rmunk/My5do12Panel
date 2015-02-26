@@ -15,7 +15,8 @@ import java.util.Date;
 public class Order {
     public String id;
     public String proId;
-    public String proName;
+    public String uName;
+    public String uSurname;
     public String userId;
     public String serviceId;
     public String serviceName;
@@ -27,6 +28,7 @@ public class Order {
     public String providerConfirm;
     public String userNote;
     public String providerNote;
+    public String color;
 
     public Order(JSONObject jsonObj) {
         DateFormat df = new SimpleDateFormat("M/d/yyyy hh:mm:ss a");
@@ -35,7 +37,8 @@ public class Order {
         try {
             this.id = jsonObj.optString("id");
             this.proId = jsonObj.optString("proId");
-            this.proName = jsonObj.optString("proName");
+            this.uName = jsonObj.optString("uName");
+            this.uSurname = jsonObj.optString("uSurname");
             this.userId = jsonObj.optString("userId");
             this.serviceId = jsonObj.optString("serviceId");
             this.serviceName = jsonObj.optString("serviceName");
@@ -47,6 +50,7 @@ public class Order {
             this.providerConfirm = jsonObj.optString("providerConfirm");
             this.userNote = jsonObj.optString("userNote");
             this.providerNote = jsonObj.optString("providerNote");
+            this.color = jsonObj.optString("color");
         } catch (ParseException e) {
             Log.e("Order", "Invalid JSON data object");
             e.printStackTrace();

@@ -11,7 +11,9 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="0.7">
+        android:layout_weight="0.7"
+        android:background="#6461067e"
+        android:weightSum="1">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -33,7 +35,7 @@
                 android:background="@drawable/calendar_tile_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TEST"
+                android:text="MJESEC"
                 android:textSize="15dp" />
 
             <ImageView
@@ -95,9 +97,9 @@
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:id="@+id/eventsDetails"
-            android:background="@drawable/droplist_dark_new"
+            android:background="#968833a3"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:scrollbars="vertical"
             android:maxLines="4"
@@ -106,14 +108,148 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingBottom="20dp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:layout_weight="0.36"
+            android:layout_margin="20dp" />
+
     </LinearLayout>
 
-    <GridView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/gridView"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_weight="0.3"
-        android:numColumns="17" />
+        android:layout_marginLeft="5dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/prevDay"
+                android:src="@layout/calendar_left_arrow_selector"
+                android:layout_width="48dp"
+                android:background="@drawable/calendar_tile_new"
+                android:layout_height="fill_parent" />
+
+            <Button
+                android:id="@+id/currentDay"
+                android:layout_weight="0.6"
+                android:textColor="#697202"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:background="@drawable/calendar_tile_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DAN"
+                android:textSize="15dp" />
+
+            <ImageView
+                android:id="@+id/nextDay"
+                android:src="@layout/calendar_right_arrow_selector"
+                android:layout_width="48dp"
+                android:background="@drawable/calendar_tile_new"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:background="@drawable/calendar_tile_new"
+            android:layout_height="48dp">
+
+            <TextView
+                android:text="06"
+                android:id="@+id/h06"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="07"
+                android:id="@+id/h07"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="08"
+                android:id="@+id/h08"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="09"
+                android:id="@+id/h09"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="10"
+                android:id="@+id/h10"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="11"
+                android:id="@+id/h11"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="12"
+                android:id="@+id/h12"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="13"
+                android:id="@+id/h13"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="14"
+                android:id="@+id/h14"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="15"
+                android:id="@+id/h15"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="16"
+                android:id="@+id/h16"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="17"
+                android:id="@+id/h17"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="18"
+                android:id="@+id/h18"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="19"
+                android:id="@+id/h19"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="20"
+                android:id="@+id/h20"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="21"
+                android:id="@+id/h21"
+                style="@style/hour_text" />
+
+            <TextView
+                android:text="22"
+                android:id="@+id/h22"
+                style="@style/hour_text" />
+
+        </LinearLayout>
+
+        <GridView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/gridView"
+            android:numColumns="17" />
+    </LinearLayout>
 
 </LinearLayout>

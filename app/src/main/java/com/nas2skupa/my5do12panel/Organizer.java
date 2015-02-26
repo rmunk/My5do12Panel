@@ -243,8 +243,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
             orders.clear();
             final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
             String userId = prefs.getString("id", "");
-            Uri uri = new Uri.Builder().encodedPath("http://nas2skupa.com/5do12/getOrders.aspx")
-                    .appendQueryParameter("userId", userId)
+            Uri uri = new Uri.Builder().encodedPath("http://nas2skupa.com/5do12/getProOrders.aspx")
+                    .appendQueryParameter("proId", userId)
                     .appendQueryParameter("year", String.valueOf(year))
                     .appendQueryParameter("month", String.valueOf(month))
                     .build();
@@ -260,7 +260,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
         private void parseServerResult(String result) {
             try {
                 JSONObject jsonObj = new JSONObject(result);
-                JSONArray jsonArray = jsonObj.getJSONArray("orders");
+                JSONArray jsonArray = jsonObj.getJSONArray("ordersPro");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     Order order = new Order(jsonArray.getJSONObject(i));
                     String key = new DateFormat().format("d-M-yyyy", order.date).toString();
@@ -424,7 +424,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
                         Integer numEvents = orders.get(key).size();
                         num_events_per_day.setText(numEvents.toString());
                         if (orderDate.before(currentDate))
-                            num_events_per_day.setTextColor(Color.parseColor("#B0C8CF"));
+                            num_events_per_day.setTextAppearance(_context, R.style.calendar_passed_event_style);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -458,7 +458,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 showEventsDialog(dateString, events);
             }
             try {
-                Date parsedDate = dateFormatter.parse(date_month_year);
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
+                Date parsedDate = dateFormatter.parse(dateString);
                 Log.d(tag, "Parsed Date: " + parsedDate.toString());
 
             } catch (ParseException e) {
@@ -480,8 +481,9 @@ public class Organizer extends BaseActivity implements OnClickListener {
             SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
             for (int i = 0; i < count; i++) {
                 Order order = events.get(i);
-                eventsDescriptions[i] = String.format("%s\n%s - %s\n%s (%s kn)",
-                        order.proName,
+                eventsDescriptions[i] = String.format("%s %s\n%s - %s\n%s (%s kn)",
+                        order.uName,
+                        order.uSurname,
                         tf.format(order.startTime),
                         tf.format(order.endTime),
                         order.serviceName,

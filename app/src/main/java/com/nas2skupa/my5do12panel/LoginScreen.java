@@ -84,27 +84,13 @@ public class LoginScreen extends Activity {
         super.onCreate(savedInstanceState);
 
         context = getApplicationContext();
-
-        if (checkPlayServices())
-            gcm = GoogleCloudMessaging.getInstance(this);
-        else {
-            Log.i(TAG, "No valid Google Play Services APK found.");
-//            initialize();
-//            return;
-        }
-
         prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
         Intent intent = getIntent();
         if (intent.getAction() == "logout")
             prefs.edit().clear().commit();
         userId = prefs.getString(TAG_ID, "");
-        if (userId.isEmpty()) {
-            initialize();
-        } else {
-            regid = getRegistrationId(context);
-            if (regid.isEmpty()) registerInBackground();
-            else goHome();
-        }
+        if (userId.isEmpty()) initialize();
+        else goHome();
     }
 
     @Override
@@ -114,13 +100,8 @@ public class LoginScreen extends Activity {
         if (intent.getAction() == "logout")
             prefs.edit().clear().commit();
         userId = prefs.getString(TAG_ID, "");
-        if (userId.isEmpty()) {
-            initialize();
-        } else {
-            regid = getRegistrationId(context);
-            if (regid.isEmpty()) registerInBackground();
-            else goHome();
-        }
+        if (userId.isEmpty()) initialize();
+        else goHome();
     }
 
     private void initialize() {
@@ -138,14 +119,8 @@ public class LoginScreen extends Activity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkPlayServices();
-    }
-
     private void goHome() {
-        Intent in = new Intent(this, HomeScreen.class);
+        Intent in = new Intent(this, Organizer.class);
         in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(in);
     }
@@ -180,6 +155,7 @@ public class LoginScreen extends Activity {
                             else
                                 Toast.makeText(LoginScreen.this, "Došlo je do pogreške prilikom prijavljivanja. Molimo pokušajte ponovo kasnije.", Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
+                            Toast.makeText(LoginScreen.this, "Došlo je do pogreške prilikom prijavljivanja. Molimo pokušajte ponovo kasnije.", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
