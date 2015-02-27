@@ -21,6 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -44,7 +45,9 @@ public class Organizer extends BaseActivity implements OnClickListener {
     private ImageView calendarToJournalButton;
     private Button selectedDayMonthYearButton;
     private TextView eventsDetails;
+    private RelativeLayout eventsLayout;
     private Button currentMonth;
+    private Button currentDay;
     private ImageView prevMonth;
     private ImageView nextMonth;
     private GridView calendarView;
@@ -75,6 +78,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
         prevMonth.setOnClickListener(this);
 
         currentMonth = (Button) this.findViewById(R.id.currentMonth);
+        currentDay = (Button) this.findViewById(R.id.currentDay);
 
         nextMonth = (ImageView) this.findViewById(R.id.nextMonth);
         nextMonth.setOnClickListener(this);
@@ -86,6 +90,9 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
         eventsDetails = (TextView) this.findViewById(R.id.eventsDetails);
         eventsDetails.setMovementMethod(new ScrollingMovementMethod());
+
+        eventsLayout = (RelativeLayout) this.findViewById(R.id.eventsLayout);
+
     }
 
     @Override
@@ -234,6 +241,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
             // Print Month
             currentMonth.setText(getMonthAsString(month - 1) + ", " + year + ".");
+
             printMonth(month, year);
 
             refreshCalendar();
@@ -453,9 +461,18 @@ public class Organizer extends BaseActivity implements OnClickListener {
         public void onClick(View view) {
             String date_month_year = (String) view.getTag();
             String dateString = date_month_year.replace('-', '.').concat(".");
+            currentDay.setText(dateString);
             if (orders.containsKey(date_month_year)) {
                 ArrayList<Order> events = orders.get(date_month_year);
-                showEventsDialog(dateString, events);
+                final int count = events.size();
+                for (int i = 0; i < count; i++) {
+                    Order order = events.get(i);
+                    Calendar calendar = GregorianCalendar.getInstance();
+                    calendar.setTime(order.startTime);
+                    int start = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
+                    calendar.setTime(order.endTime);
+                    int end = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
+                }
             }
             try {
                 SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
