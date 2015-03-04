@@ -100,16 +100,11 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:id="@+id/eventsDetails"
-            android:background="#968833a3"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:scrollbars="vertical"
             android:maxLines="4"
-            android:textColor="#FFFFFF"
-            android:paddingTop="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="20dp"
-            android:visibility="gone"
+            android:textColor="#ff520a6b"
+            android:visibility="visible"
             android:layout_weight="0.36"
             android:layout_margin="20dp" />
 
@@ -168,7 +163,8 @@
             <TextView
                 android:text="07"
                 android:id="@+id/h07"
-                style="@style/hour_text" />
+                style="@style/hour_text"
+                android:background="#32adbb02" />
 
             <TextView
                 android:text="08"
@@ -178,7 +174,8 @@
             <TextView
                 android:text="09"
                 android:id="@+id/h09"
-                style="@style/hour_text" />
+                style="@style/hour_text"
+                android:background="#32adbb02" />
 
             <TextView
                 android:text="10"
@@ -188,7 +185,8 @@
             <TextView
                 android:text="11"
                 android:id="@+id/h11"
-                style="@style/hour_text" />
+                style="@style/hour_text"
+                android:background="#32adbb02" />
 
             <TextView
                 android:text="12"
@@ -198,7 +196,8 @@
             <TextView
                 android:text="13"
                 android:id="@+id/h13"
-                style="@style/hour_text" />
+                style="@style/hour_text"
+                android:background="#32adbb02" />
 
             <TextView
                 android:text="14"
@@ -208,7 +207,8 @@
             <TextView
                 android:text="15"
                 android:id="@+id/h15"
-                style="@style/hour_text" />
+                style="@style/hour_text"
+                android:background="#32adbb02" />
 
             <TextView
                 android:text="16"
@@ -218,7 +218,8 @@
             <TextView
                 android:text="17"
                 android:id="@+id/h17"
-                style="@style/hour_text" />
+                style="@style/hour_text"
+                android:background="#32adbb02" />
 
             <TextView
                 android:text="18"
@@ -228,7 +229,8 @@
             <TextView
                 android:text="19"
                 android:id="@+id/h19"
-                style="@style/hour_text" />
+                style="@style/hour_text"
+                android:background="#32adbb02" />
 
             <TextView
                 android:text="20"
@@ -238,7 +240,9 @@
             <TextView
                 android:text="21"
                 android:id="@+id/h21"
-                style="@style/hour_text" />
+                style="@style/hour_text"
+                android:background="#32adbb02" />
+
             <TextView
                 android:text="22"
                 android:id="@+id/h22"
@@ -246,36 +250,18 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/eventsLayout">
+            android:id="@+id/scrollView">
 
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="30dp"
-                android:id="@+id/button"
-                android:layout_marginLeft="60dp"
-                android:layout_alignParentStart="false"
-                android:layout_alignParentTop="false"
-                android:layout_alignParentLeft="false"
-                android:text="Mamografija"
-                style="@style/FilterButton"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventsLayout">
 
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:id="@+id/button2"
-                android:background="#ffbb0f1b"
-                android:layout_marginLeft="220dp"
-                android:layout_alignParentStart="false"
-                android:layout_alignParentTop="false"
-                android:layout_alignParentLeft="false"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp" />
-        </RelativeLayout>
+            </RelativeLayout>
+        </ScrollView>
 
     </LinearLayout>
 

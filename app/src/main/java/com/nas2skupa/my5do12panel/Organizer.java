@@ -33,11 +33,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class Organizer extends BaseActivity implements OnClickListener {
     private static final String tag = "SimpleCalendarViewActivity";
@@ -92,7 +94,6 @@ public class Organizer extends BaseActivity implements OnClickListener {
         eventsDetails.setMovementMethod(new ScrollingMovementMethod());
 
         eventsLayout = (RelativeLayout) this.findViewById(R.id.eventsLayout);
-
     }
 
     @Override
@@ -453,6 +454,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
             }
             if (color.equals("CURRENT")) {
                 gridcell.setTextAppearance(_context, R.style.current_day);
+                gridcell.performClick();
             }
             return row;
         }
@@ -462,17 +464,11 @@ public class Organizer extends BaseActivity implements OnClickListener {
             String date_month_year = (String) view.getTag();
             String dateString = date_month_year.replace('-', '.').concat(".");
             currentDay.setText(dateString);
+            eventsLayout.removeAllViews();
             if (orders.containsKey(date_month_year)) {
                 ArrayList<Order> events = orders.get(date_month_year);
-                final int count = events.size();
-                for (int i = 0; i < count; i++) {
-                    Order order = events.get(i);
-                    Calendar calendar = GregorianCalendar.getInstance();
-                    calendar.setTime(order.startTime);
-                    int start = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
-                    calendar.setTime(order.endTime);
-                    int end = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
-                }
+                Collections.sort(events, new Order.OrderTimeComparator());
+                drawEvents(events, 0);
             }
             try {
                 SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
@@ -482,6 +478,72 @@ public class Organizer extends BaseActivity implements OnClickListener {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+
+        private void drawEvents(ArrayList<Order> events, int row) {
+            int offset = 360;
+            int last = 0;
+            float scale = (float) (eventsLayout.getMeasuredWidth() / 1020.0);
+            ArrayList<Order> leftovers = new ArrayList<Order>();
+
+            for (int i = 0; i < events.size(); i++) {
+                Order event = events.get(i);
+//                if (!event.userConfirm.equals("1") || !event.providerConfirm.equals("1"))
+//                    continue;
+
+                Calendar calendar = GregorianCalendar.getInstance();
+                calendar.setTime(event.startTime);
+                int start = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
+                calendar.setTime(event.endTime);
+                int end = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
+
+                if (start < last) {
+                    leftovers.add(event);
+                    continue;
+                }
+
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT
+                );
+                params.setMargins((int) ((start - offset) * scale), 35 * row + 5, 0, 5);
+                Button eventButton = new Button(_context);
+                eventButton.setTag(event);
+                eventButton.setId(Integer.parseInt(event.id));
+                eventButton.setText(event.serviceName);
+                eventButton.setTextAppearance(_context, R.style.daily_event_style);
+                eventButton.setMinimumWidth(0);
+                eventButton.setMinimumHeight(0);
+                eventButton.setMaxLines(1);
+                eventButton.setPadding(5, 5, 5, 5);
+                eventButton.setHeight(30);
+                eventButton.setWidth((int) ((end - start) * scale));
+                String color = Pattern.compile("#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})").matcher(event.color).matches() ? event.color : "#adbb02";
+                eventButton.setBackgroundColor(Color.parseColor(color));
+                eventButton.setAlpha(0.6f);
+                eventButton.setLayoutParams(params);
+                eventButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        v.requestFocusFromTouch();
+                        Order event = (Order) v.getTag();
+                        SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
+                        eventsDetails.setText(event.uName + " " + event.uSurname + "\n"
+                                + event.serviceName + ", " + tf.format(event.startTime) + "-" + tf.format(event.endTime) + "\n"
+                                + event.servicePrice + " kn");
+                    }
+                });
+                eventButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        v.setAlpha(hasFocus ? 1.0f : 0.6f);
+                    }
+                });
+                eventsLayout.addView(eventButton);
+                last = end;
+            }
+            if (leftovers.size() > 0)
+                drawEvents(leftovers, ++row);
         }
 
         public void showEventsDialog(String date, final ArrayList<Order> events) {

@@ -43,4 +43,13 @@
         <item name="android:textStyle">normal</item>
         <!--<item name="android:textSize">8sp</item>-->
     </style>
+
+    <style name="daily_event_style">
+        <!--<item name="android:padding">5dp</item>-->
+        <!--<item name="android:layout_margin">5dp</item>-->
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
 </resources>

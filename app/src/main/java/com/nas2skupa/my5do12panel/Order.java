@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -35,25 +36,31 @@ public class Order {
         DateFormat tf = new SimpleDateFormat("HH:mm:ss");
 
         try {
-            this.id = jsonObj.optString("id");
-            this.proId = jsonObj.optString("proId");
-            this.uName = jsonObj.optString("uName");
-            this.uSurname = jsonObj.optString("uSurname");
-            this.userId = jsonObj.optString("userId");
-            this.serviceId = jsonObj.optString("serviceId");
-            this.serviceName = jsonObj.optString("serviceName");
-            this.servicePrice = jsonObj.optString("servicePrice");
-            this.date = df.parse(jsonObj.optString("date"));
-            this.startTime = tf.parse(jsonObj.optString("startTime"));
-            this.endTime = tf.parse(jsonObj.optString("endTime"));
-            this.userConfirm = jsonObj.optString("userConfirm");
-            this.providerConfirm = jsonObj.optString("providerConfirm");
-            this.userNote = jsonObj.optString("userNote");
-            this.providerNote = jsonObj.optString("providerNote");
-            this.color = jsonObj.optString("color");
+            this.id = jsonObj.optString("id").trim();
+            this.proId = jsonObj.optString("proId").trim();
+            this.uName = jsonObj.optString("uName").trim();
+            this.uSurname = jsonObj.optString("uSurname").trim();
+            this.userId = jsonObj.optString("userId").trim();
+            this.serviceId = jsonObj.optString("serviceId").trim();
+            this.serviceName = jsonObj.optString("serviceName").trim();
+            this.servicePrice = jsonObj.optString("servicePrice").trim();
+            this.date = df.parse(jsonObj.optString("date").trim());
+            this.startTime = tf.parse(jsonObj.optString("startTime").trim());
+            this.endTime = tf.parse(jsonObj.optString("endTime").trim());
+            this.userConfirm = jsonObj.optString("userConfirm").trim();
+            this.providerConfirm = jsonObj.optString("providerConfirm").trim();
+            this.userNote = jsonObj.optString("userNote").trim();
+            this.providerNote = jsonObj.optString("providerNote").trim();
+            this.color = jsonObj.optString("color").trim();
         } catch (ParseException e) {
             Log.e("Order", "Invalid JSON data object");
             e.printStackTrace();
+        }
+    }
+
+    public static class OrderTimeComparator implements Comparator<Order> {
+        public int compare(Order left, Order right) {
+            return left.startTime.compareTo(right.startTime);
         }
     }
 }
