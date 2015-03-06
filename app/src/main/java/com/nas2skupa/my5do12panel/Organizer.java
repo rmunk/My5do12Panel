@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.format.DateFormat;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -157,7 +158,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
      * @param year
      */
     private void setGridCellAdapterToDate(int month, int year) {
-        adapter = new GridCellAdapter(getApplicationContext(), R.id.calendar_day_gridcell, month, year);
+        adapter.setCalendarDate(year, month, 1);
+//        adapter = new GridCellAdapter(getApplicationContext(), R.id.calendar_day_gridcell, month, year);
         updateCalendar(month, year);
     }
 
@@ -204,17 +206,18 @@ public class Organizer extends BaseActivity implements OnClickListener {
         private static final String tag = "GridCellAdapter";
         private final Context _context;
 
-        private final List<String> list;
+        private List<String> list;
         private static final int DAY_OFFSET = 2;
         private final String[] weekdays = new String[]{"Ned", "Pon", "Uto", "Sri", "Čet", "Pet", "Sub"};
         private final String[] months = {"Siječanj", "Veljača", "Ožujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"};
         private final int[] daysOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        private final int month, year;
+        private int month, year;
         private int daysInMonth, prevMonthDays;
         private Calendar currentDate;
         private int currentDayOfMonth;
         private int currentWeekDay;
         private Button gridcell;
+        private Button todayGridcell;
         private TextView num_events_per_day;
         private HashMap eventsPerMonthMap;
         private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy");
@@ -222,6 +225,16 @@ public class Organizer extends BaseActivity implements OnClickListener {
         private ProgressDialog pDialog;
         private String url;
         public HashMap<String, ArrayList<Order>> orders = new HashMap<String, ArrayList<Order>>();
+        private boolean showToday = true;
+
+        private Runnable updateOrders = new Runnable() {
+            @Override
+            public void run() {
+                refreshCalendar();
+                updater.postDelayed(this, 10000);
+            }
+        };
+        private Handler updater = new Handler();
 
         // Days in Current Month
         public GridCellAdapter(Context context, int textViewResourceId, int month, int year) {
@@ -245,6 +258,16 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
             printMonth(month, year);
 
+            updater.postDelayed(updateOrders, 5000);
+        }
+
+        public void setCalendarDate(int year, int month, int day) {
+            this.list = new ArrayList<String>();
+            this.month = month;
+            this.year = year;
+
+            currentMonth.setText(getMonthAsString(month - 1) + ", " + year + ".");
+            printMonth(month, year);
             refreshCalendar();
         }
 
@@ -281,6 +304,10 @@ public class Organizer extends BaseActivity implements OnClickListener {
             } catch (JSONException e) {
                 Log.e("ActionHttpRequest", "Error parsing server data.");
                 e.printStackTrace();
+            }
+            if (showToday && todayGridcell != null) {
+                todayGridcell.performClick();
+                showToday = false;
             }
             this.notifyDataSetChanged();
             calendarView.setAdapter(this);
@@ -454,7 +481,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
             }
             if (color.equals("CURRENT")) {
                 gridcell.setTextAppearance(_context, R.style.current_day);
-                gridcell.performClick();
+                todayGridcell = gridcell;
             }
             return row;
         }
@@ -465,10 +492,12 @@ public class Organizer extends BaseActivity implements OnClickListener {
             String dateString = date_month_year.replace('-', '.').concat(".");
             currentDay.setText(dateString);
             eventsLayout.removeAllViews();
+            eventsDetails.setText("");
             if (orders.containsKey(date_month_year)) {
                 ArrayList<Order> events = orders.get(date_month_year);
                 Collections.sort(events, new Order.OrderTimeComparator());
                 drawEvents(events, 0);
+                eventsLayout.requestLayout();
             }
             try {
                 SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");

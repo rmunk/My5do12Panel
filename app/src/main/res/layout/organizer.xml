@@ -30,13 +30,12 @@
             <Button
                 android:id="@+id/currentMonth"
                 android:layout_weight="0.6"
-                android:textColor="#697202"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:background="@drawable/calendar_tile_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="MJESEC"
-                android:textSize="15dp" />
+                android:textSize="15dp"
+                style="@style/month_text" />
 
             <ImageView
                 android:id="@+id/nextMonth"
@@ -123,13 +122,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/prevDay"
-                android:src="@layout/calendar_left_arrow_selector"
-                android:layout_width="48dp"
-                android:background="@drawable/calendar_tile_new"
-                android:layout_height="fill_parent" />
-
             <Button
                 android:id="@+id/currentDay"
                 android:layout_weight="0.6"
@@ -141,12 +133,6 @@
                 android:text="DAN"
                 android:textSize="15dp" />
 
-            <ImageView
-                android:id="@+id/nextDay"
-                android:src="@layout/calendar_right_arrow_selector"
-                android:layout_width="48dp"
-                android:background="@drawable/calendar_tile_new"
-                android:layout_height="fill_parent" />
         </LinearLayout>
 
         <LinearLayout

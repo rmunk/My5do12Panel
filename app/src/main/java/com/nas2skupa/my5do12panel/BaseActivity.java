@@ -129,8 +129,8 @@ public class BaseActivity extends Activity {
 
     }
 	public void homeActivity() {
-		Intent i = new Intent(this, HomeScreen.class);
-	    startActivity(i);
+        Intent i = new Intent(this, Organizer.class);
+        startActivity(i);
 	}
 
 	public void listActivity() {
