@@ -258,7 +258,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
             printMonth(month, year);
 
-            updater.postDelayed(updateOrders, 5000);
+            updater.post(updateOrders);
         }
 
         public void setCalendarDate(int year, int month, int day) {
@@ -272,7 +272,6 @@ public class Organizer extends BaseActivity implements OnClickListener {
         }
 
         public void refreshCalendar() {
-            orders.clear();
             final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
             String userId = prefs.getString("id", "");
             Uri uri = new Uri.Builder().encodedPath("http://nas2skupa.com/5do12/getProOrders.aspx")
@@ -293,24 +292,29 @@ public class Organizer extends BaseActivity implements OnClickListener {
             try {
                 JSONObject jsonObj = new JSONObject(result);
                 JSONArray jsonArray = jsonObj.getJSONArray("ordersPro");
+                HashMap<String, ArrayList<Order>> newOrders = new HashMap<String, ArrayList<Order>>();
+
                 for (int i = 0; i < jsonArray.length(); i++) {
                     Order order = new Order(jsonArray.getJSONObject(i));
                     String key = new DateFormat().format("d-M-yyyy", order.date).toString();
-                    if (orders.containsKey(key))
-                        orders.get(key).add(order);
+                    if (newOrders.containsKey(key))
+                        newOrders.get(key).add(order);
                     else
-                        orders.put(key, new ArrayList<Order>(Arrays.asList(order)));
+                        newOrders.put(key, new ArrayList<Order>(Arrays.asList(order)));
                 }
+                if (!showToday && orders.equals(newOrders))
+                    return;
+                orders = newOrders;
+                if (showToday && todayGridcell != null) {
+                    todayGridcell.performClick();
+                    showToday = false;
+                }
+                this.notifyDataSetChanged();
+                calendarView.setAdapter(this);
             } catch (JSONException e) {
                 Log.e("ActionHttpRequest", "Error parsing server data.");
                 e.printStackTrace();
             }
-            if (showToday && todayGridcell != null) {
-                todayGridcell.performClick();
-                showToday = false;
-            }
-            this.notifyDataSetChanged();
-            calendarView.setAdapter(this);
         }
 
         private String getMonthAsString(int i) {

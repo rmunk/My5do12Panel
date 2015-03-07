@@ -63,4 +63,10 @@ public class Order {
             return left.startTime.compareTo(right.startTime);
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Order that = (Order) o;
+        return this.id.equals(that.id);
+    }
 }
