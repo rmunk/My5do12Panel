@@ -22,6 +22,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -47,8 +47,9 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
     private ImageView calendarToJournalButton;
     private Button selectedDayMonthYearButton;
-    private TextView eventsDetails;
-    private RelativeLayout eventsLayout;
+    private TextView ordersDetails;
+    private RelativeLayout ordersLayout;
+    private LinearLayout orderConfirmation;
     private Button currentMonth;
     private Button currentDay;
     private ImageView prevMonth;
@@ -91,10 +92,12 @@ public class Organizer extends BaseActivity implements OnClickListener {
         // Initialised
         adapter = new GridCellAdapter(getApplicationContext(), R.id.calendar_day_gridcell, month, year);
 
-        eventsDetails = (TextView) this.findViewById(R.id.eventsDetails);
-        eventsDetails.setMovementMethod(new ScrollingMovementMethod());
+        ordersDetails = (TextView) this.findViewById(R.id.eventsDetails);
+        ordersDetails.setMovementMethod(new ScrollingMovementMethod());
 
-        eventsLayout = (RelativeLayout) this.findViewById(R.id.eventsLayout);
+        orderConfirmation = (LinearLayout) this.findViewById(R.id.eventConfirmation);
+
+        ordersLayout = (RelativeLayout) this.findViewById(R.id.eventsLayout);
     }
 
     @Override
@@ -217,15 +220,10 @@ public class Organizer extends BaseActivity implements OnClickListener {
         private int currentDayOfMonth;
         private int currentWeekDay;
         private Button gridcell;
-        private Button todayGridcell;
         private TextView num_events_per_day;
-        private HashMap eventsPerMonthMap;
-        private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MMM-yyyy");
 
-        private ProgressDialog pDialog;
-        private String url;
-        public HashMap<String, ArrayList<Order>> orders = new HashMap<String, ArrayList<Order>>();
-        private boolean showToday = true;
+        public HashMap<String, ArrayList<Order>> monthOrders = new HashMap<String, ArrayList<Order>>();
+        private String selectedDate;
 
         private Runnable updateOrders = new Runnable() {
             @Override
@@ -255,6 +253,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
             // Print Month
             currentMonth.setText(getMonthAsString(month - 1) + ", " + year + ".");
+            currentDay.setText(new DateFormat().format("d.M.yyyy.", currentDate).toString());
+            selectedDate = new DateFormat().format("d-M-yyyy", currentDate).toString();
 
             printMonth(month, year);
 
@@ -292,25 +292,26 @@ public class Organizer extends BaseActivity implements OnClickListener {
             try {
                 JSONObject jsonObj = new JSONObject(result);
                 JSONArray jsonArray = jsonObj.getJSONArray("ordersPro");
-                HashMap<String, ArrayList<Order>> newOrders = new HashMap<String, ArrayList<Order>>();
+                HashMap<String, ArrayList<Order>> newMonthOrders = new HashMap<String, ArrayList<Order>>();
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     Order order = new Order(jsonArray.getJSONObject(i));
+                    if (order.providerConfirm > 1 || order.userConfirm > 1) continue;
+                    if (order.providerConfirm == 0) order.color = "#C90C62";
+                    order.color = Pattern.compile("#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})").matcher(order.color).matches() ? order.color : "#adbb02";
                     String key = new DateFormat().format("d-M-yyyy", order.date).toString();
-                    if (newOrders.containsKey(key))
-                        newOrders.get(key).add(order);
+                    if (newMonthOrders.containsKey(key))
+                        newMonthOrders.get(key).add(order);
                     else
-                        newOrders.put(key, new ArrayList<Order>(Arrays.asList(order)));
+                        newMonthOrders.put(key, new ArrayList<Order>(Arrays.asList(order)));
                 }
-                if (!showToday && orders.equals(newOrders))
-                    return;
-                orders = newOrders;
-                if (showToday && todayGridcell != null) {
-                    todayGridcell.performClick();
-                    showToday = false;
-                }
+
+                if (monthOrders.equals(newMonthOrders)) return;
+                monthOrders = newMonthOrders;
+
                 this.notifyDataSetChanged();
                 calendarView.setAdapter(this);
+                drawDayOrders(new ArrayList<Order>(monthOrders.get(selectedDate)), 0);
             } catch (JSONException e) {
                 Log.e("ActionHttpRequest", "Error parsing server data.");
                 e.printStackTrace();
@@ -455,16 +456,18 @@ public class Organizer extends BaseActivity implements OnClickListener {
             final String themonth = day_color[2];
             final String theyear = day_color[3];
             final String key = theday + "-" + themonth + "-" + theyear;
-            if (orders.size() > 0) {
-                if (orders.containsKey(key)) {
+            if (monthOrders.size() > 0) {
+                if (monthOrders.containsKey(key)) {
                     try {
                         Calendar orderDate = Calendar.getInstance();
-                        orderDate.setTime(new SimpleDateFormat("dd-MM-yyyy").parse(key));
+                        orderDate.setTime(new SimpleDateFormat("d-M-yyyy").parse(key));
                         num_events_per_day = (TextView) row.findViewById(R.id.num_events_per_day);
-                        Integer numEvents = orders.get(key).size();
-                        num_events_per_day.setText(numEvents.toString());
-                        if (orderDate.before(currentDate))
-                            num_events_per_day.setTextAppearance(_context, R.style.calendar_passed_event_style);
+                        Integer numOrders = monthOrders.get(key).size();
+                        num_events_per_day.setText(numOrders.toString());
+                        for (Order o : monthOrders.get(key))
+                            numOrders -= o.providerConfirm;
+                        if (numOrders > 0)
+                            num_events_per_day.setTextAppearance(_context, R.style.calendar_new_events_style);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -485,53 +488,41 @@ public class Organizer extends BaseActivity implements OnClickListener {
             }
             if (color.equals("CURRENT")) {
                 gridcell.setTextAppearance(_context, R.style.current_day);
-                todayGridcell = gridcell;
             }
             return row;
         }
 
         @Override
         public void onClick(View view) {
-            String date_month_year = (String) view.getTag();
-            String dateString = date_month_year.replace('-', '.').concat(".");
+            selectedDate = (String) view.getTag();
+            String dateString = selectedDate.replace('-', '.').concat(".");
             currentDay.setText(dateString);
-            eventsLayout.removeAllViews();
-            eventsDetails.setText("");
-            if (orders.containsKey(date_month_year)) {
-                ArrayList<Order> events = orders.get(date_month_year);
-                Collections.sort(events, new Order.OrderTimeComparator());
-                drawEvents(events, 0);
-                eventsLayout.requestLayout();
-            }
-            try {
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy");
-                Date parsedDate = dateFormatter.parse(dateString);
-                Log.d(tag, "Parsed Date: " + parsedDate.toString());
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            ordersDetails.setText("");
+            orderConfirmation.setVisibility(View.GONE);
+            drawDayOrders(new ArrayList<Order>(monthOrders.get(selectedDate)), 0);
         }
 
-        private void drawEvents(ArrayList<Order> events, int row) {
-            int offset = 360;
+        private void drawDayOrders(ArrayList<Order> orders, int row) {
+            if (row == 0) ordersLayout.removeAllViews();
+            if (orders == null) return;
+
+            final int offset = 360;
+            final float scale = (float) (ordersLayout.getMeasuredWidth() / 1020.0);
             int last = 0;
-            float scale = (float) (eventsLayout.getMeasuredWidth() / 1020.0);
             ArrayList<Order> leftovers = new ArrayList<Order>();
 
-            for (int i = 0; i < events.size(); i++) {
-                Order event = events.get(i);
-//                if (!event.userConfirm.equals("1") || !event.providerConfirm.equals("1"))
-//                    continue;
+            Collections.sort(orders, new Order.OrderTimeComparator());
+            for (int i = 0; i < orders.size(); i++) {
+                Order order = orders.get(i);
 
                 Calendar calendar = GregorianCalendar.getInstance();
-                calendar.setTime(event.startTime);
+                calendar.setTime(order.startTime);
                 int start = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
-                calendar.setTime(event.endTime);
+                calendar.setTime(order.endTime);
                 int end = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE);
 
                 if (start < last) {
-                    leftovers.add(event);
+                    leftovers.add(order);
                     continue;
                 }
 
@@ -540,49 +531,56 @@ public class Organizer extends BaseActivity implements OnClickListener {
                         RelativeLayout.LayoutParams.WRAP_CONTENT
                 );
                 params.setMargins((int) ((start - offset) * scale), 35 * row + 5, 0, 5);
-                Button eventButton = new Button(_context);
-                eventButton.setTag(event);
-                eventButton.setId(Integer.parseInt(event.id));
-                eventButton.setText(event.serviceName);
-                eventButton.setTextAppearance(_context, R.style.daily_event_style);
-                eventButton.setMinimumWidth(0);
-                eventButton.setMinimumHeight(0);
-                eventButton.setMaxLines(1);
-                eventButton.setPadding(5, 5, 5, 5);
-                eventButton.setHeight(30);
-                eventButton.setWidth((int) ((end - start) * scale));
-                String color = Pattern.compile("#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})").matcher(event.color).matches() ? event.color : "#adbb02";
-                eventButton.setBackgroundColor(Color.parseColor(color));
-                eventButton.setAlpha(0.6f);
-                eventButton.setLayoutParams(params);
-                eventButton.setOnClickListener(new OnClickListener() {
+                Button orderButton = new Button(_context);
+                orderButton.setTag(order);
+                orderButton.setId(Integer.parseInt(order.id));
+                orderButton.setText(order.serviceName);
+                orderButton.setTextAppearance(_context, R.style.daily_event_style);
+                orderButton.setMinimumWidth(0);
+                orderButton.setMinimumHeight(0);
+                orderButton.setMaxLines(1);
+                orderButton.setPadding(5, 5, 5, 5);
+                orderButton.setHeight(30);
+                orderButton.setWidth((int) ((end - start) * scale));
+                orderButton.setBackgroundColor(Color.parseColor(order.color));
+                orderButton.setLayoutParams(params);
+                orderButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         v.requestFocusFromTouch();
-                        Order event = (Order) v.getTag();
+                        Order order = (Order) v.getTag();
                         SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
-                        eventsDetails.setText(event.uName + " " + event.uSurname + "\n"
-                                + event.serviceName + ", " + tf.format(event.startTime) + "-" + tf.format(event.endTime) + "\n"
-                                + event.servicePrice + " kn");
+                        ordersDetails.setText(order.uName + " " + order.uSurname + "\n"
+                                + order.serviceName + ", " + tf.format(order.startTime) + "-" + tf.format(order.endTime) + "\n"
+                                + order.servicePrice + " kn");
+                        if (order.providerConfirm == 0)
+                            orderConfirmation.setVisibility(View.VISIBLE);
+
                     }
                 });
-                eventButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                orderButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
-                        v.setAlpha(hasFocus ? 1.0f : 0.6f);
+                        if (hasFocus)
+                            v.setBackgroundColor(Color.parseColor("#330F82"));
+                        else {
+                            Order order = (Order) v.getTag();
+                            v.setBackgroundColor(Color.parseColor(order.color));
+//                            ordersDetails.setText("");
+                        }
                     }
                 });
-                eventsLayout.addView(eventButton);
+                ordersLayout.addView(orderButton);
                 last = end;
             }
             if (leftovers.size() > 0)
-                drawEvents(leftovers, ++row);
+                drawDayOrders(leftovers, ++row);
         }
 
-        public void showEventsDialog(String date, final ArrayList<Order> events) {
-            final int count = events.size();
+        public void showOrdersDialog(String date, final ArrayList<Order> orders) {
+            final int count = orders.size();
             final boolean[] selectedItems = new boolean[count];
-            final String[] eventsDescriptions = new String[count];
+            final String[] ordersDescriptions = new String[count];
             Calendar orderDate = Calendar.getInstance();
             try {
                 orderDate.setTime(new SimpleDateFormat("dd.MM.yyyy.").parse(date));
@@ -592,8 +590,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
             }
             SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
             for (int i = 0; i < count; i++) {
-                Order order = events.get(i);
-                eventsDescriptions[i] = String.format("%s %s\n%s - %s\n%s (%s kn)",
+                Order order = orders.get(i);
+                ordersDescriptions[i] = String.format("%s %s\n%s - %s\n%s (%s kn)",
                         order.uName,
                         order.uSurname,
                         tf.format(order.startTime),
@@ -604,9 +602,9 @@ public class Organizer extends BaseActivity implements OnClickListener {
             AlertDialog.Builder builder = new AlertDialog.Builder(Organizer.this);
             builder.setTitle(date);
             if (orderDate.before(currentDate))
-                builder.setItems(eventsDescriptions, null);
+                builder.setItems(ordersDescriptions, null);
             else {
-                builder.setMultiChoiceItems(eventsDescriptions, null,
+                builder.setMultiChoiceItems(ordersDescriptions, null,
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -617,7 +615,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         for (int i = 0; i < count; i++) {
                             if (selectedItems[i])
-                                sendConfirmation(events.get(i).id, "3");
+                                sendConfirmation(orders.get(i).id, "3");
                         }
                     }
                 });

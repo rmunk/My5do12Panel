@@ -19,5 +19,9 @@
     <color name="orrange">#e33d1b</color>
     <color name="darkorrange">#cc2303</color>
     <color name="greenApp">#adbb00</color>
+    <color name="event_confirmed">#adbb00</color>
+    <color name="event_unconfirmed">#C90C62</color>
+    <color name="event_selected">#330F82</color>
+    <color name="event_discounted">#FF0000</color>
 
 </resources>

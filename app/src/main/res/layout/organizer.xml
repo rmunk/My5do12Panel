@@ -97,15 +97,47 @@
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/eventsDetails"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:scrollbars="vertical"
             android:maxLines="4"
             android:textColor="#ff520a6b"
             android:visibility="visible"
-            android:layout_weight="0.36"
-            android:layout_margin="20dp" />
+            android:layout_margin="10dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/eventConfirmation"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventConfirm"
+                android:background="@drawable/nar_potvrdi"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventCancel"
+                android:background="@drawable/nar_odbij"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventSuggest"
+                android:background="@drawable/nar_ponudi"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp" />
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -238,16 +270,86 @@
 
         <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/scrollView">
+            android:layout_height="0dp"
+            android:id="@+id/scrollView"
+            android:layout_weight="0.9">
 
-            <RelativeLayout
+        <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/eventsLayout">
 
             </RelativeLayout>
         </ScrollView>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:paddingBottom="5dp"
+            android:layout_weight="0.1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Status termina:"
+                android:id="@+id/textView"
+                android:layout_gravity="bottom" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="Potvrđen"
+                android:id="@+id/button"
+                android:layout_gravity="bottom"
+                style="@style/daily_event_style"
+                android:background="@color/greenApp"
+                android:layout_marginLeft="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:minWidth="0dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="Nepotvrđen"
+                android:id="@+id/button2"
+                android:background="@color/event_unconfirmed"
+                style="@style/daily_event_style"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:minWidth="0dp" />
+
+            <Button
+                style="@style/daily_event_style"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="Akcija"
+                android:id="@+id/button4"
+                android:background="@color/event_discounted"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:minWidth="0dp" />
+
+            <Button
+                style="@style/daily_event_style"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="Odabran"
+                android:id="@+id/button3"
+                android:background="@color/event_selected"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:minWidth="0dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

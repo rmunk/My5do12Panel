@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#adbb00"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <EditText
         android:id="@+id/inputSearch"
@@ -17,7 +17,7 @@
         android:textColor="#FFFFFF"
         android:imeOptions="actionSearch"
         android:hint="Pretraži 5do12"
-        android:inputType="text"/>
+        android:inputType="text" />
 
     <ImageView
         android:id="@+id/imageView1"
@@ -42,6 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/breakline" />
+
     <TextView
         android:id="@+id/organizatorbtn"
         android:layout_width="wrap_content"
@@ -59,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/breakline" />
-    
+
     <TextView
         android:id="@+id/profilbtn"
         android:layout_width="wrap_content"
@@ -71,13 +72,14 @@
         android:gravity="center_vertical"
         android:drawablePadding="10dp"
         android:src="@drawable/pocetnabtn" />
+
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/breakline" />
 
-    
+
     <TextView
         android:id="@+id/favoritibtn"
         android:layout_width="wrap_content"
@@ -89,6 +91,7 @@
         android:gravity="center_vertical"
         android:drawablePadding="10dp"
         android:src="@drawable/pocetnabtn" />
+
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="wrap_content"
@@ -106,6 +109,7 @@
         android:gravity="center_vertical"
         android:drawablePadding="10dp"
         android:src="@drawable/pocetnabtn" />
+
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="wrap_content"

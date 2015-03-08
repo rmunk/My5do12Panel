@@ -25,8 +25,8 @@ public class Order {
     public Date date;
     public Date startTime;
     public Date endTime;
-    public String userConfirm;
-    public String providerConfirm;
+    public int userConfirm;
+    public int providerConfirm;
     public String userNote;
     public String providerNote;
     public String color;
@@ -47,8 +47,8 @@ public class Order {
             this.date = df.parse(jsonObj.optString("date").trim());
             this.startTime = tf.parse(jsonObj.optString("startTime").trim());
             this.endTime = tf.parse(jsonObj.optString("endTime").trim());
-            this.userConfirm = jsonObj.optString("userConfirm").trim();
-            this.providerConfirm = jsonObj.optString("providerConfirm").trim();
+            this.userConfirm = Integer.parseInt(jsonObj.optString("userConfirm").trim());
+            this.providerConfirm = Integer.parseInt(jsonObj.optString("providerConfirm").trim());
             this.userNote = jsonObj.optString("userNote").trim();
             this.providerNote = jsonObj.optString("providerNote").trim();
             this.color = jsonObj.optString("color").trim();
@@ -67,6 +67,6 @@ public class Order {
     @Override
     public boolean equals(Object o) {
         Order that = (Order) o;
-        return this.id.equals(that.id);
+        return this.id.equals(that.id) && this.userConfirm == that.userConfirm && this.providerConfirm == that.providerConfirm;
     }
 }
