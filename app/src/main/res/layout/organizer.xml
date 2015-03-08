@@ -12,7 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="0.7"
-        android:background="#6461067e"
+        android:background="@color/calendar_background"
         android:weightSum="1">
 
         <LinearLayout
@@ -99,25 +99,24 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/eventsDetails"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:scrollbars="vertical"
             android:maxLines="4"
-            android:textColor="#ff520a6b"
             android:visibility="visible"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"
+            style="@style/calendar_event_details" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/eventConfirmation"
+            android:id="@+id/orderConfirmation"
             android:visibility="gone"
             android:layout_gravity="center_horizontal">
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/eventConfirm"
+                android:id="@+id/orderConfirm"
                 android:background="@drawable/nar_potvrdi"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp" />
@@ -125,7 +124,8 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/eventCancel"
+                android:id="@+id/orderCancel"
+                android:tint="@color/calendar_text"
                 android:background="@drawable/nar_odbij"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp" />
@@ -133,7 +133,7 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/eventSuggest"
+                android:id="@+id/orderSuggest"
                 android:background="@drawable/nar_ponudi"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp" />
@@ -317,19 +317,6 @@
                 android:id="@+id/button2"
                 android:background="@color/event_unconfirmed"
                 style="@style/daily_event_style"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:minWidth="0dp" />
-
-            <Button
-                style="@style/daily_event_style"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="Akcija"
-                android:id="@+id/button4"
-                android:background="@color/event_discounted"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="10dp"
                 android:paddingLeft="10dp"

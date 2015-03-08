@@ -5,7 +5,7 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:gravity">center_horizontal|center_vertical</item>
-        <item name="android:textColor">#4E0367</item>
+        <item name="android:textColor">@color/calendar_text</item>
     </style>
 
     <style name="week_day_text">
@@ -14,7 +14,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center_horizontal|bottom</item>
-        <item name="android:textColor">#4E0367</item>
+        <item name="android:textColor">@color/calendar_text</item>
     </style>
 
     <style name="hour_text">
@@ -23,30 +23,30 @@
         <item name="android:layout_weight">1</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center_horizontal|bottom</item>
-        <item name="android:textColor">#ffadbb02</item>
+        <item name="android:textColor">@color/greenApp</item>
     </style>
 
     <style name="current_day">
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#C90C62</item>
+        <item name="android:textColor">@color/calendar_text_accented</item>
     </style>
 
     <style name="active_month_day">
-        <item name="android:textColor">#39014A</item>
+        <item name="android:textColor">@color/calendar_text</item>
     </style>
 
     <style name="passive_month_day">
-        <item name="android:textColor">#8833A3</item>
+        <item name="android:textColor">@color/calendar_text_light</item>
     </style>
 
     <style name="calendar_events_style" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">#8833A3</item>
+        <item name="android:textColor">@color/calendar_text</item>
         <item name="android:textStyle">normal</item>
         <!--<item name="android:textSize">8sp</item>-->
     </style>
 
     <style name="calendar_new_events_style" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">#C90C62</item>
+        <item name="android:textColor">@color/calendar_text_accented</item>
         <item name="android:textStyle">bold</item>
         <!--<item name="android:textSize">8sp</item>-->
     </style>
@@ -59,4 +59,9 @@
         <item name="android:textSize">14dp</item>
     </style>
 
+    <style name="calendar_event_details" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/calendar_text</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">16dp</item>
+    </style>
 </resources>

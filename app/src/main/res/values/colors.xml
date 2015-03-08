@@ -13,7 +13,7 @@
     <color name="sky">#0099CC</color>
     <color name="gray">#808080</color>
     <color name="lightgray">#e7e7e7</color>
-      <color name="lightgray02">#bfbfbf</color>
+    <color name="lightgray02">#bfbfbf</color>
     <color name="dark">#000015</color>
     <color name="lightgreen">#336666</color>
     <color name="orrange">#e33d1b</color>
@@ -23,5 +23,11 @@
     <color name="event_unconfirmed">#C90C62</color>
     <color name="event_selected">#330F82</color>
     <color name="event_discounted">#FF0000</color>
+    <color name="calendar_background">#6461067e</color>
+    <color name="calendar_text">#4E0366</color>
+    <color name="calendar_text_light">#FF8833A3</color>
+    <color name="calendar_text_dark">#38014A</color>
+    <color name="calendar_text_accented">#C90C62</color>
+
 
 </resources>

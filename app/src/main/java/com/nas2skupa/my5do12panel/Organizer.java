@@ -2,7 +2,6 @@ package com.nas2skupa.my5do12panel;
 
 import android.app.AlertDialog;
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +19,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,6 +51,9 @@ public class Organizer extends BaseActivity implements OnClickListener {
     private TextView ordersDetails;
     private RelativeLayout ordersLayout;
     private LinearLayout orderConfirmation;
+    private ImageButton orderConfirm;
+    private ImageButton orderCancel;
+    private ImageButton orderSuggest;
     private Button currentMonth;
     private Button currentDay;
     private ImageView prevMonth;
@@ -95,7 +99,15 @@ public class Organizer extends BaseActivity implements OnClickListener {
         ordersDetails = (TextView) this.findViewById(R.id.eventsDetails);
         ordersDetails.setMovementMethod(new ScrollingMovementMethod());
 
-        orderConfirmation = (LinearLayout) this.findViewById(R.id.eventConfirmation);
+        orderConfirmation = (LinearLayout) this.findViewById(R.id.orderConfirmation);
+//        Drawable d = getResources().getDrawable(R.drawable.nar_potvrdi);
+//        d.setColorFilter(R.color.calendar_text_light, PorterDuff.Mode.DST_ATOP);
+
+        orderConfirm = (ImageButton) this.findViewById(R.id.orderConfirm);
+        orderConfirm.setOnClickListener(orderConfirmationListener);
+        orderCancel = (ImageButton) this.findViewById(R.id.orderCancel);
+        orderCancel.setOnClickListener(orderConfirmationListener);
+        orderSuggest = (ImageButton) this.findViewById(R.id.orderSuggest);
 
         ordersLayout = (RelativeLayout) this.findViewById(R.id.eventsLayout);
     }
@@ -109,6 +121,34 @@ public class Organizer extends BaseActivity implements OnClickListener {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(notification.getIntExtra("notificationId", -1));
         }
+    }
+
+    OnClickListener orderConfirmationListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Order order = (Order) orderConfirmation.getTag();
+            if (view == orderConfirm)
+                showConfirmationDialog(order);
+            else if (view == orderConfirm) {
+                sendConfirmation(order.id, "2", "");
+            }
+        }
+    };
+
+    public void showConfirmationDialog(Order order) {
+        final String orderId = order.id;
+        final EditText note = new EditText(this);
+        new AlertDialog.Builder(this)
+                .setTitle("Potvrda termina")
+                .setMessage("Unesite poruku za korisnika:")
+                .setView(note)
+                .setPositiveButton("Potvrdi", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendConfirmation(orderId, "1", note.getText().toString());
+                    }
+                })
+                .setNegativeButton("Odustani", null)
+                .show();
     }
 
     public void showNotificationDialog(Bundle data) {
@@ -131,21 +171,22 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 .setMessage(message)
                 .setPositiveButton("Potvrdi", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        sendConfirmation(orderId, "1");
+//                        sendConfirmation(orderId, "1");
                     }
                 })
                 .setNegativeButton("Otkaži", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        sendConfirmation(orderId, "2");
+//                        sendConfirmation(orderId, "2");
                     }
                 })
                 .show();
     }
 
-    private void sendConfirmation(String orderId, String confirmed) {
-        Uri uri = new Uri.Builder().encodedPath("http://nas2skupa.com/5do12/confirmUser.aspx")
+    private void sendConfirmation(String orderId, String confirmed, String note) {
+        Uri uri = new Uri.Builder().encodedPath("http://nas2skupa.com/5do12/confirmOrder.aspx")
                 .appendQueryParameter("orderId", orderId)
                 .appendQueryParameter("confirmed", confirmed)
+                .appendQueryParameter("note", note)
                 .build();
         new HttpRequest(getApplicationContext(), uri, true)
                 .setOnHttpResultListener(new HttpRequest.OnHttpResultListener() {
@@ -311,7 +352,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
                 this.notifyDataSetChanged();
                 calendarView.setAdapter(this);
-                drawDayOrders(new ArrayList<Order>(monthOrders.get(selectedDate)), 0);
+                drawDayOrders(monthOrders.get(selectedDate), 0);
             } catch (JSONException e) {
                 Log.e("ActionHttpRequest", "Error parsing server data.");
                 e.printStackTrace();
@@ -499,16 +540,17 @@ public class Organizer extends BaseActivity implements OnClickListener {
             currentDay.setText(dateString);
             ordersDetails.setText("");
             orderConfirmation.setVisibility(View.GONE);
-            drawDayOrders(new ArrayList<Order>(monthOrders.get(selectedDate)), 0);
+            drawDayOrders(monthOrders.get(selectedDate), 0);
         }
 
-        private void drawDayOrders(ArrayList<Order> orders, int row) {
+        private void drawDayOrders(ArrayList<Order> input_orders, int row) {
             if (row == 0) ordersLayout.removeAllViews();
-            if (orders == null) return;
+            if (input_orders == null) return;
 
             final int offset = 360;
             final float scale = (float) (ordersLayout.getMeasuredWidth() / 1020.0);
             int last = 0;
+            ArrayList<Order> orders = new ArrayList<Order>(input_orders);
             ArrayList<Order> leftovers = new ArrayList<Order>();
 
             Collections.sort(orders, new Order.OrderTimeComparator());
@@ -553,9 +595,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
                         ordersDetails.setText(order.uName + " " + order.uSurname + "\n"
                                 + order.serviceName + ", " + tf.format(order.startTime) + "-" + tf.format(order.endTime) + "\n"
                                 + order.servicePrice + " kn");
-                        if (order.providerConfirm == 0)
-                            orderConfirmation.setVisibility(View.VISIBLE);
-
+                        orderConfirmation.setTag(order);
+                        orderConfirmation.setVisibility(order.providerConfirm == 0 ? View.VISIBLE : View.GONE);
                     }
                 });
                 orderButton.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -613,10 +654,10 @@ public class Organizer extends BaseActivity implements OnClickListener {
                         });
                 builder.setPositiveButton("Otkaži označene", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        for (int i = 0; i < count; i++) {
-                            if (selectedItems[i])
-                                sendConfirmation(orders.get(i).id, "3");
-                        }
+//                        for (int i = 0; i < count; i++) {
+//                            if (selectedItems[i])
+//                                sendConfirmation(orders.get(i).id, "3");
+//                        }
                     }
                 });
             }
