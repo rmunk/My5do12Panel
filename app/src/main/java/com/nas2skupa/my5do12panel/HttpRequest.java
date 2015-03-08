@@ -21,8 +21,9 @@ public class HttpRequest {
         try {
             ConnectivityManager connectivityManager = (ConnectivityManager) con.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            NetworkInfo mobileInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-            if (wifiInfo.isConnected()) {
+            if (wifiInfo.isConnected() || mobileInfo.isConnected()) {
                 return true;
             }
         } catch (Exception e) {
