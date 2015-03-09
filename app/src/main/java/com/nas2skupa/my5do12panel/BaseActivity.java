@@ -98,18 +98,23 @@ public class BaseActivity extends Activity {
 
 		switch (item.getItemId()) {
 
-		case R.id.home:
-			homeActivity();
-			return true;
+            case R.id.home:
+                homeActivity();
+                return true;
 
-		case R.id.list:
+            case R.id.list:
 
-            listActivity();
-			return true;
+                listActivity();
+                return true;
 
             case R.id.add_user:
 
                 addUserActivity();
+                return true;
+
+            case R.id.logout:
+
+                logoutActivity();
                 return true;
 
 //		case R.id.fav:
@@ -141,8 +146,8 @@ public class BaseActivity extends Activity {
 	}
 
 	public void listActivity() {
-//    	Intent i = new Intent(this, ListActivity.class);
-//	    startActivity(i);
+    	Intent i = new Intent(this, AddOrder.class);
+	    startActivity(i);
     }
 
     public void addUserActivity() {

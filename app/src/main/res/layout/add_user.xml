@@ -7,76 +7,79 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="392dp"
+        android:layout_width="400dp"
         android:layout_height="fill_parent">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Ime"
+            android:hint="Ime"
             android:ems="10"
-            android:id="@+id/editText" />
+            android:id="@+id/first_name" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Prezime"
+            android:hint="Prezime"
             android:ems="10"
-            android:id="@+id/editText2" />
+            android:id="@+id/last_name" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
-            android:id="@+id/date"
-            android:text="Datum rođenja" />
+            android:id="@+id/birthday"
+            android:hint="Datum rođenja"
+            android:onClick="showDatePickerDialog" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPostalAddress"
             android:ems="10"
-            android:id="@+id/editText4"
-            android:text="Adresa" />
+            android:id="@+id/address"
+            android:hint="Adresa" />
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/city"
-            android:spinnerMode="dropdown"
-            style="@style/AppTheme"
-            android:theme="@style/FilterButton" />
+            style="@style/FilterButton" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_gravity="top|center_horizontal" />
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/district"
-            android:spinnerMode="dropdown"
-            android:theme="@style/FilterButton" />
+            style="@style/FilterButton" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
             android:ems="10"
-            android:id="@+id/editText5"
-            android:text="Mobitel" />
+            android:id="@+id/cell"
+            android:hint="Mobitel" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
-            android:id="@+id/editText6"
-            android:text="Email" />
+            android:id="@+id/email"
+            android:hint="Email" />
 
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="12dp">
+            android:paddingLeft="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -89,35 +92,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ženski"
-                android:id="@+id/radioButton2" />
+                android:id="@+id/female" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Muški"
-                android:id="@+id/radioButton" />
+                android:id="@+id/male" />
         </RadioGroup>
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal">
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageButton"
+                android:id="@+id/accept"
                 android:src="@drawable/nar_potvrdi"
                 android:background="@android:color/transparent"
-                android:tint="@color/greenApp" />
+                android:tint="@color/greenApp"
+                android:onClick="AddNewUser" />
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageButton2"
+                android:id="@+id/cancel"
                 android:src="@drawable/nar_odbij"
                 android:background="@android:color/transparent"
-                android:tint="@color/greenApp" />
+                android:tint="@color/greenApp"
+                android:onClick="cancelAddUser" />
 
         </LinearLayout>
     </LinearLayout>

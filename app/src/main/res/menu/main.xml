@@ -17,9 +17,16 @@
     <item
         android:id="@+id/add_user"
         android:icon="@drawable/profilbtn"
-        android:orderInCategory="2"
+        android:orderInCategory="3"
         android:showAsAction="always"
         android:title="Dodaj Korisnika" />
+
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/logout_btn"
+        android:orderInCategory="4"
+        android:showAsAction="always"
+        android:title="Odjava" />
 
     <!--<item-->
     <!--android:id="@+id/fav"-->

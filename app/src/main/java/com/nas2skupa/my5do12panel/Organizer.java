@@ -129,8 +129,8 @@ public class Organizer extends BaseActivity implements OnClickListener {
             Order order = (Order) orderConfirmation.getTag();
             if (view == orderConfirm)
                 showConfirmationDialog(order);
-            else if (view == orderConfirm) {
-                sendConfirmation(order.id, "2", "");
+            else if (view == orderCancel) {
+                showCancelDialog(order);
             }
         }
     };
@@ -142,9 +142,27 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 .setTitle("Potvrda termina")
                 .setMessage("Unesite poruku za korisnika:")
                 .setView(note)
-                .setPositiveButton("Potvrdi", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Potvrdi termin", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         sendConfirmation(orderId, "1", note.getText().toString());
+                        orderConfirmation.setVisibility(View.GONE);
+                    }
+                })
+                .setNegativeButton("Odustani", null)
+                .show();
+    }
+
+    public void showCancelDialog(Order order) {
+        final String orderId = order.id;
+        final EditText note = new EditText(this);
+        new AlertDialog.Builder(this)
+                .setTitle("Otkazivanje termina")
+                .setMessage("Unesite poruku za korisnika:")
+                .setView(note)
+                .setPositiveButton("Otkaži termin", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendConfirmation(orderId, "2", note.getText().toString());
+                        orderConfirmation.setVisibility(View.GONE);
                     }
                 })
                 .setNegativeButton("Odustani", null)

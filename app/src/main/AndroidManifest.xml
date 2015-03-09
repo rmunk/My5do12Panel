@@ -59,6 +59,9 @@
             android:name="com.nas2skupa.my5do12panel.HomeScreen"
             android:screenOrientation="landscape"></activity>
         <activity
+            android:name="com.nas2skupa.my5do12panel.AddOrder"
+            android:screenOrientation="landscape"></activity>
+        <activity
             android:name="com.nas2skupa.my5do12panel.AddUser"
             android:screenOrientation="landscape"></activity>
         <activity
