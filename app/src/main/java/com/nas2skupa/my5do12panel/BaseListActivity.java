@@ -17,6 +17,7 @@ import android.widget.TextView;
 public class BaseListActivity extends ListActivity {
     SimpleSideDrawer slide_me;
     EditText inputSearch;
+
     @SuppressLint("NewApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,6 +85,7 @@ public class BaseListActivity extends ListActivity {
         });
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -97,29 +99,31 @@ public class BaseListActivity extends ListActivity {
                 listActivity();
                 return true;
 
-            case R.id.fav:
-                favActivity();
-                return true;
-
-            case R.id.akcije:
-                vaznoActivity();
-                return true;
-
-            case R.id.option:
-                optionActivity();
-                return true;
+//            case R.id.fav:
+//                favActivity();
+//                return true;
+//
+//            case R.id.akcije:
+//                vaznoActivity();
+//                return true;
+//
+//            case R.id.option:
+//                optionActivity();
+//                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
 
     }
-    public void searchActivity(){
+
+    public void searchActivity() {
         Intent i = new Intent(this, SearchActivity.class);
         i.putExtra("search", inputSearch.getText().toString());
         startActivity(i);
 
     }
+
     public void homeActivity() {
         Intent i = new Intent(this, HomeScreen.class);
         startActivity(i);
@@ -141,6 +145,7 @@ public class BaseListActivity extends ListActivity {
         Intent i = new Intent(this, Akcije.class);
         startActivity(i);
     }
+
     public void profilActivity() {
         Intent i = new Intent(this, ProfilActivity.class);
         startActivity(i);
@@ -163,42 +168,41 @@ public class BaseListActivity extends ListActivity {
         switch (CatId) {
 
             case 1:
-                catSettings[0]="zdravstvene usluge";
-                catSettings[1]="#7ec5c4";
+                catSettings[0] = "zdravstvene usluge";
+                catSettings[1] = "#7ec5c4";
                 return catSettings;
             case 2:
-                catSettings[0]="servis i održavanje";
-                catSettings[1]="#8c7c66";
+                catSettings[0] = "servis i održavanje";
+                catSettings[1] = "#8c7c66";
                 return catSettings;
             case 3:
-                catSettings[0]="ljepota";
-                catSettings[1]="#a80364";
+                catSettings[0] = "ljepota";
+                catSettings[1] = "#a80364";
                 return catSettings;
             case 4:
-                catSettings[0]="intelektualne usluge";
-                catSettings[1]="#49019a";
+                catSettings[0] = "intelektualne usluge";
+                catSettings[1] = "#49019a";
                 return catSettings;
             case 5:
-                catSettings[0]="dom i obitelj";
-                catSettings[1]="#687f95";
+                catSettings[0] = "dom i obitelj";
+                catSettings[1] = "#687f95";
                 return catSettings;
             case 6:
-                catSettings[0]="sport i rekreacija";
-                catSettings[1]="#7dad91";
+                catSettings[0] = "sport i rekreacija";
+                catSettings[1] = "#7dad91";
                 return catSettings;
             case 7:
-                catSettings[0]="turizam i ugostiteljstvo";
-                catSettings[1]="#e2a217";
+                catSettings[0] = "turizam i ugostiteljstvo";
+                catSettings[1] = "#e2a217";
                 return catSettings;
             case 8:
-                catSettings[0]="prijevoz";
-                catSettings[1]="#919294";
+                catSettings[0] = "prijevoz";
+                catSettings[1] = "#919294";
                 return catSettings;
             case 9:
-                catSettings[0]="kultura i zabava";
-                catSettings[1]="#826882";
+                catSettings[0] = "kultura i zabava";
+                catSettings[1] = "#826882";
                 return catSettings;
-
 
 
             default:

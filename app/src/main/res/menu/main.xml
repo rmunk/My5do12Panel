@@ -1,38 +1,45 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/home"
         android:icon="@drawable/home"
         android:orderInCategory="1"
         android:showAsAction="always"
-        android:title="Home"/>
+        android:title="Home" />
 
     <item
         android:id="@+id/list"
         android:icon="@drawable/list"
         android:orderInCategory="2"
         android:showAsAction="always"
-        android:title="Organizator"/>
+        android:title="Organizator" />
 
     <item
-        android:id="@+id/fav"
-        android:icon="@drawable/fav"
-        android:orderInCategory="3"
+        android:id="@+id/add_user"
+        android:icon="@drawable/profilbtn"
+        android:orderInCategory="2"
         android:showAsAction="always"
-        android:title="Favoriti"/>
+        android:title="Dodaj Korisnika" />
 
-    <item
-        android:id="@+id/akcije"
-        android:icon="@drawable/akcijebtn_new"
-        android:orderInCategory="4"
-        android:showAsAction="always"
-        android:title="Akcije"/>
+    <!--<item-->
+    <!--android:id="@+id/fav"-->
+    <!--android:icon="@drawable/fav"-->
+    <!--android:orderInCategory="3"-->
+    <!--android:showAsAction="always"-->
+    <!--android:title="Favoriti"/>-->
 
-    <item
-        android:id="@+id/option"
-        android:icon="@drawable/option"
-        android:orderInCategory="5"
-        android:showAsAction="always"
-        android:title="Opcije"/>
+    <!--<item-->
+    <!--android:id="@+id/akcije"-->
+    <!--android:icon="@drawable/akcijebtn_new"-->
+    <!--android:orderInCategory="4"-->
+    <!--android:showAsAction="always"-->
+    <!--android:title="Akcije"/>-->
+
+    <!--<item-->
+    <!--android:id="@+id/option"-->
+    <!--android:icon="@drawable/option"-->
+    <!--android:orderInCategory="5"-->
+    <!--android:showAsAction="always"-->
+    <!--android:title="Opcije"/>-->
 
 </menu>

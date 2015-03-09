@@ -4,6 +4,7 @@ import com.navdrawer.SimpleSideDrawer;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.util.Log;
@@ -102,20 +103,26 @@ public class BaseActivity extends Activity {
 			return true;
 
 		case R.id.list:
-			listActivity();
+
+            listActivity();
 			return true;
 
-		case R.id.fav:
-			favActivity();
-			return true;
+            case R.id.add_user:
 
-		case R.id.akcije:
-			vaznoActivity();
-			return true;
-			
-		case R.id.option:
-			optionActivity();
-			return true;
+                addUserActivity();
+                return true;
+
+//		case R.id.fav:
+//			favActivity();
+//			return true;
+//
+//		case R.id.akcije:
+//			vaznoActivity();
+//			return true;
+//
+//		case R.id.option:
+//			optionActivity();
+//			return true;
 
 		default:
 			return super.onOptionsItemSelected(item);
@@ -134,9 +141,13 @@ public class BaseActivity extends Activity {
 	}
 
 	public void listActivity() {
-		//Toast.makeText(this, "List Option Selexted", Toast.LENGTH_SHORT).show();
-    	Intent i = new Intent(this, Organizer.class);
-	    startActivity(i);
+//    	Intent i = new Intent(this, ListActivity.class);
+//	    startActivity(i);
+    }
+
+    public void addUserActivity() {
+        Intent i = new Intent(this, AddUser.class);
+        startActivity(i);
 	}
 
 	public void favActivity() {

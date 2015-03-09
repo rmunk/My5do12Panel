@@ -265,6 +265,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
         public HashMap<String, ArrayList<Order>> monthOrders = new HashMap<String, ArrayList<Order>>();
         private String selectedDate;
+        private int selectedOrder = -1;
 
         private Runnable updateOrders = new Runnable() {
             @Override
@@ -536,6 +537,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
         @Override
         public void onClick(View view) {
             selectedDate = (String) view.getTag();
+            selectedOrder = -1;
             String dateString = selectedDate.replace('-', '.').concat(".");
             currentDay.setText(dateString);
             ordersDetails.setText("");
@@ -589,6 +591,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 orderButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        selectedOrder = v.getId();
                         v.requestFocusFromTouch();
                         Order order = (Order) v.getTag();
                         SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
@@ -616,6 +619,13 @@ public class Organizer extends BaseActivity implements OnClickListener {
             }
             if (leftovers.size() > 0)
                 drawDayOrders(leftovers, ++row);
+        }
+
+        public void selectOrder(Order order) {
+//            findViewById()
+//            String key = new DateFormat().format("d-M-yyyy", order.date).toString();
+//            if (selectedDate != key)
+
         }
 
         public void showOrdersDialog(String date, final ArrayList<Order> orders) {

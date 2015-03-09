@@ -117,16 +117,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/orderConfirm"
-                android:background="@drawable/nar_potvrdi"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                android:src="@drawable/nar_potvrdi"
+                android:tint="@color/calendar_text"
+                android:background="@android:color/transparent" />
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/orderCancel"
+                android:src="@drawable/nar_odbij"
                 android:tint="@color/calendar_text"
-                android:background="@drawable/nar_odbij"
+                android:background="@android:color/transparent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp" />
 
@@ -134,7 +137,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/orderSuggest"
-                android:background="@drawable/nar_ponudi"
+                android:src="@drawable/nar_ponudi"
+                android:tint="@color/calendar_text"
+                android:background="@android:color/transparent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp" />
         </LinearLayout>

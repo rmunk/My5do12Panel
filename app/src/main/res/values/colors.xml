@@ -22,7 +22,6 @@
     <color name="event_confirmed">#adbb00</color>
     <color name="event_unconfirmed">#C90C62</color>
     <color name="event_selected">#330F82</color>
-    <color name="event_discounted">#FF0000</color>
     <color name="calendar_background">#6461067e</color>
     <color name="calendar_text">#4E0366</color>
     <color name="calendar_text_light">#FF8833A3</color>
