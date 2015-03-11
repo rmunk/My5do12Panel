@@ -9,7 +9,7 @@
 
     <Spinner
         android:id="@+id/cities"
-        style="@style/FilterButton" />
+        style="@style/SpinnerSelected" />
 
     <Space
         android:layout_width="8dp"
@@ -18,6 +18,6 @@
 
     <Spinner
         android:id="@+id/districts"
-        style="@style/FilterButton" />
+        style="@style/SpinnerSelected" />
 
 </LinearLayout>

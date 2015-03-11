@@ -206,7 +206,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 .appendQueryParameter("confirmed", confirmed)
                 .appendQueryParameter("note", note)
                 .build();
-        new HttpRequest(getApplicationContext(), uri, true)
+        new HttpRequest(this, uri, false)
                 .setOnHttpResultListener(new HttpRequest.OnHttpResultListener() {
                     @Override
                     public void onHttpResult(String result) {

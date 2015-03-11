@@ -1,53 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/back">
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:background="@drawable/back"
+        android:rowCount="5"
+        android:columnCount="2"
+        android:layout_margin="10dp">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="400dp"
-        android:layout_height="fill_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Korisnik:"
+            android:id="@+id/textView3"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_gravity="center_vertical" />
 
         <Spinner
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/user"
-            style="@style/FilterButton" />
+            android:id="@+id/users"
+            android:orderInCategory="1"
+            style="@style/SpinnerSelected"
+            android:layout_row="0"
+            android:layout_column="1" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_gravity="center_horizontal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Usluga:"
+            android:id="@+id/textView4"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_gravity="center_vertical" />
 
         <Spinner
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/service"
-            style="@style/FilterButton" />
+            android:id="@+id/services"
+            android:orderInCategory="2"
+            style="@style/SpinnerSelected"
+            android:layout_row="1"
+            android:layout_column="1" />
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Datum:"
+            android:id="@+id/textView5"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
             android:id="@+id/date"
-            android:hint="Datum" />
+            android:orderInCategory="3"
+            android:hint="Datum"
+            android:layout_row="2"
+            android:layout_column="1"
+            style="@style/SpinnerSelected" />
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="10"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Vrijeme:"
+            android:id="@+id/textView6"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
             android:id="@+id/time"
-            android:hint="Vrijeme" />
+            android:orderInCategory="4"
+            android:hint="Vrijeme"
+            android:layout_row="3"
+            android:layout_column="1"
+            style="@style/SpinnerSelected" />
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center_horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_row="4"
+            android:layout_column="1"
+            android:layout_margin="5dp">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -56,7 +93,8 @@
                 android:src="@drawable/nar_potvrdi"
                 android:background="@android:color/transparent"
                 android:tint="@color/greenApp"
-                android:onClick="AddNewUser" />
+                android:orderInCategory="5"
+                android:onClick="AddNewOrder" />
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -65,9 +103,24 @@
                 android:src="@drawable/nar_odbij"
                 android:background="@android:color/transparent"
                 android:tint="@color/greenApp"
+                android:orderInCategory="6"
                 android:onClick="cancelAddOrder" />
 
         </LinearLayout>
-    </LinearLayout>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/empty_services"
+            style="@style/SpinnerSelected"
+            android:text="Dohvaćanje usluga..."
+            android:visibility="gone"
+            android:layout_row="0"
+            android:layout_column="1" />
+
+        <TextView
+            android:id="@+id/empty_users"
+            style="@style/SpinnerSelected"
+            android:text="Dohvaćanje korisnika..."
+            android:visibility="gone"
+            android:layout_row="1"
+            android:layout_column="1" />
+    </GridLayout>
