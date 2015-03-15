@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/splash"
+    android:background="@drawable/splash_new"
     android:foregroundGravity="center">
 
 
@@ -51,10 +51,6 @@
                 android:onClick="tryLogin"
                 android:text="@string/btnLogin" />
 
-            <Button
-                style="@style/LoginButton"
-                android:id="@+id/btnRegister"
-                android:text="@string/btnRegister" />
         </LinearLayout>
     </LinearLayout>
 
