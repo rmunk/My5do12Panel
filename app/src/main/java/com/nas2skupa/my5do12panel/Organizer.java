@@ -1,5 +1,7 @@
 package com.nas2skupa.my5do12panel;
 
+import android.accounts.Account;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -65,6 +67,15 @@ public class Organizer extends BaseActivity implements OnClickListener {
     private final DateFormat dateFormatter = new DateFormat();
     private static final String dateTemplate = "MMMM yyyy";
 
+    // The authority for the sync adapter's content provider
+    public static final String AUTHORITY = "com.nas2skupa.my5do12panel.provider";
+    // An account type, in the form of a domain name
+    public static final String ACCOUNT_TYPE = "example.com";
+    // The account name
+    public static final String ACCOUNT = "default_account";
+    // Instance fields
+    Account mAccount;
+
     /**
      * Called when the activity is first created.
      */
@@ -73,6 +84,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.organizer);
+        SyncUtils.CreateSyncAccount(this);
 
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
@@ -318,7 +330,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
             printMonth(month, year);
 
-            updater.post(updateOrders);
+//            updater.post(updateOrders);
         }
 
         public void setCalendarDate(int year, int month, int day) {

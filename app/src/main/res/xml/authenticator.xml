@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<account-authenticator
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accountType="com.nas2skupa.my5do12panel"
+    android:icon="@drawable/icon_5do12"
+    android:smallIcon="@drawable/icon_5do12"
+    android:label="@string/app_name"/>

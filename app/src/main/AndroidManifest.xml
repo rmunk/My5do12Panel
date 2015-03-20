@@ -12,6 +12,10 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
     <permission
         android:name="com.nas2skupa.my5do12panel.permission.C2D_MESSAGE"
@@ -93,11 +97,34 @@
             android:label="@string/app_name"
             android:name="com.nas2skupa.my5do12panel.OrderActivity"></activity>
 
-        Google Cloud Messaging Service and Notifications
+        <service android:name="com.nas2skupa.my5do12panel.AppService" />
+
+        <!--Google Cloud Messaging Service and Notifications-->
         <service android:name="com.nas2skupa.my5do12panel.GcmIntentService">
             <meta-data
                 android:name="GCM_PROJECT_ID"
                 android:value="@string/gcm_project_id" />
+        </service>
+
+        <service
+            android:name="com.nas2skupa.my5do12panel.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <service
+            android:name="com.nas2skupa.my5do12panel.SyncService"
+            android:exported="true"
+            android:process=":sync">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
         </service>
 
         <receiver android:name="com.nas2skupa.my5do12panel.GcmBroadcastReceiver">
@@ -109,6 +136,13 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name="com.nas2skupa.my5do12panel.DataProvider"
+            android:authorities="com.nas2skupa.my5do12panel.provider"
+            android:exported="false"
+            android:syncable="true"/>
+
     </application>
 
 </manifest>

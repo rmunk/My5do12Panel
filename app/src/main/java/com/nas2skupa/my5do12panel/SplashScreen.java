@@ -1,6 +1,8 @@
 package com.nas2skupa.my5do12panel;
 
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -16,7 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class SplashScreen extends Activity {
-    @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,37 +68,6 @@ public class SplashScreen extends Activity {
             return null;
         }
     }
-
-    // For testing notifications receiver
-    private void sendNotification() {
-        new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-                String msg = "";
-                try {
-                    final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
-                    String registrationId = prefs.getString("registration_id", "");
-                    String message = "bla";
-                    ServiceHandler sh = new ServiceHandler();
-                    String url = "http://nas2skupa.com/5do12/confirmOrder.aspx?orderId=" + 3 + "&confirmed=" + 1 + "&note=bla";
-                    msg = sh.makeServiceCall(url, ServiceHandler.GET);
-                    Log.d("Response: ", "> " + msg);
-                } catch (Exception ex) {
-                    msg = "Error :" + ex.getMessage();
-                    // If there is an error, don't just keep trying to register.
-                    // Require the user to click a button again, or perform
-                    // exponential back-off.
-                }
-                return msg;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-            }
-        }.execute(null, null, null);
-    }
-
 
     public void nextScreen(View view) {
         Intent i = new Intent(this, LoginScreen.class);
