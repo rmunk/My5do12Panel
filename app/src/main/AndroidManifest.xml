@@ -12,10 +12,6 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
     <permission
         android:name="com.nas2skupa.my5do12panel.permission.C2D_MESSAGE"
@@ -23,12 +19,12 @@
     <uses-permission android:name="com.nas2skupa.do12.permission.C2D_MESSAGE" />
 
     <application
+        android:name="com.nas2skupa.my5do12panel.Globals"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/icon_5do12"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name="com.nas2skupa.my5do12panel.Globals"
-        android:hardwareAccelerated="false">
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -46,7 +42,12 @@
         <activity
             android:name="com.nas2skupa.my5do12panel.Organizer"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
+        <activity
+            android:name="com.nas2skupa.my5do12panel.NewOrderDialog"
+            android:label="Nova poruka od 5do12"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity
             android:name="com.nas2skupa.my5do12panel.LoginScreen"
             android:label="@string/app_name"
@@ -60,13 +61,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.nas2skupa.my5do12panel.HomeScreen"
-            android:screenOrientation="landscape"></activity>
-        <activity
             android:name="com.nas2skupa.my5do12panel.AddOrder"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape"/>
         <activity
             android:name="com.nas2skupa.my5do12panel.AddUser"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name="com.nas2skupa.my5do12panel.HomeScreen"
             android:screenOrientation="landscape"></activity>
         <activity
             android:name="com.nas2skupa.my5do12panel.Subcats"
@@ -85,17 +86,17 @@
             android:label="@string/app_name"
             android:screenOrientation="landscape"></activity>
         <activity
-            android:label="@string/app_name"
-            android:name="com.nas2skupa.my5do12panel.SearchActivity"></activity>
+            android:name="com.nas2skupa.my5do12panel.SearchActivity"
+            android:label="@string/app_name"></activity>
         <activity
-            android:label="@string/app_name"
-            android:name="com.nas2skupa.my5do12panel.SingleProvider"></activity>
+            android:name="com.nas2skupa.my5do12panel.SingleProvider"
+            android:label="@string/app_name"></activity>
         <activity
-            android:label="@string/app_name"
-            android:name="com.nas2skupa.my5do12panel.ProfilActivity"></activity>
+            android:name="com.nas2skupa.my5do12panel.ProfilActivity"
+            android:label="@string/app_name"></activity>
         <activity
-            android:label="@string/app_name"
-            android:name="com.nas2skupa.my5do12panel.OrderActivity"></activity>
+            android:name="com.nas2skupa.my5do12panel.OrderActivity"
+            android:label="@string/app_name"></activity>
 
         <service android:name="com.nas2skupa.my5do12panel.AppService" />
 
@@ -104,27 +105,6 @@
             <meta-data
                 android:name="GCM_PROJECT_ID"
                 android:value="@string/gcm_project_id" />
-        </service>
-
-        <service
-            android:name="com.nas2skupa.my5do12panel.AuthenticatorService">
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
-            </intent-filter>
-            <meta-data
-                android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator" />
-        </service>
-
-        <service
-            android:name="com.nas2skupa.my5do12panel.SyncService"
-            android:exported="true"
-            android:process=":sync">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
-            </intent-filter>
-            <meta-data android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter" />
         </service>
 
         <receiver android:name="com.nas2skupa.my5do12panel.GcmBroadcastReceiver">
@@ -136,12 +116,6 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
-
-        <provider
-            android:name="com.nas2skupa.my5do12panel.DataProvider"
-            android:authorities="com.nas2skupa.my5do12panel.provider"
-            android:exported="false"
-            android:syncable="true"/>
 
     </application>
 

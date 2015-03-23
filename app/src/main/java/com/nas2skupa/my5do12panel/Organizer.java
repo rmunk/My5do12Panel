@@ -1,17 +1,17 @@
 package com.nas2skupa.my5do12panel;
 
 import android.accounts.Account;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.format.DateFormat;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -75,6 +75,15 @@ public class Organizer extends BaseActivity implements OnClickListener {
     public static final String ACCOUNT = "default_account";
     // Instance fields
     Account mAccount;
+    private DataReceiver dataReceiver;
+
+    private class DataReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            adapter.parseServerResult(intent.getStringExtra("orders"));
+        }
+    }
 
     /**
      * Called when the activity is first created.
@@ -84,7 +93,6 @@ public class Organizer extends BaseActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.organizer);
-        SyncUtils.CreateSyncAccount(this);
 
         _calendar = Calendar.getInstance(Locale.getDefault());
         month = _calendar.get(Calendar.MONTH) + 1;
@@ -105,9 +113,6 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
         calendarView = (GridView) this.findViewById(R.id.calendar);
 
-        // Initialised
-        adapter = new GridCellAdapter(getApplicationContext(), R.id.calendar_day_gridcell, month, year);
-
         ordersDetails = (TextView) this.findViewById(R.id.eventsDetails);
         ordersDetails.setMovementMethod(new ScrollingMovementMethod());
 
@@ -122,6 +127,29 @@ public class Organizer extends BaseActivity implements OnClickListener {
         orderSuggest = (ImageButton) this.findViewById(R.id.orderSuggest);
 
         ordersLayout = (RelativeLayout) this.findViewById(R.id.eventsLayout);
+
+        adapter = new GridCellAdapter(getApplicationContext(), R.id.calendar_day_gridcell, month, year);
+    }
+
+    @Override
+    protected void onStart() {
+        dataReceiver = new DataReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(AppService.DATA_TRANSMIT_ACTION);
+        registerReceiver(dataReceiver, intentFilter);
+
+        Intent intent = new Intent(this, AppService.class);
+        intent.putExtra("year", year);
+        intent.putExtra("month", month);
+        startService(intent);
+
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(dataReceiver);
+        super.onStop();
     }
 
     @Override
@@ -222,7 +250,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 .setOnHttpResultListener(new HttpRequest.OnHttpResultListener() {
                     @Override
                     public void onHttpResult(String result) {
-                        adapter.refreshCalendar();
+                        sendBroadcast(new Intent(AppService.REQUEST_DATA_ACTION));
                     }
                 });
     }
@@ -241,6 +269,11 @@ public class Organizer extends BaseActivity implements OnClickListener {
         _calendar.set(year, month, _calendar.get(Calendar.DAY_OF_MONTH));
         adapter.notifyDataSetChanged();
         calendarView.setAdapter(adapter);
+
+        Intent intent = new Intent(AppService.REQUEST_DATA_ACTION);
+        intent.putExtra("year", year);
+        intent.putExtra("month", month);
+        sendBroadcast(intent);
     }
 
     @Override
@@ -297,15 +330,6 @@ public class Organizer extends BaseActivity implements OnClickListener {
         private String selectedDate;
         private int selectedOrder = -1;
 
-        private Runnable updateOrders = new Runnable() {
-            @Override
-            public void run() {
-                refreshCalendar();
-                updater.postDelayed(this, 10000);
-            }
-        };
-        private Handler updater = new Handler();
-
         // Days in Current Month
         public GridCellAdapter(Context context, int textViewResourceId, int month, int year) {
             super();
@@ -329,8 +353,6 @@ public class Organizer extends BaseActivity implements OnClickListener {
             selectedDate = new DateFormat().format("d-M-yyyy", currentDate).toString();
 
             printMonth(month, year);
-
-//            updater.post(updateOrders);
         }
 
         public void setCalendarDate(int year, int month, int day) {
@@ -340,27 +362,10 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
             currentMonth.setText(getMonthAsString(month - 1) + ", " + year + ".");
             printMonth(month, year);
-            refreshCalendar();
-        }
-
-        public void refreshCalendar() {
-            final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
-            String userId = prefs.getString("id", "");
-            Uri uri = new Uri.Builder().encodedPath("http://nas2skupa.com/5do12/getProOrders.aspx")
-                    .appendQueryParameter("proId", userId)
-                    .appendQueryParameter("year", String.valueOf(year))
-                    .appendQueryParameter("month", String.valueOf(month))
-                    .build();
-            new HttpRequest(getApplicationContext(), uri, true)
-                    .setOnHttpResultListener(new HttpRequest.OnHttpResultListener() {
-                        @Override
-                        public void onHttpResult(String result) {
-                            parseServerResult(result);
-                        }
-                    });
         }
 
         private void parseServerResult(String result) {
+            if (result == null || result.isEmpty()) return;
             try {
                 JSONObject jsonObj = new JSONObject(result);
                 JSONArray jsonArray = jsonObj.getJSONArray("ordersPro");
@@ -500,6 +505,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 Log.d(tag, "NEXT MONTH:= " + getMonthAsString(nextMonth));
                 list.add(String.valueOf(i + 1) + "-PASSIVE" + "-" + (nextMonth + 1) + "-" + nextYear);
             }
+
         }
 
         @Override
@@ -626,8 +632,10 @@ public class Organizer extends BaseActivity implements OnClickListener {
                         Order order = (Order) v.getTag();
                         SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
                         ordersDetails.setText(order.uName + " " + order.uSurname + "\n"
-                                + order.serviceName + ", " + tf.format(order.startTime) + "-" + tf.format(order.endTime) + "\n"
-                                + order.servicePrice + " kn");
+                                + order.serviceName + "\n"
+                                + tf.format(order.startTime) + "-" + tf.format(order.endTime) + ", "
+                                + order.servicePrice + " kn\n"
+                                + (!order.userNote.equals("") ? "Napomena: " + order.userNote : ""));
                         orderConfirmation.setTag(order);
                         orderConfirmation.setVisibility(order.providerConfirm == 0 ? View.VISIBLE : View.GONE);
                     }
@@ -720,6 +728,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
         public int getCurrentWeekDay() {
             return currentWeekDay;
         }
+
     }
 }
 

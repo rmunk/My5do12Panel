@@ -96,7 +96,7 @@
                 android:id="@+id/accept"
                 android:src="@drawable/nar_potvrdi"
                 android:background="@android:color/transparent"
-                android:tint="@color/greenApp"
+                android:tint="@color/app_green"
                 android:orderInCategory="5"
                 android:onClick="AddNewOrder" />
 
@@ -106,7 +106,7 @@
                 android:id="@+id/cancel"
                 android:src="@drawable/nar_odbij"
                 android:background="@android:color/transparent"
-                android:tint="@color/greenApp"
+                android:tint="@color/app_green"
                 android:orderInCategory="6"
                 android:onClick="cancelAddOrder" />
 

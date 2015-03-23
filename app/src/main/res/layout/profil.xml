@@ -74,14 +74,14 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/pAdresalbl"
                 android:textSize="15sp"
-                android:textColor="@color/greenApp"
+                android:textColor="@color/app_green"
                 android:textStyle="bold"
                 android:paddingTop="20dp"
                 android:text="Adresa: "/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/greenApp"
+                android:textColor="@color/app_green"
                 android:textSize="15sp"
                 android:id="@+id/pAdresa" />
         </LinearLayout>
@@ -115,14 +115,14 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/pMobilelbl"
                 android:textSize="15sp"
-                android:textColor="@color/greenApp"
+                android:textColor="@color/app_green"
                 android:textStyle="bold"
                 android:paddingTop="20dp"
                 android:text="Mobitel: "/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/greenApp"
+                android:textColor="@color/app_green"
                 android:textSize="15sp"
                 android:id="@+id/pMobile" />
         </LinearLayout>
@@ -133,7 +133,7 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:paddingTop="20dp"
-            android:textColor="@color/greenApp"
+            android:textColor="@color/app_green"
             android:text="Promijeni lozinku!"/>
     </LinearLayout>
     </ScrollView>

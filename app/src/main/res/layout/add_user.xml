@@ -113,7 +113,7 @@
                 android:id="@+id/accept"
                 android:src="@drawable/nar_potvrdi"
                 android:background="@android:color/transparent"
-                android:tint="@color/greenApp"
+                android:tint="@color/app_green"
                 android:onClick="AddNewUser" />
 
             <ImageButton
@@ -122,7 +122,7 @@
                 android:id="@+id/cancel"
                 android:src="@drawable/nar_odbij"
                 android:background="@android:color/transparent"
-                android:tint="@color/greenApp"
+                android:tint="@color/app_green"
                 android:onClick="cancelAddUser" />
 
         </LinearLayout>

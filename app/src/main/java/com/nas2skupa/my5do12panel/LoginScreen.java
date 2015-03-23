@@ -78,27 +78,27 @@ public class LoginScreen extends Activity {
     private Button login;
     private Dialog errorDialog;
 
-    @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         context = getApplicationContext();
-        prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
         Intent intent = getIntent();
-        if (intent.getAction() == "logout")
-            prefs.edit().clear().commit();
-        userId = prefs.getString(TAG_ID, "");
-        if (userId.isEmpty()) initialize();
-        else goHome();
+        handleLogin(intent);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        handleLogin(intent);
+    }
+
+    private void handleLogin(Intent intent) {
         prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
-        if (intent.getAction() == "logout")
+        if (intent.getAction() == "logout") {
             prefs.edit().clear().commit();
+            stopService(new Intent(this, AppService.class));
+        }
         userId = prefs.getString(TAG_ID, "");
         if (userId.isEmpty()) initialize();
         else goHome();
@@ -120,10 +120,6 @@ public class LoginScreen extends Activity {
     }
 
     private void goHome() {
-        Intent startServiceIntent = new Intent(context, AppService.class);
-//        startServiceIntent.setAction(Intent.ACTION_MAIN);
-        startService(startServiceIntent);
-
         Intent in = new Intent(this, Organizer.class);
         in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(in);

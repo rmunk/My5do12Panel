@@ -34,7 +34,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="MJESEC"
-                android:textSize="15dp"
                 style="@style/month_text" />
 
             <ImageView
@@ -162,13 +161,11 @@
             <Button
                 android:id="@+id/currentDay"
                 android:layout_weight="0.6"
-                android:textColor="#697202"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:background="@drawable/calendar_tile_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="DAN"
-                android:textSize="15dp" />
+                style="@style/day_text" />
 
         </LinearLayout>
 
@@ -309,7 +306,7 @@
                 android:id="@+id/button"
                 android:layout_gravity="bottom"
                 style="@style/daily_event_style"
-                android:background="@color/greenApp"
+                android:background="@color/app_green"
                 android:layout_marginLeft="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
