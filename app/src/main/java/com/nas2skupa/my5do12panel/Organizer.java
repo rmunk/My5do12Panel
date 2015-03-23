@@ -129,6 +129,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
         ordersLayout = (RelativeLayout) this.findViewById(R.id.eventsLayout);
 
         adapter = new GridCellAdapter(getApplicationContext(), R.id.calendar_day_gridcell, month, year);
+        adapter.parseServerResult(getIntent().getStringExtra("orders"));
     }
 
     @Override
@@ -161,6 +162,12 @@ public class Organizer extends BaseActivity implements OnClickListener {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(notification.getIntExtra("notificationId", -1));
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        adapter.parseServerResult(intent.getStringExtra("orders"));
     }
 
     OnClickListener orderConfirmationListener = new OnClickListener() {

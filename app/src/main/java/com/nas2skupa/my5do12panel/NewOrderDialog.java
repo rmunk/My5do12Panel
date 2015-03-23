@@ -19,15 +19,15 @@ public class NewOrderDialog extends Activity {
         setContentView(R.layout.new_order_dialog);
 
         final Context context = this;
-        Intent intent = getIntent();
 
 
         Button showButton = (Button) findViewById(R.id.show_new_order);
         showButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, Organizer.class);
-                startActivity(intent);
+                Intent organizerIntent = new Intent(getIntent());
+                organizerIntent.setClass(context, Organizer.class);
+                startActivity(organizerIntent);
             }
         });
 
