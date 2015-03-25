@@ -69,4 +69,16 @@ public class Order {
         Order that = (Order) o;
         return this.id.equals(that.id) && this.userConfirm == that.userConfirm && this.providerConfirm == that.providerConfirm;
     }
+
+    @Override
+    public String toString() {
+        SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
+        return String.format("%s %s\n%s - %s\n%s (%s kn)",
+                uName,
+                uSurname,
+                tf.format(startTime),
+                tf.format(endTime),
+                serviceName,
+                servicePrice);
+    }
 }

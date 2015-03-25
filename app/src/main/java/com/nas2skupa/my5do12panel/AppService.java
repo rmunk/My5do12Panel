@@ -80,7 +80,7 @@ public class AppService extends IntentService {
                     List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
                     ComponentName componentInfo = taskInfo.get(0).topActivity;
 
-                    if (!this.getPackageName().equals(componentInfo.getPackageName())) {
+                    if (!componentInfo.getClassName().equals(Organizer.class.getName())) {
                         Intent dialogIntent = new Intent(this, NewOrderDialog.class);
                         dialogIntent.putExtra("orders", result);
                         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

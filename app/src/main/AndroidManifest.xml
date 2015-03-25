@@ -44,7 +44,7 @@
             android:label="@string/app_name"
             android:screenOrientation="landscape" />
         <activity
-            android:name="com.nas2skupa.my5do12panel.NewOrderDialog"
+            android:name=".NewOrderDialog"
             android:label="Nova poruka od 5do12"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
@@ -98,7 +98,7 @@
             android:name="com.nas2skupa.my5do12panel.OrderActivity"
             android:label="@string/app_name"></activity>
 
-        <service android:name="com.nas2skupa.my5do12panel.AppService" />
+        <service android:name=".AppService" />
 
         <!--Google Cloud Messaging Service and Notifications-->
         <service android:name="com.nas2skupa.my5do12panel.GcmIntentService">

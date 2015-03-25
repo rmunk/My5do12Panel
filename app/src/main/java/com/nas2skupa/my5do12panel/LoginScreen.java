@@ -1,6 +1,5 @@
 package com.nas2skupa.my5do12panel;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;

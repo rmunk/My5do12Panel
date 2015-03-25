@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/new_order_list_item_title"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/new_order_list_item_details"
+        android:layout_below="@+id/new_order_list_item_title"
+        android:layout_alignParentStart="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_order_list_item_confirm"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/nar_potvrdi"
+        android:tint="@color/calendar_text"
+        android:background="@android:color/transparent"
+        android:layout_toLeftOf="@+id/new_order_list_item_cancel"
+        android:layout_centerVertical="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_order_list_item_cancel"
+        android:src="@drawable/nar_odbij"
+        android:tint="@color/calendar_text"
+        android:background="@android:color/transparent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/new_order_list_item_reschedule"
+        android:layout_centerVertical="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_order_list_item_reschedule"
+        android:src="@drawable/nar_ponudi"
+        android:tint="@color/calendar_text"
+        android:background="@android:color/transparent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+
+</RelativeLayout>

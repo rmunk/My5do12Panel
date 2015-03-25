@@ -2,28 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="300dp"
-    android:padding="10dp">
+    android:padding="20dp"
+    android:weightSum="1">
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textView7" />
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:id="@+id/new_orders_container"
+        android:choiceMode="multipleChoice" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center_horizontal|bottom">
-
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Potvrdi"
-            android:id="@+id/confirm_new_order"
-            android:textSize="16dp"
-            android:layout_gravity="bottom" />
+        android:layout_height="wrap_content"
+        android:layout_weight="0.21"
+        android:gravity="center_horizontal">
 
         <Button
             android:layout_width="100dp"
@@ -35,7 +28,7 @@
         <Button
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="Kasnije"
+            android:text="Zatvori"
             android:id="@+id/close_new_order"
             android:textSize="16dp" />
     </LinearLayout>
