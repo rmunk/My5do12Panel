@@ -2,7 +2,6 @@ package com.nas2skupa.my5do12panel;
 
 import android.accounts.Account;
 import android.app.AlertDialog;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -133,17 +132,11 @@ public class Organizer extends BaseActivity implements OnClickListener {
 
     @Override
     protected void onStart() {
+        super.onStart();
         dataReceiver = new DataReceiver();
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(AppService.DATA_TRANSMIT_ACTION);
+        intentFilter.addAction(AppService.NEW_DATA_RECEIVED_ACTION);
         registerReceiver(dataReceiver, intentFilter);
-
-        Intent intent = new Intent(this, AppService.class);
-        intent.putExtra("year", year);
-        intent.putExtra("month", month);
-        startService(intent);
-
-        super.onStart();
     }
 
     @Override
@@ -155,18 +148,10 @@ public class Organizer extends BaseActivity implements OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        while (GcmIntentService.class != null && !GcmIntentService.pendingNotifications.isEmpty()) {
-            Intent notification = GcmIntentService.pendingNotifications.pop();
-            showNotificationDialog(notification.getExtras());
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.cancel(notification.getIntExtra("notificationId", -1));
-        }
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        adapter.parseServerResult(intent.getStringExtra("orders"));
+        Intent intent = new Intent(AppService.REQUEST_DATA_ACTION);
+        intent.putExtra("year", year);
+        intent.putExtra("month", month);
+        sendBroadcast(intent);
     }
 
     OnClickListener orderConfirmationListener = new OnClickListener() {
@@ -215,34 +200,20 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 .show();
     }
 
-    public void showNotificationDialog(Bundle data) {
-        SimpleDateFormat inputDateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
-        SimpleDateFormat outputDateFormatter = new SimpleDateFormat("dd.MM.yyyy.");
-
-        final String orderId = data.getString("orderId");
-        String provider = data.getString("provider");
-        boolean confirmed = data.getString("confirmed").equals("1");
-        String date = null;
-        try {
-            date = outputDateFormatter.format(inputDateFormatter.parse(data.getString("date")));
-        } catch (ParseException e) {
-        }
-        String startTime = data.getString("startTime");
-        String endTime = data.getString("endTime");
-        String message = String.format("Vaš termin %s u %s sati je %s", date, startTime.substring(0, 5), confirmed ? "potvrđen." : "otkazan.");
+    public void showRescheduleDialog(Order order) {
+        final String orderId = order.id;
+        final EditText note = new EditText(this);
         new AlertDialog.Builder(this)
-                .setTitle(provider)
-                .setMessage(message)
-                .setPositiveButton("Potvrdi", new DialogInterface.OnClickListener() {
+                .setTitle("Otkazivanje termina")
+                .setMessage("Unesite poruku za korisnika:")
+                .setView(note)
+                .setPositiveButton("Otkaži termin", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-//                        sendConfirmation(orderId, "1");
+                        sendConfirmation(orderId, "2", note.getText().toString());
+                        orderConfirmation.setVisibility(View.GONE);
                     }
                 })
-                .setNegativeButton("Otkaži", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-//                        sendConfirmation(orderId, "2");
-                    }
-                })
+                .setNegativeButton("Odustani", null)
                 .show();
     }
 
@@ -256,7 +227,10 @@ public class Organizer extends BaseActivity implements OnClickListener {
                 .setOnHttpResultListener(new HttpRequest.OnHttpResultListener() {
                     @Override
                     public void onHttpResult(String result) {
-                        sendBroadcast(new Intent(AppService.REQUEST_DATA_ACTION));
+                        Intent intent = new Intent(AppService.REQUEST_DATA_ACTION);
+                        intent.putExtra("year", year);
+                        intent.putExtra("month", month);
+                        sendBroadcast(intent);
                     }
                 });
     }
