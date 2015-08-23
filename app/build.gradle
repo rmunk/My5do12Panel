@@ -1,20 +1,30 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias '5do12'
+            keyPassword 'nas2skupa'
+            storeFile file('C:/Users/Ranko/AndroidStudioProjects/nas2skupa.jks')
+            storePassword 'nas2skupa'
+        }
+    }
     compileSdkVersion 19
     buildToolsVersion "20.0.0"
-
     defaultConfig {
         applicationId "com.nas2skupa.my5do12panel"
         minSdkVersion 11
         targetSdkVersion 19
+        signingConfig signingConfigs.config
     }
-
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt', 'proguard-project.txt'
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt', 'proguard-project.txt'
+            signingConfig signingConfigs.config
         }
+    }
+    productFlavors {
     }
 }
 

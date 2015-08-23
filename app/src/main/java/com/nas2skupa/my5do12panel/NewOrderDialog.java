@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,12 +63,6 @@ public class NewOrderDialog extends Activity {
 
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-    }
-
     private void parseServerResult(String result) {
         if (result == null || result.isEmpty()) return;
         try {
@@ -85,76 +80,74 @@ public class NewOrderDialog extends Activity {
             e.printStackTrace();
         }
     }
-}
+    class NewOrdersAdapter extends ArrayAdapter<Order> {
 
-class NewOrdersAdapter extends ArrayAdapter<Order> {
+        private final Context context;
+        private final int resource;
+        private final List<Order> orders;
 
-    private final Context context;
-    private final int resource;
-    private final List<Order> orders;
+        public NewOrdersAdapter(Context context, int resource, List<Order> orders) {
+            super(context, resource, orders);
+            this.context = context;
+            this.resource = resource;
+            this.orders = orders;
+        }
 
-    public NewOrdersAdapter(Context context, int resource, List<Order> orders) {
-        super(context, resource, orders);
-        this.context = context;
-        this.resource = resource;
-        this.orders = orders;
-    }
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final Order order = orders.get(position);
 
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        final Order order = orders.get(position);
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(resource, parent, false);
+            TextView title = (TextView) rowView.findViewById(R.id.new_order_list_item_title);
+            TextView details = (TextView) rowView.findViewById(R.id.new_order_list_item_details);
+            ImageButton confirm = (ImageButton) rowView.findViewById(R.id.new_order_list_item_confirm);
+            ImageButton cancel = (ImageButton) rowView.findViewById(R.id.new_order_list_item_cancel);
+            ImageButton reschedule = (ImageButton) rowView.findViewById(R.id.new_order_list_item_reschedule);
 
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.new_order_list_item, parent, false);
-        TextView title = (TextView) rowView.findViewById(R.id.new_order_list_item_title);
-        TextView details = (TextView) rowView.findViewById(R.id.new_order_list_item_details);
-        ImageButton confirm = (ImageButton) rowView.findViewById(R.id.new_order_list_item_confirm);
-        ImageButton cancel = (ImageButton) rowView.findViewById(R.id.new_order_list_item_cancel);
-        ImageButton reschedule = (ImageButton) rowView.findViewById(R.id.new_order_list_item_reschedule);
+            SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
+            title.setText(String.format("%s %s, %s - %s", order.uName, order.uSurname, tf.format(order.startTime), tf.format(order.endTime)));
+            details.setText(String.format("%s (%s kn)\n%s", order.serviceName, order.servicePrice, order.userNote));
+            confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sendConfirmation(order.id, "1", "");
+                    orders.remove(order);
+                }
+            });
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sendConfirmation(order.id, "2", "");
+                    orders.remove(order);
+                }
+            });
+            reschedule.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent organizerIntent = new Intent(context, Organizer.class);
+                    context.startActivity(organizerIntent);
+                }
+            });
 
-        SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
-        title.setText(String.format("%s %s, %s - %s", order.uName, order.uSurname, tf.format(order.startTime), tf.format(order.endTime)));
-        details.setText(String.format("%s (%s kn)\n%s", order.serviceName, order.servicePrice, order.userNote));
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendConfirmation(order.id, "1", "");
-                orders.remove(order);
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendConfirmation(order.id, "2", "");
-                orders.remove(order);
-            }
-        });
-        reschedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent organizerIntent = new Intent(context, Organizer.class);
-                context.startActivity(organizerIntent);
-            }
-        });
+            return rowView;
 
-        return rowView;
+        }
 
-    }
-
-
-    private void sendConfirmation(String orderId, String confirmed, String note) {
-        Uri uri = new Uri.Builder().encodedPath("http://nas2skupa.com/5do12/confirmOrder.aspx")
-                .appendQueryParameter("orderId", orderId)
-                .appendQueryParameter("confirmed", confirmed)
-                .appendQueryParameter("note", note)
-                .build();
-        new HttpRequest(context, uri, false)
-                .setOnHttpResultListener(new HttpRequest.OnHttpResultListener() {
-                    @Override
-                    public void onHttpResult(String result) {
-
-                    }
-                });
+        private void sendConfirmation(String orderId, String confirmed, String note) {
+            Uri uri = new Uri.Builder().encodedPath("http://nas2skupa.com/5do12/confirmOrder.aspx")
+                    .appendQueryParameter("orderId", orderId)
+                    .appendQueryParameter("confirmed", confirmed)
+                    .appendQueryParameter("note", note)
+                    .build();
+            new HttpRequest(context, uri, false)
+                    .setOnHttpResultListener(new HttpRequest.OnHttpResultListener() {
+                        @Override
+                        public void onHttpResult(String result) {
+                            Toast.makeText(NewOrderDialog.this, "Odgovor je poslan.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 }

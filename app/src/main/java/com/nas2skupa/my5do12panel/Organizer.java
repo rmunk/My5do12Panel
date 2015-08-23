@@ -135,7 +135,7 @@ public class Organizer extends BaseActivity implements OnClickListener {
         super.onStart();
         dataReceiver = new DataReceiver();
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(AppService.DATA_TRANSMIT_ACTION);
+        intentFilter.addAction(AppService.NEW_DATA_RECEIVED_ACTION);
         registerReceiver(dataReceiver, intentFilter);
     }
 

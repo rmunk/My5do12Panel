@@ -92,7 +92,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ženski"
-                android:id="@+id/female" />
+                android:id="@+id/female"
+                android:checked="true" />
 
             <RadioButton
                 android:layout_width="wrap_content"

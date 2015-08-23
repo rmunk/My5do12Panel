@@ -4,7 +4,6 @@ import com.navdrawer.SimpleSideDrawer;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.util.Log;
@@ -30,10 +29,7 @@ public class BaseActivity extends Activity {
         slide_me.setRightBehindContentView(R.layout.sidemenu);
         TextView pocTV = (TextView) findViewById(R.id.pocetnabtn);
         TextView orgTV = (TextView) findViewById(R.id.organizatorbtn);
-        TextView favTV = (TextView) findViewById(R.id.favoritibtn);
-        TextView akcTV = (TextView) findViewById(R.id.akcijebtn);
         TextView odjTV = (TextView) findViewById(R.id.odjavabtn);
-        TextView proTV = (TextView) findViewById(R.id.profilbtn);
         inputSearch = (EditText) findViewById(R.id.inputSearch);
         inputSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -47,7 +43,6 @@ public class BaseActivity extends Activity {
         pocTV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","home");
                 homeActivity();
             }
         });
@@ -55,39 +50,13 @@ public class BaseActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","organizer");
-                listActivity();
-            }
-        });
-        favTV.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","favorites");
-                favActivity();
-            }
-        });
-        akcTV.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","actions");
-                vaznoActivity();
-            }
-        });
-        proTV.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","profil");
-                profilActivity();
+                addOrderActivity();
             }
         });
         odjTV.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Log.d("KLIK!!!!!!!","logout");
                 logoutActivity();
             }
         });
@@ -95,45 +64,27 @@ public class BaseActivity extends Activity {
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
 		switch (item.getItemId()) {
-
             case R.id.home:
                 homeActivity();
                 return true;
-
-            case R.id.list:
-
-                listActivity();
+            case R.id.add_order:
+                addOrderActivity();
                 return true;
-
             case R.id.add_user:
-
                 addUserActivity();
                 return true;
-
+            case R.id.provider_page:
+                providerActivity();
+                return true;
             case R.id.logout:
-
                 logoutActivity();
                 return true;
-
-//		case R.id.fav:
-//			favActivity();
-//			return true;
-//
-//		case R.id.akcije:
-//			vaznoActivity();
-//			return true;
-//
-//		case R.id.option:
-//			optionActivity();
-//			return true;
-
-		default:
-			return super.onOptionsItemSelected(item);
+    		default:
+			    return super.onOptionsItemSelected(item);
 		}
-
 	}
+
     public void searchActivity(){
         Intent i = new Intent(this, SearchActivity.class);
         i.putExtra("search", inputSearch.getText().toString());
@@ -145,7 +96,7 @@ public class BaseActivity extends Activity {
         startActivity(i);
 	}
 
-	public void listActivity() {
+	public void addOrderActivity() {
     	Intent i = new Intent(this, AddOrder.class);
 	    startActivity(i);
     }
@@ -155,22 +106,12 @@ public class BaseActivity extends Activity {
         startActivity(i);
 	}
 
-	public void favActivity() {
-
-        Intent i = new Intent(this, Favorites.class);
-        startActivity(i);
-	}
-
-    public void vaznoActivity() {
-        Intent i = new Intent(this, Akcije.class);
+    private void providerActivity() {
+        Intent i = new Intent(this, SingleProvider.class);
         startActivity(i);
     }
-    public void profilActivity() {
-        Intent i = new Intent(this, ProfilActivity.class);
-        startActivity(i);
-    }
-	
-	public void logoutActivity() {
+
+    public void logoutActivity() {
         Intent i = new Intent(this, LoginScreen.class);
         i.setAction("logout");
         startActivity(i);

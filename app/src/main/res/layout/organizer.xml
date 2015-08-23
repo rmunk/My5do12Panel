@@ -92,17 +92,21 @@
             android:id="@+id/calendar"
             android:numColumns="7"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="visible" />
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/eventsDetails"
             android:scrollbars="vertical"
-            android:maxLines="4"
+            android:maxLines="3"
             android:visibility="visible"
-            android:layout_margin="10dp"
-            style="@style/calendar_event_details" />
+            style="@style/calendar_event_details"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
 
         <LinearLayout
             android:orientation="horizontal"

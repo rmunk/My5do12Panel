@@ -2,17 +2,17 @@
 
     <item
         android:id="@+id/home"
-        android:icon="@drawable/home"
+        android:icon="@drawable/list"
         android:orderInCategory="1"
         android:showAsAction="always"
         android:title="Home" />
 
     <item
-        android:id="@+id/list"
-        android:icon="@drawable/list"
+        android:id="@+id/add_order"
+        android:icon="@drawable/imp"
         android:orderInCategory="2"
         android:showAsAction="always"
-        android:title="Organizator" />
+        android:title="Dodaj Termin" />
 
     <item
         android:id="@+id/add_user"
@@ -20,6 +20,13 @@
         android:orderInCategory="3"
         android:showAsAction="always"
         android:title="Dodaj Korisnika" />
+
+    <item
+        android:id="@+id/provider_page"
+        android:icon="@drawable/home"
+        android:orderInCategory="3"
+        android:showAsAction="always"
+        android:title="O Meni" />
 
     <item
         android:id="@+id/logout"

@@ -119,7 +119,9 @@ public class LoginScreen extends Activity {
     }
 
     private void goHome() {
-        Intent in = new Intent(this, Organizer.class);
+        startService(new Intent(this, AppService.class));
+
+        Intent in = new Intent(this, SingleProvider.class);
         in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(in);
     }

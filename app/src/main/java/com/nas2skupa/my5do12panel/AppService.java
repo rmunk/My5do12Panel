@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Ranko on 3/19/2015.
  */
 public class AppService extends IntentService {
-    public static final String DATA_TRANSMIT_ACTION = "com.nas2skupa.my5do12panel.NEW_DATA_RECEIVED";
+    public static final String NEW_DATA_RECEIVED_ACTION = "com.nas2skupa.my5do12panel.NEW_DATA_RECEIVED";
     public static final String REQUEST_DATA_ACTION = "com.nas2skupa.my5do12panel.REQUEST_DATA";
     private static final int TIMEOUT = 10000;
     private String userId;
@@ -72,7 +72,7 @@ public class AppService extends IntentService {
                 if (!result.equals(lastResponse)) {
 
                     Intent dataIntent = new Intent();
-                    dataIntent.setAction(DATA_TRANSMIT_ACTION);
+                    dataIntent.setAction(NEW_DATA_RECEIVED_ACTION);
                     dataIntent.putExtra("orders", result);
                     sendBroadcast(dataIntent);
 
@@ -80,7 +80,8 @@ public class AppService extends IntentService {
                     List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
                     ComponentName componentInfo = taskInfo.get(0).topActivity;
 
-                    if (!componentInfo.getClassName().equals(Organizer.class.getName())) {
+                    if (!componentInfo.getPackageName().equals(this.getPackageName()) ||
+                        componentInfo.getClassName().equals(this.getClass().getName())) {
                         Intent dialogIntent = new Intent(this, NewOrderDialog.class);
                         dialogIntent.putExtra("orders", result);
                         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -107,7 +108,7 @@ public class AppService extends IntentService {
                         @Override
                         public void onHttpResult(String result) {
                             Intent dataIntent = new Intent();
-                            dataIntent.setAction(DATA_TRANSMIT_ACTION);
+                            dataIntent.setAction(NEW_DATA_RECEIVED_ACTION);
                             dataIntent.putExtra("orders", result);
                             sendBroadcast(dataIntent);
                             lastResponse = result;

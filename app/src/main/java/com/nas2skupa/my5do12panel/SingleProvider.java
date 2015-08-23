@@ -1,7 +1,6 @@
 package com.nas2skupa.my5do12panel;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -47,8 +45,6 @@ public class SingleProvider extends BaseActivity {
     private static final String TAG_SUBCAT = "subcat";
     private static final String TAG_RATING = "rating";
 
-    private String color;
-
     private String url = "http://nas2skupa.com/5do12/getSinglePro.aspx?id=";
     PricelistAdapter adapter;
     private ListView listView1;
@@ -67,14 +63,9 @@ public class SingleProvider extends BaseActivity {
     List<String> phonesArr = new ArrayList<String>();
     View footer = null;
     private RatingBar ratingBar;
-    private RatingBar ratingBarBig;
-    private float userRating;
+    private TextView ratingValue;
     TextView lblAbout,lblEmail,lblWeb, lblAddress;
-    ImageView btnFav, btnVise, btnMap;
-    Dialog favDialog;
-    LinearLayout moreLayout;
-    Boolean detailOn = false, isFav=false;
-    ProviderClass proClass;
+    ImageView btnMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,31 +73,25 @@ public class SingleProvider extends BaseActivity {
         setContentView(R.layout.activity_single_provider);
         Intent in = getIntent();
         Bundle bundle = in.getExtras();
-        proClass = bundle.getParcelable("providerclass");
-        color = bundle.getString("color");
-        proId=proClass.proID;
+//        color = bundle.getString("color");
+
+        final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
+        String proId = prefs.getString("id", "");
+
         url += proId;
 
-        btnFav = (ImageView) findViewById(R.id.tofav);
-        btnVise = (ImageView) findViewById(R.id.details);
         btnMap = (ImageView) findViewById(R.id.showMap);
         lblAbout = (TextView) findViewById(R.id.about_label);
         lblEmail = (TextView) findViewById(R.id.email);
         lblWeb = (TextView) findViewById(R.id.web);
         lblAddress = (TextView) findViewById(R.id.address);
 
-        btnFav.setOnClickListener(clickHandler);
-        btnVise.setOnClickListener(clickHandler);
         btnMap.setOnClickListener(clickHandler);
         lblAbout.setOnClickListener(clickHandler);
         lblEmail.setOnClickListener(clickHandler);
         lblWeb.setOnClickListener(clickHandler);
         lblAddress.setOnClickListener(clickHandler);
 
-        if(proClass.proFav.equals("1")){
-            isFav=true;
-            btnFav.setImageResource(R.drawable.fav_icon_enabled);
-        }
         new GetProvider().execute();
         footer = (View) getLayoutInflater().inflate(R.layout.service_listview_footer_row, null);
         listView1 = (ListView) findViewById(R.id.listView1);
@@ -115,37 +100,24 @@ public class SingleProvider extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                PricelistAdapter.PricelistHolder holder = (PricelistAdapter.PricelistHolder)view.getTag();
-                PricelistClass pricelistclass = (PricelistClass)holder.priceObj;
-                Bundle b = new Bundle();
-                b.putParcelable("pricelistclass", pricelistclass);
-                b.putParcelable("providerclass", proClass);
-                int[] payArray = new int[payingArr.size()];
-                for(int i = 0; i < payingArr.size(); i++) payArray[i] = payingArr.get(i);
-                b.putIntArray("paying",payArray);
-                b.putString("color", color);
-                Intent in = new Intent(getApplicationContext(),
-                        OrderActivity.class);
-                in.putExtras(b);
-                startActivity(in);
+//                PricelistAdapter.PricelistHolder holder = (PricelistAdapter.PricelistHolder)view.getTag();
+//                PricelistClass pricelistclass = (PricelistClass)holder.priceObj;
+//                Bundle b = new Bundle();
+//                b.putParcelable("pricelistclass", pricelistclass);
+//                int[] payArray = new int[payingArr.size()];
+//                for(int i = 0; i < payingArr.size(); i++) payArray[i] = payingArr.get(i);
+//                b.putIntArray("paying",payArray);
+//                Intent in = new Intent(getApplicationContext(),
+//                        OrderActivity.class);
+//                in.putExtras(b);
+//                startActivity(in);
             }
         });
 
-        ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+        ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+        ratingValue = (TextView) findViewById(R.id.rating_value);
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(Color.parseColor("#ffadbb02"), PorterDuff.Mode.SRC_IN);
-        ratingBarBig = (RatingBar) findViewById(R.id.ratingBarBig);
-        LayerDrawable starsBig = (LayerDrawable) ratingBarBig.getProgressDrawable();
-        starsBig.getDrawable(2).setColorFilter(Color.parseColor("#ffadbb02"), PorterDuff.Mode.SRC_IN);
-        ratingBarBig.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                if (fromUser) {
-                    userRating = rating;
-                    new sendRating().execute(null, null, null);
-                }
-            }
-        });
     }
     View.OnClickListener phoneClick = new View.OnClickListener(){
         public void onClick(View v) {
@@ -162,9 +134,6 @@ public class SingleProvider extends BaseActivity {
 
     View.OnClickListener clickHandler = new View.OnClickListener() {
         public void onClick(View v) {
-            if (v == btnFav) {
-                new addToFav().execute(null,null,null);
-            }
             if(v==lblEmail){
                 try{
                     String uri = "mailto:" + lblEmail.getText() + "?subject=" + "Upit sa 5do12";
@@ -192,112 +161,8 @@ public class SingleProvider extends BaseActivity {
                     Log.d("MAPA:",e.toString());
                 }
             }
-            if (v == btnVise || v==lblAbout) {
-                moreLayout = (LinearLayout) findViewById(R.id.moreLayout);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)btnVise.getLayoutParams();
-                if (detailOn==false) {
-                    lblAbout.setMaxLines(Integer.MAX_VALUE);
-                    moreLayout.setVisibility(View.VISIBLE);
-                    detailOn=true;
-                    btnVise.setImageResource(R.drawable.more_arrow_up);
-                    params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                    btnVise.setLayoutParams(params);
-                }else{
-                    lblAbout.setMaxLines(4);
-                    moreLayout.setVisibility(View.GONE);
-                    detailOn=false;
-                    btnVise.setImageResource(R.drawable.more_arrow_down);
-                    params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,0);
-                    btnVise.setLayoutParams(params);
-                }
-            }
         }
     };
-
-    private class addToFav extends AsyncTask<Object, Object, Object> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(SingleProvider.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-
-        }
-        @Override
-        protected Object doInBackground(Object[] params) {
-            String msg = "";
-            try {
-                final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
-                String userId = prefs.getString("id", "");
-                ServiceHandler sh = new ServiceHandler();
-                String setFav="1";
-                if(isFav==true){
-                    setFav="0";
-
-                }
-                String url = "http://nas2skupa.com/5do12/setFav.aspx?userId=" + userId + "&proId=" + provider.getString(TAG_ID) + "&fav="+setFav;
-                msg = sh.makeServiceCall(url, ServiceHandler.GET);
-                Log.d("Response: ", "> " + msg);
-            } catch (Exception ex) {
-                Log.d("Error :", ex.getMessage());
-            }
-            return msg;
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-            Log.d("Post exe",o.toString());
-            if(isFav==false){
-                isFav=true;
-                btnFav.setImageResource(R.drawable.fav_icon_enabled);
-            }else{
-                isFav=false;
-                btnFav.setImageResource(R.drawable.fav_icon);
-            }
-        }
-    }
-
-    public void rateProvider(View view) {
-        ratingBar.setVisibility(View.GONE);
-        ratingBarBig.setVisibility(View.VISIBLE);
-        btnFav.setVisibility(View.GONE);
-    }
-
-    private class sendRating extends AsyncTask<Object, Object, Object> {
-        @Override
-        protected Object doInBackground(Object[] params) {
-            String msg = "";
-            try {
-                if (userRating == 0) return null;
-                final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
-                String userId = prefs.getString("id", "");
-                ServiceHandler sh = new ServiceHandler();
-                String url = "http://nas2skupa.com/5do12/setRate.aspx?userId=" + userId + "&proId=" + provider.getString(TAG_ID) + "&rate=" + (int) userRating;
-                msg = sh.makeServiceCall(url, ServiceHandler.GET);
-                Log.d("Response: ", "> " + msg);
-            } catch (Exception ex) {
-                Log.d("Error :", ex.getMessage());
-            }
-            return msg;
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-            ratingBar.setVisibility(View.VISIBLE);
-            ratingBarBig.setVisibility(View.GONE);
-            btnFav.setVisibility(View.VISIBLE);
-            if (o != null) {
-                listArray.clear();
-                adapter.clear();
-                new GetProvider().execute();
-            }
-        }
-    }
 
     private class GetProvider extends AsyncTask<Void, Void, Void> {
         @Override
@@ -374,8 +239,6 @@ public class SingleProvider extends BaseActivity {
             TextView lblAbout = (TextView) findViewById(R.id.about_label);
             TextView lblWorking = (TextView) findViewById(R.id.working);
             LinearLayout llMore = (LinearLayout) findViewById(R.id.moreLayout);
-            lblAbout.setBackgroundColor(Color.parseColor(color));
-            llMore.setBackgroundColor(Color.parseColor(color));
             try {
                 lblName.setText(provider.getString(TAG_NAME));
                 lblAbout.setText(provider.getString(TAG_ABOUT));
@@ -430,6 +293,8 @@ public class SingleProvider extends BaseActivity {
                 try {
                     float rating = Float.parseFloat(provider.getString(TAG_RATING));
                     ratingBar.setRating(rating);
+                    ratingValue.setText(String.valueOf(rating));
+
                 } catch (NumberFormatException e) {
                 }
             }catch (JSONException e){

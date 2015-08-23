@@ -95,7 +95,7 @@ public class BaseListActivity extends ListActivity {
                 homeActivity();
                 return true;
 
-            case R.id.list:
+            case R.id.add_order:
                 listActivity();
                 return true;
 
