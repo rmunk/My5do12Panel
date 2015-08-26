@@ -1,8 +1,10 @@
 package com.nas2skupa.my5do12panel;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -11,13 +13,18 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,6 +35,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,18 +75,16 @@ public class SingleProvider extends BaseActivity {
     private TextView ratingValue;
     TextView lblAbout,lblEmail,lblWeb, lblAddress;
     ImageView btnMap;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_provider);
-        Intent in = getIntent();
-        Bundle bundle = in.getExtras();
-//        color = bundle.getString("color");
+        context = this;
 
         final SharedPreferences prefs = getSharedPreferences("user", Context.MODE_PRIVATE);
         String proId = prefs.getString("id", "");
-
         url += proId;
 
         btnMap = (ImageView) findViewById(R.id.showMap);
@@ -100,6 +107,67 @@ public class SingleProvider extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+
+                final String currency = getString(R.string.currency);
+
+                PricelistAdapter.PricelistHolder holder = (PricelistAdapter.PricelistHolder)view.getTag();
+                final PricelistClass pricelistItem = (PricelistClass) holder.priceObj;
+
+                LayoutInflater li = LayoutInflater.from(context);
+                View promptsView = li.inflate(R.layout.service_item_dialog, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText name = (EditText) promptsView.findViewById(R.id.service_name);
+                name.setText(pricelistItem.plName);
+
+                final EditText price = (EditText) promptsView.findViewById(R.id.service_price);
+                price.setText(pricelistItem.plPrice.replace(currency, "").trim());
+
+                final CheckBox discount = (CheckBox) promptsView.findViewById(R.id.service_action);
+                discount.setChecked(pricelistItem.akcijaIcon!=0);
+
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("Prihvati promjene",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick (DialogInterface dialog,int id){
+                                        // get user input and set it to result
+                                        // edit text
+                                        pricelistItem.plName = name.getText().toString();
+                                        pricelistItem.plPrice = price.getText().toString().replace(currency, "").trim() + " " + currency;
+                                        pricelistItem.akcijaIcon = discount.isChecked() ? R.drawable.akcija_icon : 0;
+                                    }
+                                }
+
+                        )
+                        .setNegativeButton("Odustani",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick (DialogInterface dialog,int id){
+                                        dialog.cancel();
+                                    }
+                                }
+                        )
+                        .setNeutralButton("Izbriši iz cijenika",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick (DialogInterface dialog,int id){
+                                        //TODO: delete pricelistItem
+                                        dialog.cancel();
+                                    }
+                                }
+                        );
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
 //                PricelistAdapter.PricelistHolder holder = (PricelistAdapter.PricelistHolder)view.getTag();
 //                PricelistClass pricelistclass = (PricelistClass)holder.priceObj;
 //                Bundle b = new Bundle();
@@ -141,7 +209,7 @@ public class SingleProvider extends BaseActivity {
                     startActivity(intent);
                 }catch(Exception e){
                     Log.d("Email:",e.toString());
-            }
+                }
             }
             if(v==lblWeb){
                 try{
